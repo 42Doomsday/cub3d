@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:57:14 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/04 17:21:27 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/05 14:53:51 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ __int128_t	ft_atol(const char *str);
 char		*ft_itoa(int n);
 
 // get_next_line
+char		*get_next_line(int fd);
 
 // io
 int			ft_putchar_fd(char c, int fd);
