@@ -32,7 +32,7 @@ $(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(OBJ) $(LIBFT) | $(OBJ_DIR)
 
 test: $(TESTS)
 	@for t in $(TESTS); do \
-		echo "Running $$t"; \
+		echo "\nRunning $$t"; \
 		./$$t || exit 1; \
 	done
 
