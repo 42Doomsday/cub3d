@@ -6,49 +6,24 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/05 16:22:36 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/05 17:16:17 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "libft.h"
 
-# define TEXTURES_TESTS_PATH "tests/examples/textures/invalid/"
+# define TEXTURES_TESTS_PATH "tests/examples/textures/"
 
-static int	get_test_file(char *filename)
-{
-	char	*path;
-	int		fd;
-
-	path = ft_strjoin(TEXTURES_TESTS_PATH, filename);
-	fd = open(filename, O_RDONLY);
-	free(path);
-	return (fd);
-}
-
-static void	puterror(char *filename, bool result, bool expected)
-{
-	int	stdout_fd = dup(STDOUT_FILENO);
-	dup2(STDERR_FILENO, STDOUT_FILENO);
-	printf("\nThe test: %s - was failed:\n", filename);
-	printf("Expected result: %d; yours: %d\n", expected, result);
-	dup2(stdout_fd, STDOUT_FILENO);
-	close(stdout_fd);
-}
-
-static void	putsuccess(char *filename) {
-	printf("Test: %s - passed!\n", filename);
-}
-
-static void	free_struct(textures_t *textures)
-{
-	free(textures->east);
-	free(textures->north);
-	free(textures->south);
-	free(textures->west);
-	free(textures->floor);
-	free(textures->ceiling);
-}
+static void	check_invalid(char **invalid_files, bool expected_result);
+static void	check_valid(char **valid_files, bool expected_result);
+static void	add_prefix(char **in, char *prefix);
+static int	get_test_file(char *filename);
+static void	puterror(char *filename);
+static void unexpected_result(bool exp, bool res);
+static void	putsuccess(char *filename);
+static void	free_struct(textures_t *textures);
+static bool	is_not_empty(textures_t *textures);
 
 int	main(void)
 {
@@ -65,22 +40,143 @@ int	main(void)
 		NULL
 	};
 
+	add_prefix(invalid_test_files, "invalid/");
+
+	char *valid_test_files[] = {
+		"line_separated",
+		"mixed",
+		"more_spaces",
+		"normal",
+		"path_with_space",
+		NULL
+	};
+
+	add_prefix(valid_test_files, "valid/");
+
+	check_invalid(invalid_test_files, false);
+	for (int i = 0; invalid_test_files[i] != NULL; i++)
+		free(invalid_test_files[i]);
+
+	check_valid(valid_test_files, true);
+	for (int i = 0; valid_test_files[i] != NULL; i++)
+		free(valid_test_files[i]);
+
+	return (EXIT_SUCCESS);
+}
+
+static void	check_invalid(char **invalid_files, bool expected_result)
+{
 	textures_t	textures;
 	int			fd;
 	bool		result;
 
-	for (int i = 0; invalid_test_files[i] != NULL; i++)
+	for (int i = 0; invalid_files[i] != NULL; i++)
 	{
 		ft_bzero(&textures, sizeof(textures_t));
-		fd = get_test_file(invalid_test_files[i]);
+		fd = get_test_file(invalid_files[i]);
 		result = parse_textures(fd, &textures);
-		if (result == true)
-			puterror(invalid_test_files[i], result, false);
+		if (result != expected_result)
+		{
+			puterror(invalid_files[i]);
+			unexpected_result(expected_result, result);
+		}
 		else
-			putsuccess(invalid_test_files[i]);
+			putsuccess(invalid_files[i]);
 		if (fd > -1)
 			close(fd);
 		free_struct(&textures);
 	}
-	return (EXIT_SUCCESS);
 }
+
+static void	check_valid(char **valid_files, bool expected_result)
+{
+	textures_t	textures;
+	int			fd;
+	bool		result;
+
+	for (int i = 0; valid_files[i] != NULL; i++)
+	{
+		ft_bzero(&textures, sizeof(textures_t));
+		fd = get_test_file(valid_files[i]);
+		result = parse_textures(fd, &textures);
+		if (result == expected_result)
+		{
+			if (is_not_empty(&textures))
+				putsuccess(valid_files[i]);
+			else
+			{
+				puterror(valid_files[i]);
+				ft_putstr_fd("The structure is not filled\n", 2);
+			}
+		}
+		else
+		{
+			puterror(valid_files[i]);
+			unexpected_result(expected_result, result);
+		}
+		if (fd > -1)
+			close(fd);
+		free_struct(&textures);
+	}
+}
+
+static void	add_prefix(char **in, char *prefix)
+{
+	for (int i = 0; in[i] != NULL; i++) {
+		in[i] = ft_strjoin(prefix, in[i]);
+	}
+}
+
+static int	get_test_file(char *filename)
+{
+	char	*path;
+	int		fd;
+
+	path = ft_strjoin(TEXTURES_TESTS_PATH, filename);
+	fd = open(path, O_RDONLY);
+	free(path);
+	return (fd);
+}
+
+
+static void	puterror(char *filename)
+{
+	dprintf(STDERR_FILENO, "\nThe test: %s - was failed:\n", filename);
+}
+
+static void unexpected_result(bool exp, bool res)
+{
+	dprintf(STDERR_FILENO, "The expected result: %d; yours: %d\n", exp, res);
+}
+
+static void	putsuccess(char *filename) {
+	printf("Test: %s - passed!\n", filename);
+}
+
+static void	free_struct(textures_t *textures)
+{
+	free(textures->east);
+	free(textures->north);
+	free(textures->south);
+	free(textures->west);
+	free(textures->floor);
+	free(textures->ceiling);
+}
+
+static bool	is_not_empty(textures_t *textures)
+{
+	if (textures->ceiling == NULL)
+		return (false);
+	if (textures->east == NULL)
+		return (false);
+	if (textures->floor == NULL)
+		return (false);
+	if (textures->north == NULL)
+		return (false);
+	if (textures->south == NULL)
+		return (false);
+	if (textures->west == NULL)
+		return (false);
+	return (true);
+}
+
