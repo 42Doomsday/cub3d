@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/05 13:48:12 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/05 16:22:16 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ typedef struct textures_s
 	char *south;
 	char *west;
 	char *east;
-	int	*floor[3];
-	int	*ceiling[3];
-} textures_t;
+	int	*floor;
+	int	*ceiling;
+}	textures_t;
 
 bool	parse_textures(int fd, textures_t *out);
 
