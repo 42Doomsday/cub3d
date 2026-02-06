@@ -16,7 +16,8 @@ VALGRIND = valgrind \
 SRC  = is_valid_path.c parse_textures.c
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-TESTS = $(OBJ_DIR)/test_parse_textures $(OBJ_DIR)/test_is_valid_path
+TEST_NAMES = test_parse_textures test_is_valid_path
+TESTS      = $(addprefix $(OBJ_DIR)/,$(TEST_NAMES))
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
@@ -35,7 +36,6 @@ test: $(TESTS)
 		echo "\nRunning $$t"; \
 		./$$t || exit 1; \
 	done
-
 
 test-leaks: $(TESTS)
 	@for t in $(TESTS); do \
