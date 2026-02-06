@@ -13,10 +13,10 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SRC  = parse_textures.c
+SRC  = is_valid_path.c parse_textures.c
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-TESTS = $(OBJ_DIR)/test_parse_textures
+TESTS = $(OBJ_DIR)/test_parse_textures $(OBJ_DIR)/test_is_valid_path
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
