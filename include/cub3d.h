@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/09 16:43:39 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/09 16:46:04 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ typedef struct s_textures
 
 bool	is_valid_path(char *path);
 bool	parse_textures(int fd, t_textures *out);
+bool	is_valid_path(char *path);
 
 #endif
