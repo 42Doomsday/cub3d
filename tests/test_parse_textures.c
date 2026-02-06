@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/05 17:16:17 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/06 12:04:16 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,18 +165,13 @@ static void	free_struct(textures_t *textures)
 
 static bool	is_not_empty(textures_t *textures)
 {
-	if (textures->ceiling == NULL)
-		return (false);
-	if (textures->east == NULL)
-		return (false);
-	if (textures->floor == NULL)
-		return (false);
-	if (textures->north == NULL)
-		return (false);
-	if (textures->south == NULL)
-		return (false);
-	if (textures->west == NULL)
-		return (false);
-	return (true);
+	return (
+		textures->ceiling &&
+		textures->east &&
+		textures->floor &&
+		textures->north &&
+		textures->south &&
+		textures->west
+	);
 }
 
