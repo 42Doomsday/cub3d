@@ -6,13 +6,13 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 13:53:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/05 14:15:21 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/09 15:17:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-bool	parse_textures(int fd, textures_t *out)
+bool	parse_textures(int fd, t_textures *out)
 {
 	(void)fd;
 	(void)out;

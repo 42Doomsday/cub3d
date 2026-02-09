@@ -6,13 +6,13 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/06 12:39:34 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/09 16:44:04 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-# define TEXTURES_TESTS_PATH "tests/examples/textures/"
+# define t_TEXTURESESTS_PATH "tests/examples/textures/"
 
 static void	check_invalid(char **invalid_files, bool expected_result);
 static void	check_valid(char **valid_files, bool expected_result);
@@ -21,8 +21,8 @@ static int	get_test_file(char *filename);
 static void	puterror(char *filename);
 static void unexpected_result(bool exp, bool res);
 static void	putsuccess(char *filename);
-static void	free_struct(textures_t *textures);
-static bool	is_not_empty(textures_t *textures);
+static void	free_struct(t_textures *textures);
+static bool	is_not_empty(t_textures *textures);
 
 int	main(void)
 {
@@ -65,13 +65,13 @@ int	main(void)
 
 static void	check_invalid(char **invalid_files, bool expected_result)
 {
-	textures_t	textures;
+	t_textures	textures;
 	int			fd;
 	bool		result;
 
 	for (int i = 0; invalid_files[i] != NULL; i++)
 	{
-		ft_bzero(&textures, sizeof(textures_t));
+		ft_bzero(&textures, sizeof(t_textures));
 		fd = get_test_file(invalid_files[i]);
 		result = parse_textures(fd, &textures);
 		if (result != expected_result)
@@ -89,13 +89,13 @@ static void	check_invalid(char **invalid_files, bool expected_result)
 
 static void	check_valid(char **valid_files, bool expected_result)
 {
-	textures_t	textures;
+	t_textures	textures;
 	int			fd;
 	bool		result;
 
 	for (int i = 0; valid_files[i] != NULL; i++)
 	{
-		ft_bzero(&textures, sizeof(textures_t));
+		ft_bzero(&textures, sizeof(t_textures));
 		fd = get_test_file(valid_files[i]);
 		result = parse_textures(fd, &textures);
 		if (result == expected_result)
@@ -131,7 +131,7 @@ static int	get_test_file(char *filename)
 	char	*path;
 	int		fd;
 
-	path = ft_strjoin(TEXTURES_TESTS_PATH, filename);
+	path = ft_strjoin(t_TEXTURESESTS_PATH, filename);
 	fd = open(path, O_RDONLY);
 	free(path);
 	return (fd);
@@ -152,7 +152,7 @@ static void	putsuccess(char *filename) {
 	printf("Test: %s - passed!\n", filename);
 }
 
-static void	free_struct(textures_t *textures)
+static void	free_struct(t_textures *textures)
 {
 	free(textures->east);
 	free(textures->north);
@@ -162,7 +162,7 @@ static void	free_struct(textures_t *textures)
 	free(textures->ceiling);
 }
 
-static bool	is_not_empty(textures_t *textures)
+static bool	is_not_empty(t_textures *textures)
 {
 	return (
 		textures->ceiling &&
