@@ -42,6 +42,61 @@
  * if space is detected and no back slash or quotes are dtected then add quotes
 */
 
+#include "libft.h"
+#include <stdio.h>
+
+typedef enum e_texture {
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	FLOOR,
+	CEILING,
+	T_COUNT
+}	t_textr;
+
+typedef struct s_texture_map {
+	char	*name;
+	t_textr	textr;
+}	t_textr_map
+
+void mark_item(t_textr texture, int *found)
+{
+	if (found[item])
+	{
+		printf("texture already found\n");
+		exit (1);
+	}
+	found[item] = 1;
+}
+
+t_textr	get_textr_type(char *textr_str)
+{
+	int			i;
+	t_textr_map	map;
+
+	i = -1;
+	while (++i < T_COUNT)
+	{
+		if (ft_strcmp == map[i])
+			return (map[i]);
+	}
+}
+
+int	parser(int fd)
+{
+	char	*next_line;
+
+	next_line = get_next_line(fd);
+	
+}
 
 
+int	main(int ac, char *av[])
+{
+	int	fd;
+	
+	fd = open(av[1], O_RDONLY);
+	parser(fd);
+}
 
