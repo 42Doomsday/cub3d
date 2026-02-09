@@ -41,7 +41,6 @@
  * if it has space then quotes or backslash should be detecte or added
  * if space is detected and no back slash or quotes are dtected then add quotes
 */
-
 #include "libft.h"
 #include <stdio.h>
 
@@ -62,12 +61,12 @@ typedef struct s_texture_map {
 
 void mark_item(t_textr texture, int *found)
 {
-	if (found[item])
+	if (found[texture])
 	{
 		printf("texture already found\n");
 		exit (1);
 	}
-	found[item] = 1;
+	found[texture] = 1;
 }
 
 t_textr	get_textr_type(char *textr_str)
