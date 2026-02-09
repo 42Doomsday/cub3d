@@ -6,12 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/09 15:17:18 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/09 16:46:23 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include "libft.h"
 
 # define t_TEXTURESESTS_PATH "tests/examples/textures/"
 
