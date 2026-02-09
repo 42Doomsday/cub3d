@@ -5,6 +5,9 @@
 # Prerequisites
 *.d
 
+# Program files
+/build
+
 # Object files
 *.o
 *.ko
