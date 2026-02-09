@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/05 17:04:23 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/09 15:16:37 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <stdarg.h>
 
-typedef struct textures_s
+typedef struct s_textures
 {
 	char *north;
 	char *south;
@@ -26,8 +26,8 @@ typedef struct textures_s
 	char *east;
 	int	*floor;
 	int	*ceiling;
-}	textures_t;
+}	t_textures;
 
-bool	parse_textures(int fd, textures_t *out);
+bool	parse_textures(int fd, t_textures *out);
 
 #endif
