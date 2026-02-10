@@ -44,52 +44,38 @@
 #include "libft.h"
 #include <stdio.h>
 
-typedef enum e_texture {
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST,
-	FLOOR,
-	CEILING,
-	T_COUNT
-}	t_textr;
-
+// texture map
 typedef struct s_texture_map {
-	char	*name;
-	t_textr	textr;
+	char	        *name;
+	t_texture_id	textr;
 }	t_textr_map
 
-void mark_item(t_textr texture, int *found)
-{
-	if (found[texture])
-	{
-		printf("texture already found\n");
-		exit (1);
-	}
-	found[texture] = 1;
-}
-
+// get 
 t_textr	get_textr_type(char *textr_str)
 {
 	int			i;
+    int         bytes;
 	t_textr_map	map;
 
-	i = -1;
-	while (++i < T_COUNT)
+	i = 0;
+	while (i < TEXTURE_CNT)
 	{
-		if (ft_strcmp == map[i])
+        bytes = ft_strlen(textr_str);
+		if (ft_strncmp(textr_str, map[i], )
 			return (map[i]);
+        i++;
 	}
 }
 
-int	parser(int fd)
+bool	parser_texture(int fd, t_textures *out)
 {
-	char	*next_line;
+	char	*line;
+    char    **split;
 
-	next_line = get_next_line(fd);
-	
+	line = get_next_line(fd);
+    split = ft_split(line, ' ');
+    get_textr_type(split[0]);
 }
-
 
 int	main(int ac, char *av[])
 {
