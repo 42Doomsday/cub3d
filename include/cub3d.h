@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/09 18:09:45 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/13 14:38:33 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,9 @@ typedef struct s_map
 	int		width;
 }	t_map;
 
-typedef enum s_side
-{
-	N,S,E,W
-}	t_side;
-
 typedef struct s_player
 {
-	t_side	side;
+	char	side;
 	float	x;
 	float	y;
 }	t_player;
@@ -52,6 +47,7 @@ typedef struct s_player
 bool	is_valid_path(char *path);
 bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
+void	free_map(t_map *map);
 bool	is_valid_path(char *path);
 
 #endif

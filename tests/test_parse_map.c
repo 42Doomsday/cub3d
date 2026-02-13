@@ -6,13 +6,13 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:38:24 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/10 15:53:20 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/13 17:08:07 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-# define t_TEXTURESESTS_PATH "tests/examples/map/"
+# define TEXTURES_TESTS_PATH "tests/examples/map/"
 
 static void	check_invalid(char **invalid_files, bool expected_result);
 static void	check_valid(char **valid_files, bool expected_result);
@@ -21,7 +21,6 @@ static int	get_test_file(char *filename);
 static void	puterror(char *filename);
 static void unexpected_result(bool exp, bool res);
 static void	putsuccess(char *filename);
-static void	free_map(t_map *map);
 static bool	is_not_empty_player(t_player *player);
 static bool	is_not_empty_map(t_map *map);
 
@@ -132,7 +131,7 @@ static int	get_test_file(char *filename)
 	char	*path;
 	int		fd;
 
-	path = ft_strjoin(t_TEXTURESESTS_PATH, filename);
+	path = ft_strjoin(TEXTURES_TESTS_PATH, filename);
 	fd = open(path, O_RDONLY);
 	free(path);
 	return (fd);
@@ -151,11 +150,6 @@ static void unexpected_result(bool exp, bool res)
 
 static void	putsuccess(char *filename) {
 	printf("Test: %s - passed!\n", filename);
-}
-
-static void	free_map(t_map *map)
-{
-	free(map->data);
 }
 
 static bool	is_not_empty_map(t_map *map)
