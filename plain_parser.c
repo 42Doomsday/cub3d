@@ -1,4 +1,5 @@
 #include "libft.h"
+#include <fcntl.h>
 
 
 typedef struct s_texture_vals
@@ -9,7 +10,7 @@ typedef struct s_texture_vals
 	char	*west;
 }	t_texture_vals;
 
-
+// 0) initiate data	
 // 1) validate input
 // 2) allocate resutl array
 // 3) find position of first space
@@ -23,26 +24,78 @@ typedef struct s_texture_vals
 
 
 
-int find_split_point()
-
-
-int parse_textures(const char *line, t_texture_vals *vals)
+char	*get_tag(const char *line, int len, int len_before_space)
 {
+	int		len;
+	char	*space_ptr;
+	int		len_before_space;
+	char	*tag;
+}
+
+int	check_tag()
+
+char	*get_path(char *line, int len, int len_before_space)
+{
+	path = ft_substr(line, len_before_space + 1, len);
+	path = ft_strtrim(path);
+}
+
+int	check_path()
+
+
+//get_line(fd);
+//
+//check_texture_tag
+//
+//set_path()
+//
+//set_texture_vals()
+
+
+int	parse_textures(int fd, t_texture_vals *vals)
+{
+	char *line;
+
+	line = get_next_line(fd);
+	while (line && line[0])
+	{
+		line = ft_strtrim(line, " ");
+		if (!line)
+			return (NULL);
+		if (line[0] == "\n")
+		{
+			free(line);
+			line = get_next_line(fd);
+			continue;
+		}	
+	}
+	return (line);
+}
+
+
+
+
 	int	len;
 	char *space_ptr;
-	int before_space;
+	int len_before_space;
+	char *tag;
+	char *path;
 
 	len = ft_strlen(line);
 	space_ptr = ft_strchr(line, ' ');
-
-	before_space = space_ptr - line;
-
-	printf("Total length: %d\n", len);
-	printf("Length before space: %d\n", before_space);
-	printf("First part: %.*s\n", before_space, line);
+	len_before_space = space_ptr - line;
+	tag = ft_substr(line, 0, len_before_space);
+	path = ft_substr(line, len_before_space + 1, len);
+	int i = 0; 
+	while (!ft_isprint(path[i])) 
+		i++;
+	
+	printf("SECONDHALF %s\n", path);
+	int fd = open(path, O_RDONLY);
+	char *next = get_next_line(fd);
+	printf("NEXTLINE: %s\n", next);
 	return (0);
 }
-
 
 int main(void)
 {
@@ -51,8 +104,8 @@ int main(void)
     /* Simulated file lines */
     char *file_lines[] =
     {
-        "NO ./north.xpm",
-        "SO ./south.xpm",
+        "NO     ./example.cub",
+        "SO ./example.cub",
         "EA ./east.xpm",
         "WE ./west.xpm",
         NULL

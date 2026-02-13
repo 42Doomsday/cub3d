@@ -6,7 +6,7 @@
 #    By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 18:43:41 by clouden           #+#    #+#              #
-#    Updated: 2026/02/05 14:54:33 by clouden          ###   ########.fr        #
+#    Updated: 2026/02/12 18:22:08 by clouden          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ CHAR_SRCS	=	$(CHAR_DIR)ft_isalnum.c\
 				$(CHAR_DIR)ft_isascii.c\
 				$(CHAR_DIR)ft_isdigit.c\
 				$(CHAR_DIR)ft_isprint.c\
+				$(CHAR_DIR)ft_isspace.c\
 				$(CHAR_DIR)ft_tolower.c\
 				$(CHAR_DIR)ft_toupper.c
 
