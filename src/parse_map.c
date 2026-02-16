@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:35:58 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/13 17:45:10 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/16 12:13:23 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ bool	parse_map(int fd, t_map *map, t_player *player)
 	if (lst == NULL)
 		return (false);
 	expand_tabs(lst);
+	map->height = ft_lstsize(lst);
+	map->data = convert_to_array(lst, map->height);
 	if (is_valid_chars(lst) == false)
 	{
 		ft_lstclear(&lst, NULL);
 		return (false);
 	}
-	map->height = ft_lstsize(lst);
-	map->data = convert_to_array(lst, map->height);
 	map->width = max_length(lst);
 	if (is_closed(map->data, map->height) == false)
 	{
