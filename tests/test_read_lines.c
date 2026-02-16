@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 17:36:29 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 17:53:29 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/16 17:55:07 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ int	main(void)
 		putsuccess("Bagel");
 	else
 		puterror("Bagel");
+
+	int	idx = 0;
+	while (res[idx])
+		free(res[idx++]);
+	free(res);
 
 	return (EXIT_SUCCESS);
 }
