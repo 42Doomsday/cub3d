@@ -14,7 +14,7 @@ VALGRIND = valgrind \
 	--error-exitcode=1
 
 SRC  = is_valid_path.c parse_textures.c parse_map.c free_map.c \
-		read_lines.c parse_player.c
+		read_lines.c parse_player.c expand_tabs.c
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

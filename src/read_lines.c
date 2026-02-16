@@ -6,14 +6,13 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 13:53:25 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 14:45:45 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/16 16:51:19 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static t_list	*read_to_list(int fd);
-static t_list	*expand_tabs(t_list *lst);
 static char		**convert_to_array(t_list *lst);
 
 char	**read_lines(int fd)
@@ -21,9 +20,17 @@ char	**read_lines(int fd)
 	char	**map;
 	t_list	*lst;
 
-	lst = expand_tabs(read_to_list(fd));
-	map = convert_to_array(lst);
-	ft_lstclear(&lst, NULL);
+	map = NULL;
+	lst = read_to_list(fd);
+	if (lst)
+	{
+		lst = expand_tabs(lst);
+		if (lst)
+		{
+			map = convert_to_array(lst);
+			ft_lstclear(&lst, NULL);
+		}
+	}
 	return (map);
 }
 
@@ -47,61 +54,6 @@ static t_list	*read_to_list(int fd)
 			return (NULL);
 		}
 		ft_lstadd_back(&lst, node);
-	}
-	return (lst);
-}
-
-static t_list	*expand_tabs(t_list *lst)
-{
-	char	*str;
-	char	*new_str;
-	int		counter;
-	int		idx;
-	t_list	*tmp;
-
-	tmp = lst;
-	while (tmp )
-	{
-		str = tmp->content;
-		idx = 0;
-		counter = 0;
-		while (str && str[idx])
-		{
-			if (str[idx] == '\t')
-				counter += TAB_SIZE;
-			else
-				counter++;
-			idx++;
-		}
-		if (idx != counter)
-		{
-			new_str = malloc(counter + 1);
-			int	i;
-			int	k;
-			int	j;
-			i = 0;
-			k = 0;
-			j = 0;
-			while (str && str[i])
-			{
-				if (str[i] == '\t')
-				{
-					k = 0;
-					while (k < TAB_SIZE)
-					{
-						new_str[j++] = ' ';
-						k++;
-					}
-				}
-				else
-					new_str[j++] = str[i];
-				i++;
-			}
-			new_str[j] = '\0';
-			free(str);
-			tmp ->content = new_str;
-		}
-		tmp  = tmp ->next;
 	}
 	return (lst);
 }

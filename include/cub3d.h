@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 15:35:39 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/16 16:50:32 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ void	free_map(t_map *map);
 
 // helpers
 char	**read_lines(int fd);
+t_list	*expand_tabs(t_list *lst);
 
 #endif
