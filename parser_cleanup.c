@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 00:22:59 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/13 02:29:05 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/13 16:05:54 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,9 @@ void	free_textures(t_textures *tex)
 {
 	if (!tex)
 		return;
-	if (tex->north)
-		free(tex->north);
-	if (tex->south)
-		free(tex->south);
-	if (tex->east)
-		free(tex->east);
-	if (tex->west)
-		free(tex->west);
+	free(tex->north);
+	free(tex->south);
+	free(tex->east);
+	free(tex->west);
+	free(tex
 }

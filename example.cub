@@ -1,5 +1,7 @@
-   NO     ./nor th.xpm
-SO ./south.xpm
+
+	NO     ./nor th.xpm
+
+	SO ./south.xpm
 F 220,100,0
 
 

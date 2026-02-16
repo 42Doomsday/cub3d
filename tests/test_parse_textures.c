@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/09 16:46:23 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/16 12:38:36 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(void)
 		"incomplete_sides",
 		"incomplete_texture_path",
 		"new_lines_only",
+		"partial_key_match",
 		"wrong_key",
 		NULL
 	};

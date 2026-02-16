@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:57:14 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/12 18:20:59 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/14 18:18:54 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char		*ft_strrchr(const char *s, int c);
 char		*ft_strtrim(char const *s1, char const *set);
+char		*ft_strtrim_wht(char const *s1);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif

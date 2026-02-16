@@ -10,8 +10,8 @@ typedef struct s_texture_vals
 	char	*west;
 }	t_texture_vals;
 
-// 0) initiate data	
-// 1) validate input
+// 0) initiate data (inside parser)
+// 1) validate input (inside parse_texture)
 // 2) allocate resutl array
 // 3) find position of first space
 // 4) if space is found 
@@ -24,15 +24,8 @@ typedef struct s_texture_vals
 
 
 
-char	*get_tag(const char *line, int len, int len_before_space)
-{
-	int		len;
-	char	*space_ptr;
-	int		len_before_space;
-	char	*tag;
-}
 
-int	check_tag()
+int	check_tag(char *line)
 
 char	*get_path(char *line, int len, int len_before_space)
 {
@@ -51,25 +44,32 @@ int	check_path()
 //
 //set_texture_vals()
 
-
 int	parse_textures(int fd, t_texture_vals *vals)
-{
+{			
 	char *line;
 
-	line = get_next_line(fd);
-	while (line && line[0])
+	line = get_next_line(fd); // returns allocated memory
+	while (line)
 	{
-		line = ft_strtrim(line, " ");
+		line = ft_strtrim(line, "\t\n\r:"); // does it return allocated memory?
 		if (!line)
 			return (NULL);
 		if (line[0] == "\n")
 		{
 			free(line);
-			line = get_next_line(fd);
+			line = get_next_line(fd); // returns allocated memory
 			continue;
-		}	
+		}
+		ft_strtrim(line, " ")
+		//first_word
+		check_tag
+		//path
+		//assign values to struct
+		//check all values are in struct
+		//return 1 if error exists
 	}
-	return (line);
+	//return 0 if no error
+	return (0);
 }
 
 
