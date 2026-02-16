@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/13 14:38:33 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/16 13:59:42 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdarg.h>
 
 # include "libft.h"
+
+#define TAB_SIZE 4
 
 typedef struct s_textures
 {
@@ -49,5 +51,6 @@ bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
 void	free_map(t_map *map);
 bool	is_valid_path(char *path);
+char	**read_lines(int fd);
 
 #endif

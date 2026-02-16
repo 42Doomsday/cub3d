@@ -13,7 +13,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SRC  = is_valid_path.c parse_textures.c parse_map.c free_map.c
+SRC  = is_valid_path.c parse_textures.c parse_map.c free_map.c read_lines.c
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 TEST_NAMES = test_parse_textures test_is_valid_path test_parse_map
