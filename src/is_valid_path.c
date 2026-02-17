@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:28:10 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/17 17:04:02 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/17 17:11:07 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ bool	is_valid_path(char *path)
 {
 	int		offset;
 	size_t	path_len;
-	size_t	extention_len;
+	size_t	extension_len;
 
 	if (path)
 	{
 		path_len = ft_strlen(path);
-		extention_len = ft_strlen(EXTENTION);
-		if (path_len > extention_len)
+		extension_len = ft_strlen(EXTENSION);
+		if (path_len > extension_len)
 		{
-			offset = path_len - extention_len;
-			if (ft_strncmp(&path[offset], EXTENTION, extention_len) == 0)
+			offset = path_len - extension_len;
+			if (ft_strncmp(&path[offset], EXTENSION, extension_len) == 0)
 				return (true);
 		}
 	}
