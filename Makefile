@@ -24,6 +24,9 @@ SRC  = main.c is_valid_path.c parse_textures.c parse_map.c free_map.c \
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
+TEST_SRC  = $(filter-out main.c, $(SRC))
+TEST_OBJ  = $(TEST_SRC:%.c=$(OBJ_DIR)/%.o)
+
 TEST_NAMES = test_parse_map test_expand_tabs \
 				 test_parse_player test_read_lines
 
@@ -45,11 +48,10 @@ $(NAME): $(LIBFT) $(MLX) $(OBJ)
 	@cc $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-
 	@cc $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(OBJ) $(LIBFT) | $(OBJ_DIR)
-	@cc $(CFLAGS) $< $(OBJ) $(LIBFT) -o $@
+$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) | $(OBJ_DIR)
+	@cc $(CFLAGS) $< $(TEST_OBJ) $(LIBFT) -o $@
 
 re: fclean $(NAME)
 
