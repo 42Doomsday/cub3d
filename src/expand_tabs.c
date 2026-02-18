@@ -18,7 +18,6 @@ static char		*expand_line(char *line, int size);
 t_list	*expand_tabs(t_list *lst)
 {
 	char	*str;
-	int		idx;
 	size_t	size;
 	t_list	*tmp;
 
@@ -26,7 +25,6 @@ t_list	*expand_tabs(t_list *lst)
 	while (tmp)
 	{
 		str = tmp->content;
-		idx = 0;
 		size = exanded_strlen(str);
 		if (size != ft_strlen(str))
 		{
