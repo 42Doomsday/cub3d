@@ -45,10 +45,13 @@ $(NAME): $(LIBFT) $(MLX) $(OBJ)
 	@cc $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+
 	@cc $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(OBJ) $(LIBFT) | $(OBJ_DIR)
 	@cc $(CFLAGS) $< $(OBJ) $(LIBFT) -o $@
+
+re: fclean $(NAME)
 
 test: $(TESTS)
 	@for t in $(TESTS); do \
@@ -72,6 +75,9 @@ test-leaks: $(TESTS)
 			echo "\033[0;31m LEAK\033[0m"; \
 		fi; \
 	done
+
+fclean: clean
+	@rm -rf $(NAME)
 
 clean:
 	@rm -rf $(OBJ_DIR)
