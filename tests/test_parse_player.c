@@ -6,27 +6,29 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 17:20:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 17:35:18 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/18 16:51:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	simple_test(void);
-static void	bad_map_test(void);
-static void	duplicated_player_test(void);
+static bool	simple_test(void);
+static bool	bad_map_test(void);
+static bool	duplicated_player_test(void);
 static void	puterror(char *filename);
 static void	putsuccess(char *filename);
 
 int	main(void)
 {
-	simple_test();
-	bad_map_test();
-	duplicated_player_test();
-	return (EXIT_SUCCESS);
+	bool result = simple_test();
+	result &= bad_map_test();
+	result &= duplicated_player_test();
+	if (result)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
-static void	simple_test(void)
+static bool	simple_test(void)
 {
 	t_player	player;
 	ft_bzero(&player, sizeof(player));
@@ -39,12 +41,18 @@ static void	simple_test(void)
 	};
 	parse_player(map, &player);
 	if (player.x == 5 && player.y == 1 && player.side == 'N')
+	{
 		putsuccess("Simple map");
+		return (true);
+	}
 	else
+	{
 		puterror("Simple map");
+		return (false);
+	}
 }
 
-static void	bad_map_test(void)
+static bool	bad_map_test(void)
 {
 	t_player	player;
 	ft_bzero(&player, sizeof(player));
@@ -57,12 +65,18 @@ static void	bad_map_test(void)
 	};
 	parse_player(map, &player);
 	if (player.x == 0 && player.y == 0 && player.side == 0)
+	{
 		putsuccess("Bad map test");
+		return (true);
+	}
 	else
+	{
 		puterror("Bad map test");
+		return (false);
+	}
 }
 
-static void	duplicated_player_test(void)
+static bool	duplicated_player_test(void)
 {
 	t_player	player;
 	ft_bzero(&player, sizeof(player));
@@ -75,9 +89,15 @@ static void	duplicated_player_test(void)
 	};
 	bool result = parse_player(map, &player);
 	if (result == false)
+	{
 		putsuccess("Duplicated player test");
+		return (true);
+	}
 	else
+	{
 		puterror("Duplicated player test");
+		return (false);
+	}
 }
 
 static void	puterror(char *filename)

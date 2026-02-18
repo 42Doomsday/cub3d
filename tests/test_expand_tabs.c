@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 16:54:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 17:15:38 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/18 16:56:22 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,16 @@ static void	putsuccess(char *filename);
 
 int	main(void)
 {
-	test_case(NULL, NULL);
-	test_case("Nothing", "Nothing");
-	test_case("One	Tab", "One    Tab");
-	test_case("More	Tabs	Here", "More    Tabs    Here");
-	return (EXIT_SUCCESS);
+	bool	result;
+
+	result = true;
+	result &= test_case(NULL, NULL);
+	result &= test_case("Nothing", "Nothing");
+	result &= test_case("One	Tab", "One    Tab");
+	result &= test_case("More	Tabs	Here", "More    Tabs    Here");
+	if (result)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 static bool	test_case(char *input, char *exp_result)

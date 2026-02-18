@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:38:24 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/13 17:08:07 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/18 16:45:50 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 # define TEXTURES_TESTS_PATH "tests/examples/map/"
 
-static void	check_invalid(char **invalid_files, bool expected_result);
-static void	check_valid(char **valid_files, bool expected_result);
+static bool	check_invalid(char **invalid_files, bool expected_result);
+static bool	check_valid(char **valid_files, bool expected_result);
 static void	add_prefix(char **in, char *prefix);
 static int	get_test_file(char *filename);
 static void	puterror(char *filename);
@@ -48,59 +48,72 @@ int	main(void)
 
 	add_prefix(valid_test_files, "valid/");
 
-	check_invalid(invalid_test_files, false);
+	bool result = true;
+
+	result &= check_invalid(invalid_test_files, false);
 	for (int i = 0; invalid_test_files[i] != NULL; i++)
 		free(invalid_test_files[i]);
 
-	check_valid(valid_test_files, true);
+	result &= check_valid(valid_test_files, true);
 	for (int i = 0; valid_test_files[i] != NULL; i++)
 		free(valid_test_files[i]);
 
-	return (EXIT_SUCCESS);
+	if (result)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
-static void	check_invalid(char **invalid_files, bool expected_result)
+static bool	check_invalid(char **invalid_files, bool expected_result)
 {
 	t_player	player;
 	t_map		map;
 	int			fd;
 	bool		result;
+	bool		total_result;
 
+	total_result = true;
 	for (int i = 0; invalid_files[i] != NULL; i++)
 	{
 		ft_bzero(&player, sizeof(t_player));
 		ft_bzero(&map, sizeof(t_map));
 		fd = get_test_file(invalid_files[i]);
 		result = parse_map(fd, &map, &player);
-		if (result != expected_result)
+		result = expected_result == result;
+		total_result &= result;
+		if (result)
+			putsuccess(invalid_files[i]);
+		else
 		{
 			puterror(invalid_files[i]);
 			unexpected_result(expected_result, result);
 		}
-		else
-			putsuccess(invalid_files[i]);
 		if (fd > -1)
 			close(fd);
 		free_map(&map);
 	}
+	return (total_result);
 }
 
-static void	check_valid(char **valid_files, bool expected_result)
+static bool	check_valid(char **valid_files, bool expected_result)
 {
 	t_player	player;
 	t_map		map;
 	int			fd;
 	bool		result;
+	bool		total_result;
 
+	total_result = true;
 	for (int i = 0; valid_files[i] != NULL; i++)
 	{
 		ft_bzero(&player, sizeof(t_player));
 		ft_bzero(&map, sizeof(t_map));
 		fd = get_test_file(valid_files[i]);
 		result = parse_map(fd, &map, &player);
-		if (result == expected_result)
+		result = expected_result == result;
+		if (result)
 		{
-			if (is_not_empty_map(&map) && is_not_empty_player(&player))
+			result = is_not_empty_map(&map) && is_not_empty_player(&player);
+			if (result)
 				putsuccess(valid_files[i]);
 			else
 			{
@@ -113,10 +126,12 @@ static void	check_valid(char **valid_files, bool expected_result)
 			puterror(valid_files[i]);
 			unexpected_result(expected_result, result);
 		}
+		total_result &= result;
 		if (fd > -1)
 			close(fd);
 		free_map(&map);
 	}
+	return (total_result);
 }
 
 static void	add_prefix(char **in, char *prefix)
