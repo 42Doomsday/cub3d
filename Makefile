@@ -41,7 +41,7 @@ $(MLX):
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
-$(NAME): $(LIBFT) $(MLX42) $(OBJ)
+$(NAME): $(LIBFT) $(MLX) $(OBJ)
 	@cc $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
@@ -75,5 +75,7 @@ test-leaks: $(TESTS)
 
 clean:
 	@rm -rf $(OBJ_DIR)
+	@rm -rf $(MLX_BUILD)
+	@make -C $(LIBFT_DIR) clean
 
 .PHONY: test test-leaks clean
