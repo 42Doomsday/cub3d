@@ -40,7 +40,7 @@ test: $(TESTS)
 test-leaks: $(TESTS)
 	@for t in $(TESTS); do \
 		printf "Running %-25s" "$$t"; \
-		$(VALGRIND) ./$$t > /dev/null 2>&1; \
+		$(VALGRIND) ./$$t ; \
 		if [ $$? -eq 0 ]; then \
 			echo " OK"; \
 		else \

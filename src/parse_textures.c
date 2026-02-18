@@ -6,38 +6,9 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 13:53:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/18 14:04:06 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/18 18:36:47 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//#include <libft.h>
-//#include <fcntl.h>
-//
-//typedef struct s_textures
-//{
-//	char *north;
-//	char *south;
-//	char *east;
-//	char *west;
-//	int *floor;
-//	int *ceiling;
-//}	t_textures;
-//
-//bool	parse_textures(int fd, t_textures *out);
-//
-//int	main(void)
-//{
-//	int	fd;
-//	t_textures	*out;
-//
-//	fd = open("../tests/examples/textures/invalid/incomplete_texture_path", O_RDONLY);
-//	parse_textures(fd, out);
-//	fd = open("../tests/examples/textures/invalid/partial_key_match", O_RDONLY);
-//	parse_textures(fd, out);
-//	fd = open("../tests/examples/textures/invalid/wrong_key", O_RDONLY);
-//	parse_textures(fd, out);
-//	return (0);
-//}
 
 #include "cub3d.h"
 
@@ -47,42 +18,29 @@ char	*extract_path(char *str);
 
 bool	parse_textures(int fd, t_textures *out)
 {
-	char	*line = NULL;
-	char	*trim = NULL;
+	char	*line;
+	char	*trim;
 
 	line = get_next_line(fd);
-	dprintf(2, "LINE: %s\n", line);
 	while (line)
 	{
 		if (line[0] == '\n')
 		{
 			free(line);
-			line = NULL;
 			line = get_next_line(fd);
 			continue;
 		}
-		dprintf(2, "LINE: %s\n", line);
-		trim = NULL;
 		trim = ft_strtrim_wht(line);
 		free(line);
-		line = NULL;
-		if (check_for_tag(trim))
-		{
-			add_texture_vals(out, trim);
-		}
-		else if (!check_for_tag(trim))
+		if (!check_for_tag(trim))
 		{
 			free(trim);
-			trim = NULL;
 			return (false);
 		}
+		add_texture_vals(out, trim);
 		free(trim);
-		trim = NULL;
 		line = get_next_line(fd);
 	}
-	if (line)
-		free(line);
-	line = NULL;
 	return (true);
 }
 
@@ -95,41 +53,52 @@ bool	check_for_tag(char *trim)
 		return (false);
 	if (ft_isspace(trim[2]))
 	{
-		if (!ft_strncmp(trim, "NO", 2))
-		{
+		if (ft_strncmp(trim, "NO", 2) == 0)
 			return (true);
-		}
-		else if (!ft_strncmp(trim, "SO", 2))
-		{
+		if (ft_strncmp(trim, "SO", 2) == 0)
 			return (true);
-		}
-		else if (!ft_strncmp(trim, "EA", 2))
-		{
+		if (ft_strncmp(trim, "EA", 2) == 0)
 			return (true);
-		}
-		else if (!ft_strncmp(trim, "WE", 2))
-		{
+		if (ft_strncmp(trim, "WE", 2) == 0)
 			return (true);
-		}
 	}
-	else if (ft_isspace(trim[1]))
+	if (ft_isspace(trim[1]))
 	{
-		if (!ft_strncmp(trim, "F", 1))
-		{
+		if (ft_strncmp(trim, "F", 1) == 0)
 			return (true);
-		}
-		if (!ft_strncmp(trim, "C", 1))
-		{
+		if (ft_strncmp(trim, "C", 1) == 0)
 			return (true);
-		}
 	}
 	return (false);
 }
 
 void	add_texture_vals(t_textures *out, char *str)
 {
-	(void)out;
-	extract_path(str);
+	char	*val;
+	
+	val = ft_strdup(extract_path(str));
+	if (!val)
+		return ;
+	if (ft_strncmp(str, "NO", 2) == 0)
+	{
+		out->north = val;
+		dprintf(2, "OUT: %s\n", out->north);
+	}
+	else if (ft_strncmp(str, "SO", 2) == 0)
+	{
+		out->south = val;
+		dprintf(2, "OUT: %s\n", out->south);
+	}
+	else if (ft_strncmp(str, "EA", 2) == 0)
+	{
+		out->east = val;
+		dprintf(2, "OUT: %s\n", out->east);
+	}
+	else if (ft_strncmp(str, "WE", 2) == 0)
+	{
+		out->west = val;
+		dprintf(2, "OUT: %s\n", out->west);
+	}
 }
 
 char	*extract_path(char *str)
@@ -141,6 +110,6 @@ char	*extract_path(char *str)
 		offset++;
 	while (ft_isspace(str[offset]))
 		offset++;
-	dprintf(2, "EXTRACTED: %s\n", &str[offset]);
 	return (&str[offset]);
 }
+
