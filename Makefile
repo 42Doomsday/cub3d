@@ -2,10 +2,16 @@ SRC_DIR   = src
 TEST_DIR  = tests
 OBJ_DIR   = build
 LIBFT_DIR = libft
+MLX_DIR = MLX42
+MLX_BUILD = $(MLX_DIR)/build
+
+NAME = game
 
 LIBFT = $(LIBFT_DIR)/libft.a
+MLX = $(MLX_BUILD)/libmlx42.a
 
 CFLAGS = -Wall -Wextra -Werror -Iinclude -g
+EXTRA_FLAGS = -lglfw -ldl -pthread -lm
 
 VALGRIND = valgrind \
 	--leak-check=full \
@@ -13,7 +19,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SRC  = is_valid_path.c parse_textures.c parse_map.c free_map.c \
+SRC  = main.c is_valid_path.c parse_textures.c parse_map.c free_map.c \
 		read_lines.c parse_player.c expand_tabs.c
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -23,11 +29,20 @@ TEST_NAMES = test_parse_textures test_is_valid_path test_parse_map \
 
 TESTS      = $(addprefix $(OBJ_DIR)/,$(TEST_NAMES))
 
+all: $(NAME)
+
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
+$(MLX):
+	@cmake -S $(MLX_DIR) -B $(MLX_BUILD)
+	@cmake --build $(MLX_BUILD) -j4
+
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
+
+$(NAME): $(LIBFT) $(MLX42) $(OBJ)
+	@cc $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@cc $(CFLAGS) -c $< -o $@
