@@ -15,5 +15,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: run_tests
       run: make test
+    - name: install_valgrind
+      run: sudo apt install valgrind
     - name: run_leaks_check
       run: make test-leaks
