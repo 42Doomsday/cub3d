@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 16:50:32 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/18 14:20:29 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
 # include <stdarg.h>
 
 # include "libft.h"
+ #include "MLX42.h"
 
 #define TAB_SIZE 4
 #define VALID_CHARS_MAP "\t\n\v\f\r 01NEWS"
 #define VALID_PLAYER_SIDES "NEWS"
+#define EXTENSION ".cub"
 
 typedef struct s_textures
 {

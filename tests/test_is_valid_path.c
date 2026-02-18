@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:28:54 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/18 16:40:50 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/17 17:10:35 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static bool	run_test(int fd, bool exp_res)
 
 	while ((line = get_next_line(fd)) != NULL)
 	{
+		line[ft_strlen(line) - 1] = '\0';
 		result = is_valid_path(line);
 		test_result = result == exp_res;
 		if (test_result)
