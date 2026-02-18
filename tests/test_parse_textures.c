@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 12:38:36 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/18 14:55:47 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void unexpected_result(bool exp, bool res);
 static void	putsuccess(char *filename);
 static void	free_struct(t_textures *textures);
 static bool	is_not_empty(t_textures *textures);
+void	flush(void);
 
 int	main(void)
 {
@@ -56,7 +57,7 @@ int	main(void)
 	check_invalid(invalid_test_files, false);
 	for (int i = 0; invalid_test_files[i] != NULL; i++)
 		free(invalid_test_files[i]);
-
+	
 	check_valid(valid_test_files, true);
 	for (int i = 0; valid_test_files[i] != NULL; i++)
 		free(valid_test_files[i]);
@@ -85,6 +86,7 @@ static void	check_invalid(char **invalid_files, bool expected_result)
 		if (fd > -1)
 			close(fd);
 		free_struct(&textures);
+		flush();
 	}
 }
 
@@ -117,6 +119,7 @@ static void	check_valid(char **valid_files, bool expected_result)
 		if (fd > -1)
 			close(fd);
 		free_struct(&textures);
+		flush();
 	}
 }
 
@@ -175,3 +178,13 @@ static bool	is_not_empty(t_textures *textures)
 	);
 }
 
+void	flush(void)
+{
+	int fd;
+	char *line;
+
+	fd = open("./examples/flush", O_RDONLY);
+	while ((line = get_next_line(fd)) != NULL)
+		free(line);
+	close(fd);
+}
