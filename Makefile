@@ -18,7 +18,7 @@ SRC  = is_valid_path.c parse_textures.c parse_map.c free_map.c \
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-TEST_NAMES = test_parse_map test_expand_tabs \
+TEST_NAMES = test_parse_map test_expand_tabs test_is_valid_path \
 				 test_parse_player test_read_lines
 
 TESTS      = $(addprefix $(OBJ_DIR)/,$(TEST_NAMES))
