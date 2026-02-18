@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 17:36:29 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 17:55:07 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/18 16:51:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	main(void)
 	};
 
 	char **res = read_lines(fd);
-	if (compare_str_arrays(exp_res, res))
+	bool result = compare_str_arrays(exp_res, res);
+	if (result)
 		putsuccess("Bagel");
 	else
 		puterror("Bagel");
@@ -50,7 +51,9 @@ int	main(void)
 		free(res[idx++]);
 	free(res);
 
-	return (EXIT_SUCCESS);
+	if (result)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 static bool	compare_str_arrays(char **arr1, char **arr2)

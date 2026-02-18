@@ -18,43 +18,51 @@ static int	get_test_file(char *filename);
 static void	puterror(char *filename);
 static void unexpected_result(bool exp, bool res);
 static void	putsuccess(char *filename);
-static void	run_test(int fd, bool exp_res);
+static bool	run_test(int fd, bool exp_res);
 static void	delete_newline(char *line);
 
 int	main(void)
 {
 	int	fd;
+	bool	result;
+
+	result = true;
 
 	fd = get_test_file("valid");
-	run_test(fd, true);
+	result &= run_test(fd, true);
 	close (fd);
 
 	fd = get_test_file("invalid");
-	run_test(fd, false);
+	result &= run_test(fd, false);
 	close(fd);
 
-	return (EXIT_SUCCESS);
+	if (result)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
-static void	run_test(int fd, bool exp_res)
+static bool	run_test(int fd, bool exp_res)
 {
 	char	*line;
 	bool	result;
+	bool	test_result;
 
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		line[ft_strlen(line) - 1] = '\0';
 		result = is_valid_path(line);
-		if (result != exp_res)
+		test_result = result == exp_res;
+		if (test_result)
+			putsuccess(line);
+		else
 		{
 			puterror(line);
 			unexpected_result(exp_res, result);
 		}
-		else
-			putsuccess(line);
 		free(line);
 	}
 	close(fd);
+	return (test_result);
 }
 
 static void	puterror(char *filename)
