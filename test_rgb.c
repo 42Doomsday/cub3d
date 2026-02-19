@@ -20,14 +20,20 @@ int	comma_cnt(char *trim)
 
 int	*parse_rgb(char *trim)
 {
-	char **strarr;
-	char **ptr;
-	int	i;
+	char	**strarr;
+	char	**ptr;
+	int		new;
+	int		*intarr;
+	int		i;
 
-	if (comma_cnt(trim) != 2) // validate commas
+	i = 0;
+	intarr = ft_calloc(sizeof(int), 3);
+	if (!intarr)
+		return (NULL);
+	if (comma_cnt(trim) != 2)
 		return (NULL);
 	strarr = ft_split(trim, ',');
-	if (!strarr || !*strarr || ft_strarr_len(strarr) != 3) //validate length of arr
+	if (!strarr || !*strarr || ft_strarr_len(strarr) != 3)
 	{
 		ft_strarr_free(&strarr);
 		return (NULL);
@@ -35,16 +41,28 @@ int	*parse_rgb(char *trim)
 	ptr = strarr;
 	while (*ptr)
 	{
-		i = ft_atoi(*ptr);
-		printf("PTR: %d\n", ft_atoi(*ptr));
+		if (!ft_isnum(*ptr))
+		{
+			free(intarr);
+			return (NULL);
+		}
+		intarr[i] = ft_atoi(*ptr);
+		i++;
 		ptr++;
 	}
-	return (0);
+	return (intarr);
 }
 
 int main(void)
 {
-	char *str = "230, 44, aa";
-	parse_rgb(str);
+	char *str = "230, 44, 45";
+	int	*intarr;
+	intarr = parse_rgb(str);
+	if (!intarr)
+		return (0);
+	for(int i = 0; i < 3; i++)
+	{
+		printf("INT: %d\n", intarr[i]);
+	}
 	return (0);
 }
