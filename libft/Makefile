@@ -6,7 +6,7 @@
 #    By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 18:43:41 by clouden           #+#    #+#              #
-#    Updated: 2026/02/16 12:03:44 by clouden          ###   ########.fr        #
+#    Updated: 2026/02/19 18:12:58 by clouden          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ CHAR_DIR 	=	chars/
 CHAR_SRCS	=	$(CHAR_DIR)ft_isalnum.c\
 				$(CHAR_DIR)ft_isalpha.c\
 				$(CHAR_DIR)ft_isascii.c\
+				$(CHAR_DIR)ft_isnum.c\
 				$(CHAR_DIR)ft_isdigit.c\
 				$(CHAR_DIR)ft_isprint.c\
 				$(CHAR_DIR)ft_isspace.c\
