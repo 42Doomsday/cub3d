@@ -18,44 +18,79 @@ int	comma_cnt(char *trim)
 	return (cnt);
 }
 
+bool	check_range(int num)
+{
+	return (num > -1 && num < 256);
+}
+
+bool	validate_rgb(char **strarr)
+{
+	int	i;
+	int	new;
+
+	i = 0;
+	if (!strarr || !*strarr || ft_strarr_len(strarr) != 3)
+	{
+		return (false);
+	}
+	while (strarr[i])
+	{
+		if (!ft_isnum(strarr[i]))
+		{
+			return (false);
+		}
+		new = ft_atoi(strarr[i]);
+		if (!check_range(new))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+void	free_rgb(char ***strarr, int **intarr)
+{
+	if (strarr)
+		ft_strarr_free(strarr);
+	if (*intarr)
+		free(*intarr);
+	return ;
+}
+
 int	*parse_rgb(char *trim)
 {
 	char	**strarr;
-	char	**ptr;
-	int		new;
 	int		*intarr;
 	int		i;
+	int		new;
 
-	i = 0;
-	intarr = ft_calloc(sizeof(int), 3);
-	if (!intarr)
-		return (NULL);
-	if (comma_cnt(trim) != 2)
-		return (NULL);
 	strarr = ft_split(trim, ',');
-	if (!strarr || !*strarr || ft_strarr_len(strarr) != 3)
+	intarr = ft_calloc(sizeof(int), 3);
+	if (comma_cnt(trim) != 2 || !validate_rgb(strarr) || !intarr)
 	{
-		ft_strarr_free(&strarr);
+		free_rgb(&strarr, &intarr);
 		return (NULL);
 	}
-	ptr = strarr;
-	while (*ptr)
+	if (validate_rgb(strarr))
 	{
-		if (!ft_isnum(*ptr))
+		i = 0;
+		while (strarr[i])
 		{
-			free(intarr);
-			return (NULL);
+			intarr[i] = ft_atoi(strarr[i]);
+			i++;
 		}
-		intarr[i] = ft_atoi(*ptr);
-		i++;
-		ptr++;
+		ft_strarr_free(&strarr);
+		return (intarr);
 	}
-	return (intarr);
+	else
+	{
+		free_rgb(&strarr, &intarr);
+		return (NULL);
+	}
 }
 
 int main(void)
 {
-	char *str = "230, 44, 45";
+	char *str = "256, 0, 0";
 	int	*intarr;
 	intarr = parse_rgb(str);
 	if (!intarr)

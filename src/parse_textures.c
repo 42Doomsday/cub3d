@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 13:53:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/19 18:29:47 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/20 15:55:24 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ char	*extract_path(char *trim)
 	return (&trim[offset]);
 }
 
-// this counts commas
 int	comma_cnt(char *trim)
 {
 	int	cnt;
@@ -132,25 +131,80 @@ int	comma_cnt(char *trim)
 	cnt = 0;
 	while (*trim)
 	{
-		if (*trim == ",")
+		if (*trim == ',')
 			cnt++;
 		trim++;
 	}
 	return (cnt);
 }
 
+bool	check_range(int num)
+{
+	return (num > -1 && num < 256);
+}
+
+bool	validate_rgb(char **strarr)
+{
+	int	i;
+	int	new;
+
+	i = 0;
+	if (!strarr || !*strarr || ft_strarr_len(strarr) != 3)
+	{
+		return (false);
+	}
+	while (strarr[i])
+	{
+		if (!ft_isnum(strarr[i]))
+		{
+			return (false);
+		}
+		new = ft_atoi(strarr[i]);
+		if (!check_range(new))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+void	free_rgb(char ***strarr, int **intarr)
+{
+	if (strarr)
+		ft_strarr_free(strarr);
+	if (*intarr)
+		free(*intarr);
+	return ;
+}
+
 int	*parse_rgb(char *trim)
 {
-	char **strarr;
+	char	**strarr;
+	int		*intarr;
+	int		i;
+	int		new;
 
-	if (comma_cnt(trim) != 2) // validate commas
-		return (-1);
 	strarr = ft_split(trim, ',');
-	if (!strarr || !*strarr || ft_strarr_len(strarr) != 3) //validate length of arr
+	intarr = ft_calloc(sizeof(int), 3);
+	if (comma_cnt(trim) != 2 || !validate_rgb(strarr) || !intarr)
 	{
-		ft_strarr_free(&strarr);
-		return (-1);
+		free_rgb(&strarr, &intarr);
+		return (NULL);
 	}
-	while (strarr)
+	if (validate_rgb(strarr))
 	{
+		i = 0;
+		while (strarr[i])
+		{
+			intarr[i] = ft_atoi(strarr[i]);
+			i++;
+		}
+		ft_strarr_free(&strarr);
+		return (intarr);
+	}
+	else
+	{
+		free_rgb(&strarr, &intarr);
+		return (NULL);
+	}
 }
+
