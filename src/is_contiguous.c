@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 14:26:38 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/20 17:47:45 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/20 17:51:22 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ static char	**copy_map(char **map, int size)
 static t_coords	get_first_map_character(char **map)
 {
 	t_coords	coords;
-	int		i;
-	int		j;
+	int			i;
+	int			j;
 
 	i = 0;
 	coords.x = 0;
 	coords.y = 0;
- 	while (map[i])
+	while (map[i])
 	{
 		j = 0;
 		while (map[i][j])
