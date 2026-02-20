@@ -13,10 +13,14 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SRC  = is_valid_path.c parse_textures.c
+SRC  = is_valid_path.c parse_textures.c parse_map.c free_map.c \
+		read_lines.c parse_player.c expand_tabs.c
+
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-TEST_NAMES = test_parse_textures test_is_valid_path
+TEST_NAMES = test_parse_map test_expand_tabs \
+				 test_parse_player test_read_lines
+
 TESTS      = $(addprefix $(OBJ_DIR)/,$(TEST_NAMES))
 
 $(LIBFT):
@@ -32,23 +36,39 @@ $(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(OBJ) $(LIBFT) | $(OBJ_DIR)
 	@cc $(CFLAGS) $< $(OBJ) $(LIBFT) -o $@
 
 test: $(TESTS)
-	@for t in $(TESTS); do \
+	@status=0; \
+	for t in $(TESTS); do \
 		echo "\nRunning $$t"; \
-		./$$t || exit 1; \
-	done
+		if ./$$t; then \
+			echo "\033[0;32mTest $$t PASSED\033[0m"; \
+		else \
+			echo "\033[0;31mTest $$t FAILED\033[0m"; \
+			status=1; \
+		fi; \
+	done; \
+	echo ; \
+	exit $$status
+
 
 test-leaks: $(TESTS)
-	@for t in $(TESTS); do \
+	@status=0; \
+	for t in $(TESTS); do \
+		tmpfile=$$(mktemp); \
 		printf "Running %-25s" "$$t"; \
-		$(VALGRIND) ./$$t ; \
+		$(VALGRIND) ./$$t > $$tmpfile 2>&1; \
 		if [ $$? -eq 0 ]; then \
-			echo " OK"; \
+			echo "\033[0;32m OK\033[0m"; \
 		else \
-			echo " LEAK"; \
+			echo "\033[0;31m LEAK\033[0m"; \
+			cat $$tmpfile; \
+			status=1; \
 		fi; \
-	done
+		rm -f $$tmpfile; \
+	done; \
+	echo; \
+	exit $$status
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
 
 .PHONY: test test-leaks clean
