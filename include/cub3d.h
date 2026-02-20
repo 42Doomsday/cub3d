@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/27 18:05:21 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/27 18:07:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ typedef enum	e_texture
 	CEILING,
 	T_COUNT
 }	t_texture_id;
+
+#define FILL '2'
+#define SPACE ' '
 
 typedef struct s_textures
 {
@@ -104,10 +107,13 @@ void	free_map(t_map *map);
 void	exit_with_error(t_textures *tex, char *error_type, char *message);
 void	free_rgb(char ***strarr, int **intarr);
 void	print_error(char *error_type, char *message);
+void	free_map_data(char **data);
 
 // helpers
 char	**read_lines(int fd);
 t_list	*expand_tabs(t_list *lst);
 bool	set_gnl(int fd, char **line);
+bool	flood_fill(char **map, int x, int y);
+bool	is_contiguous(t_map *map);
 
 #endif

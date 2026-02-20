@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:31:28 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/13 14:38:10 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/20 17:34:49 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 void	free_map(t_map	*map)
 {
+	free_map_data(map->data);
+}
+
+void	free_map_data(char **data)
+{
 	int	idx;
 
-	if (map == NULL)
+	if (data == NULL)
 		return ;
 	idx = 0;
-	while (map->data && map->data[idx])
-		free(map->data[idx++]);
-	free(map->data);
+	while (data && data[idx])
+		free(data[idx++]);
+	free(data);
 }
