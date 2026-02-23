@@ -6,44 +6,22 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 11:05:56 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 12:57:14 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 13:19:53 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static bool	trim_empty_lines(t_map *map);
+static void	trim_empty_lines(t_map *map);
 static bool	is_empty_line(char *line);
 
-static void	print_str_array(char **arr)
+void	trim_map(t_map *map)
 {
-	int	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-	{
-		printf("%s\n", arr[i]);
-		i++;
-	}
-	printf("\n");
+	trim_empty_lines(map);
+	trim_spaces(map);
 }
 
-bool	trim_map(t_map *map)
-{
-	if (trim_empty_lines(map))
-	{
-		if (trim_spaces(map))
-		{
-			print_str_array(map->data);
-			return (true);
-		}
-	}
-	return (false);
-}
-
-static bool	trim_empty_lines(t_map *map)
+static void	trim_empty_lines(t_map *map)
 {
 	char	**data;
 	size_t	size;
@@ -63,7 +41,6 @@ static bool	trim_empty_lines(t_map *map)
 		}
 		idx++;
 	}
-	return (true);
 }
 
 static bool	is_empty_line(char *line)

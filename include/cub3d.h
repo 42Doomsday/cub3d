@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 12:54:29 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 13:17:33 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	**read_lines(int fd);
 t_list	*expand_tabs(t_list *lst);
 bool	flood_fill(char **map, int x, int y);
 bool	is_contiguous(t_map *map);
-bool	trim_spaces(t_map *map);
-bool	trim_map(t_map *map);
+void	trim_spaces(t_map *map);
+void	trim_map(t_map *map);
 
 #endif

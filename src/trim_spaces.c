@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 12:34:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 12:56:32 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 13:16:13 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	get_last_idx(char *line);
 #define LEADING 0
 #define TRAILING 1
 
-bool	trim_spaces(t_map *map)
+void	trim_spaces(t_map *map)
 {
 	char	**data;
 	int		count;
@@ -43,7 +43,6 @@ bool	trim_spaces(t_map *map)
 		data[idx][ft_strlen(data[idx]) - count] = '\0';
 		idx++;
 	}
-	return (true);
 }
 
 static int	count_extra_spaces(char **map, int flag)
