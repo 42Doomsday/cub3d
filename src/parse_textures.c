@@ -6,15 +6,32 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 13:53:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/20 15:55:24 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/23 23:51:19 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-bool	check_for_tag(char *trim);
+bool	check_for_tag(char *trim, t_textures *out);
 void	add_texture_vals(t_textures *out, char *trim);
 char	*extract_path(char *trim);
+int		*parse_rgb(char *trim);
+
+static const t_texture_map  g_tex_table[] =
+{ 
+	{NORTH, "NO", offsetof(t_textures, north)},
+	{SOUTH, "SO", offsetof(t_textures, south)},
+	{EAST, "EA", offsetof(t_textures, east)},
+	{WEST, "WE", offsetof(t_textures, west)},
+	{T_COUNT, NULL, 0}
+};
+
+//static const t_texture_map g_rgb_table[] = 
+//{
+//	{FLOOR, "F", offsetof(t_textures, floor)},
+//	{CEILING, "C", offsetof(t_textures, ceiling)},
+//	{T_COUNT, NULL, NULL}
+//};
 
 bool	parse_textures(int fd, t_textures *out)
 {
@@ -32,7 +49,7 @@ bool	parse_textures(int fd, t_textures *out)
 		}
 		trim = ft_strtrim_wht(line);
 		free(line);
-		if (!check_for_tag(trim))
+		if (!check_for_tag(trim, out))
 		{
 			free(trim);
 			return (false);
@@ -44,23 +61,29 @@ bool	parse_textures(int fd, t_textures *out)
 	return (true);
 }
 
-bool	check_for_tag(char *trim)
+bool	check_for_tag(char *trim, t_textures *out)
 {
-	int	len;
+	int		len;
+	int		i;
+	void	*mem_ptr;
 
 	len = ft_strlen(trim);
 	if (len < 3)
 		return (false);
 	if (ft_isspace(trim[2]))
 	{
-		if (ft_strncmp(trim, "NO", 2) == 0)
-			return (true);
-		if (ft_strncmp(trim, "SO", 2) == 0)
-			return (true);
-		if (ft_strncmp(trim, "EA", 2) == 0)
-			return (true);
-		if (ft_strncmp(trim, "WE", 2) == 0)
-			return (true);
+		i = 0;
+		while (g_tex_table[i].name != NULL)
+		{
+			if (ft_strncmp(trim, g_tex_table[i].name, 2) == 0)
+			{
+				mem_ptr = (char *)out + g_tex_table[i].member;
+				if(*(const char **)mem_ptr == NULL)
+					return (true);
+				else
+					dprintf(2, "Dupl texture for %s\n", g_tex_table[i].name);
+			}
+		}
 	}
 	if (ft_isspace(trim[1]))
 	{
@@ -69,6 +92,7 @@ bool	check_for_tag(char *trim)
 		if (ft_strncmp(trim, "C", 1) == 0)
 			return (true);
 	}
+	dprintf(2, "invalid texture %s\n", trim);
 	return (false);
 }
 
@@ -85,7 +109,7 @@ void	add_texture_vals(t_textures *out, char *trim)
 		out->north = val;
 		dprintf(2, "OUT: %s\n", out->north);
 	}
-	else if (ft_strncmp(trim, "SO", 2) =	= 0)
+	else if (ft_strncmp(trim, "SO", 2) == 0)
 	{
 		out->south = val;
 		dprintf(2, "OUT: %s\n", out->south);
@@ -181,7 +205,6 @@ int	*parse_rgb(char *trim)
 	char	**strarr;
 	int		*intarr;
 	int		i;
-	int		new;
 
 	strarr = ft_split(trim, ',');
 	intarr = ft_calloc(sizeof(int), 3);

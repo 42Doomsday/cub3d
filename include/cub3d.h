@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 16:50:32 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:48:16 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,24 @@ typedef struct s_textures
 	int	*ceiling;
 }	t_textures;
 
+typedef enum	e_texture 
+{
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	FLOOR,
+	CEILING,
+	T_COUNT
+}	t_texture_id;
+
+typedef struct	s_texture_map
+{
+	t_texture_id	tex_id;
+	const char		*name;
+	size_t			member;
+}   t_texture_map;
+
 typedef struct s_map
 {
 	char	**data;
@@ -52,9 +70,11 @@ typedef struct s_player
 bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
 bool	parse_player(char **map, t_player *player);
+int		*parse_rgb(char *trim);
 
 // validators
 bool	is_valid_path(char *path);
+bool	validate_rgb(char **strarr);
 
 // cleaning
 void	free_map(t_map *map);

@@ -6,18 +6,20 @@
 /*   By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 00:22:59 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/13 16:05:54 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/23 23:43:19 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "cub3d.h"
 
-void	exit_with_error(t_textures *tex, char *error_type, char *detail)
+void	free_textures(t_textures *tex);
+
+void	exit_with_error(t_textures *tex, char *error_type, char *message)
 {
 	ft_putstr_fd("Cub3D: ", 2);
 	ft_putstr_fd(error_type, 2);
 	ft_putstr_fd(":", 2);
-	ft_putstr_fd(detail, 2);
+	ft_putstr_fd(message, 2);
 	free_textures(tex);
 	exit(1);
 }
@@ -30,5 +32,6 @@ void	free_textures(t_textures *tex)
 	free(tex->south);
 	free(tex->east);
 	free(tex->west);
-	free(tex
+	free(tex->floor);
+	free(tex->ceiling);
 }
