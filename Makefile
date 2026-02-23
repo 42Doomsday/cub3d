@@ -21,7 +21,7 @@ VALGRIND = valgrind \
 
 SRC  = main.c is_valid_path.c parse_textures.c parse_map.c free_map.c \
 		read_lines.c parse_player.c expand_tabs.c flood_fill.c \
-		is_contiguous.c trim_map.c
+		is_contiguous.c trim_map.c trim_spaces.c
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
