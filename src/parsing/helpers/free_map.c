@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:31:28 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/20 17:34:49 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:02:59 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 void	free_map(t_map	*map)
 {

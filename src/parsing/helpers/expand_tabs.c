@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 16:42:50 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 16:52:40 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:02:55 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static size_t	exanded_strlen(char *line);
 static char		*expand_line(char *line, int size);

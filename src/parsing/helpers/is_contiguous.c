@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 14:26:38 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/20 17:51:22 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:03:00 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static char		**copy_map(char **map, int size);
 static t_coords	get_first_map_character(char **map);

@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 16:37:41 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/20 17:11:20 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:13:34 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static bool	compare_str_arrays(char **arr1, char **arr2);
 static void	puterror(char *filename);

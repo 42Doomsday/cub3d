@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:35:58 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 13:19:32 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:02:35 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static int	count_rows(char **lines);
 static int	max_strlen(char **lines);

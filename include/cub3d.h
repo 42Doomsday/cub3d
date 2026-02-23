@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 13:17:33 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:02:12 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,30 +54,15 @@ typedef struct s_player
 	float	y;
 }	t_player;
 
-typedef struct s_coords
-{
-	int	x;
-	int	y;
-}	t_coords;
 
 // parsers
 bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
 bool	parse_player(char **map, t_player *player);
-
-// validators
 bool	is_valid_path(char *path);
 
 // cleaning
 void	free_map(t_map *map);
 void	free_map_data(char **data);
-
-// helpers
-char	**read_lines(int fd);
-t_list	*expand_tabs(t_list *lst);
-bool	flood_fill(char **map, int x, int y);
-bool	is_contiguous(t_map *map);
-void	trim_spaces(t_map *map);
-void	trim_map(t_map *map);
 
 #endif
