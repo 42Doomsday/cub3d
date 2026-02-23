@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 17:36:29 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:13:53 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 17:22:44 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(void)
 
 	char **res = read_lines(fd);
 	bool result = compare_str_arrays(exp_res, res);
+
 	if (result)
 		putsuccess("Bagel");
 	else
@@ -69,6 +70,8 @@ static bool	compare_str_arrays(char **arr1, char **arr2)
 	idx = 0;
 	while (arr1 && arr1[idx])
 	{
+		if (ft_strlen(arr1[idx]) != ft_strlen(arr2[idx]))
+			return (false);
 		if (ft_strncmp(arr1[idx], arr2[idx], ft_strlen(arr1[idx]) + 1) > 0)
 			return (false);
 		idx++;
