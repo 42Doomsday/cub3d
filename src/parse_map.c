@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:35:58 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 11:48:54 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 11:54:33 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	parse_map(int fd, t_map *map, t_player *player)
 				&& parse_player(map->data, player)
 				&& is_closed(map->data, map->width)
 				&& is_contiguous(map)
-				&& trim_empty_lines(map)
+				&& trim_map(map)
 			);
 		}
 	}
