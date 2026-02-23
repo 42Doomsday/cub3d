@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:02:12 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:20:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@
 
 # include "libft.h"
 # include "MLX42.h"
-
-#define TAB_SIZE 4
-#define VALID_CHARS_MAP "\t\n\v\f\r 01NEWS"
-#define VALID_PLAYER_SIDES "NEWS"
-#define MAP_CHARACTERS "NEWS01"
-#define EXTENSION ".cub"
-
-#define FILL '2'
-#define SPACE ' '
 
 typedef struct s_textures
 {
@@ -54,7 +45,6 @@ typedef struct s_player
 	float	y;
 }	t_player;
 
-
 // parsers
 bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
@@ -63,6 +53,5 @@ bool	is_valid_path(char *path);
 
 // cleaning
 void	free_map(t_map *map);
-void	free_map_data(char **data);
 
 #endif
