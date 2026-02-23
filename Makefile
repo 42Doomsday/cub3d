@@ -37,7 +37,8 @@ TEST_OBJ  = $(TEST_SRC:%.c=$(OBJ_DIR)/%.o)
 
 TEST_NAMES = test_parse_map test_expand_tabs \
 				 test_parse_player test_read_lines \
-				 test_rgb test_parse_textures test_trim_spaces
+				 test_rgb test_parse_textures test_trim_spaces \
+				 test_trim_map
 
 TESTS      = $(addprefix $(OBJ_DIR)/,$(TEST_NAMES))
 
