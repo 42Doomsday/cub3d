@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 12:34:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:03:11 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:58:51 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ static int	count_spaces(char *line, int flag)
 			break ;
 		if (line[idx] == SPACE)
 			count++;
+		else
+			break ;
 		if (flag == LEADING)
 			idx++;
 		else
