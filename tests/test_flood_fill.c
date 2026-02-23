@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 16:37:41 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:13:34 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 16:20:12 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ int	main(void)
 	char	*expected_map[] = {
 		"222222",
 		"222222",
-		"222221",
+		"222222",
 		NULL
 	};
 
 	result = flood_fill(input_map, 0, 0);
 	result &= compare_str_arrays(expected_map, input_map);
-
-
+	result &= compare_str_arrays(input_map, expected_map);
 
 	if (result)
 	{
