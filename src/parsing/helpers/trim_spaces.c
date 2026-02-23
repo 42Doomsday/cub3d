@@ -6,14 +6,14 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 12:34:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 15:01:40 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 17:20:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static int	count_extra_spaces(char **map, int flag);
-static int	count_spaces(char *line, int flag);
+static int	find_border_idx(char **map, int flag);
+static int	count_idx(char *line, int flag);
 static int	get_last_idx(char *line);
 
 #define UNDEFINT -1
@@ -23,72 +23,72 @@ static int	get_last_idx(char *line);
 void	trim_spaces(t_map *map)
 {
 	char	**data;
-	int		count;
+	int		border_idx;
 	size_t	size;
 	int		idx;
 
 	data = map->data;
-	count = count_extra_spaces(map->data, LEADING);
+	border_idx = find_border_idx(map->data, LEADING);
 	idx = 0;
-	while (data && data[idx])
+	while (data && data[idx] && border_idx != 0)
 	{
-		size = ft_strlen(data[idx]) - count + 1;
-		ft_memmove(data[idx], data[idx] + count, size);
+		size = ft_strlen(data[idx]) - border_idx + 1;
+		ft_memmove(data[idx], data[idx] + border_idx, size);
 		idx++;
 	}
-	count = count_extra_spaces(map->data, TRAILING);
+	border_idx = find_border_idx(map->data, TRAILING);
 	idx = 0;
 	while (data && data[idx])
 	{
-		data[idx][ft_strlen(data[idx]) - count] = '\0';
+		if (border_idx < (int)ft_strlen(data[idx]))
+			data[idx][border_idx] = '\0';
 		idx++;
 	}
 }
 
-static int	count_extra_spaces(char **map, int flag)
+static int	find_border_idx(char **map, int flag)
 {
 	int	total;
-	int	count;
+	int	border_idx;
 	int	idx;
 
 	total = UNDEFINT;
 	idx = 0;
 	while (map && map[idx])
 	{
-		count = count_spaces(map[idx], flag);
-		if (total == UNDEFINT || count < total)
-			total = count;
+		border_idx = count_idx(map[idx], flag);
+		if (total == UNDEFINT )
+			total = border_idx;
+		else if (flag == LEADING && border_idx < total)
+			total = border_idx;
+		else if (flag == TRAILING && border_idx > total)
+			total = border_idx;
 		idx++;
 	}
 	return (total);
 }
 
-static int	count_spaces(char *line, int flag)
+static int	count_idx(char *line, int flag)
 {
-	int	count;
 	int	idx;
 
-	count = 0;
+	if (!line)
+		return (0);
+
 	if (flag == LEADING)
-		idx = 0;
-	else
-		idx = get_last_idx(line);
-	while (42)
 	{
-		if (flag == LEADING && line[idx] == '\0')
-			break ;
-		if (flag == TRAILING && idx >= 0)
-			break ;
-		if (line[idx] == SPACE)
-			count++;
-		else
-			break ;
-		if (flag == LEADING)
+		idx = 0;
+		while (line[idx] && line[idx] == SPACE)
 			idx++;
-		else
-			idx--;
 	}
-	return (count);
+	else
+	{
+		idx = get_last_idx(line);
+		while (idx >= 0 && line[idx] == SPACE)
+			idx--;
+		idx++;
+	}
+	return (idx);
 }
 
 static int	get_last_idx(char *line)
