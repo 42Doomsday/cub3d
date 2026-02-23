@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 12:34:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 17:20:52 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 17:25:24 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	find_border_idx(char **map, int flag)
 	while (map && map[idx])
 	{
 		border_idx = count_idx(map[idx], flag);
-		if (total == UNDEFINT )
+		if (total == UNDEFINT)
 			total = border_idx;
 		else if (flag == LEADING && border_idx < total)
 			total = border_idx;
@@ -72,9 +72,8 @@ static int	count_idx(char *line, int flag)
 {
 	int	idx;
 
-	if (!line)
+	if (line == NULL)
 		return (0);
-
 	if (flag == LEADING)
 	{
 		idx = 0;
