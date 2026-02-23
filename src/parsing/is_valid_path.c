@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:28:10 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/17 17:11:07 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:20:04 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 bool	is_valid_path(char *path)
 {
