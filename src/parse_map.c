@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:35:58 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 11:54:33 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 13:19:32 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ static bool	is_valid_chars(char **lines);
 bool	parse_map(int fd, t_map *map, t_player *player)
 {
 	char	**lines;
+	bool	is_valid;
 
+	is_valid = false;
 	if (map && player)
 	{
 		lines = read_lines(fd);
@@ -29,16 +31,13 @@ bool	parse_map(int fd, t_map *map, t_player *player)
 			map->data = lines;
 			map->height = count_rows(lines);
 			map->width = max_strlen(lines);
-			return (
-				is_valid_chars(lines)
-				&& parse_player(map->data, player)
-				&& is_closed(map->data, map->width)
-				&& is_contiguous(map)
-				&& trim_map(map)
-			);
+			is_valid = is_valid_chars(lines) && parse_player(map->data, player)
+				&& is_closed(map->data, map->width) && is_contiguous(map);
+			if (is_valid)
+				trim_map(map);
 		}
 	}
-	return (false);
+	return (is_valid);
 }
 
 static int	count_rows(char **lines)
