@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/19 16:29:16 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 10:32:33 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int32_t	main(int argc, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	if (parse_map(fd, &map, &player) == false)
 		return (EXIT_FAILURE);
-1
+
 	mlx = init_mlx();
 	if (mlx == NULL)
 	{
