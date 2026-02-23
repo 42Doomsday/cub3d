@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 12:34:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 13:16:13 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:03:11 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static int	count_extra_spaces(char **map, int flag);
 static int	count_spaces(char *line, int flag);

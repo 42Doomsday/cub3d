@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 15:00:03 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 15:34:56 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:02:42 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static bool	is_player(int c);
 static void	set_params(t_player *player, int x, int y, int side);

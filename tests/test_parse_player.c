@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 17:20:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/18 16:51:05 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:13:47 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static bool	simple_test(void);
 static bool	bad_map_test(void);

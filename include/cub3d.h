@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/27 18:13:14 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/27 18:16:09 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,6 @@ typedef struct s_player
 	float	y;
 }	t_player;
 
-typedef struct s_coords
-{
-	int	x;
-	int	y;
-}	t_coords;
 
 // parsers
 bool	parse_textures(int fd, t_textures *out);

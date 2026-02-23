@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/18 14:55:47 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/27 18:16:25 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 # define t_TEXTURESESTS_PATH "tests/examples/textures/"
 
@@ -57,7 +57,7 @@ int	main(void)
 	check_invalid(invalid_test_files, false);
 	for (int i = 0; invalid_test_files[i] != NULL; i++)
 		free(invalid_test_files[i]);
-	
+
 	check_valid(valid_test_files, true);
 	for (int i = 0; valid_test_files[i] != NULL; i++)
 		free(valid_test_files[i]);
