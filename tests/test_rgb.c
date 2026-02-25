@@ -15,6 +15,7 @@ int main(void)
 		"255, a, 0",
 		"255, -1, 0",
 		"256, 0, 0",
+		"25 5, 0, 0",
 		"2147483649, 0, 0",
 		"-2147483649, 0, 0",
 		NULL
@@ -26,7 +27,7 @@ int main(void)
 		"0, 0, 0",
 		"0,0,0",
 		"0,   0   ,  +1  ",
-		"100, 200, 050",
+		" 100, 200, 050",
 		NULL
 	};
 	int		*intarr;
@@ -42,7 +43,7 @@ int main(void)
 		strarr = ft_split(trim, ',');
 		if (!strarr)
 			continue;
-		results = validate_rgb(strarr);
+		results = validate_rgb(trim, strarr);
 		if (results == false)
 			putsuccess(invalid_cases[i]);
 		else
@@ -60,8 +61,7 @@ int main(void)
 			puterror(valid_cases[i]);
 		else
 		{
-			for(int i = 0; i < 3; i++)
-				printf("INT: %d\n", intarr[i]);
+			printf("INT OUT: %d, %d, %d\n", intarr[0], intarr[1], intarr[2]);
 			putsuccess(valid_cases[i]);
 		}
 		free(trim);

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 23:48:16 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/25 20:01:56 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,6 @@
 #define VALID_CHARS_MAP "\t\n\v\f\r 01NEWS"
 #define VALID_PLAYER_SIDES "NEWS"
 
-typedef struct s_textures
-{
-	char *north;
-	char *south;
-	char *west;
-	char *east;
-	int	*floor;
-	int	*ceiling;
-}	t_textures;
-
 typedef enum	e_texture 
 {
 	NORTH,
@@ -44,6 +34,30 @@ typedef enum	e_texture
 	CEILING,
 	T_COUNT
 }	t_texture_id;
+
+typedef struct s_textures
+{
+	char *north;
+	char *south;
+	char *west;
+	char *east;
+	int	*floor;
+	int	*ceiling;
+	int	*tex[T_COUNT];
+}	t_textures;
+
+typedef enum	e_error_class 
+{
+	MAP,
+	TEX,
+	RGB,
+}	t_error_class;
+
+typedef struct s_error_class
+{
+	t_error_class	error_class;
+	const char		message;
+}	t_error_class_map;
 
 typedef struct	s_texture_map
 {
@@ -74,10 +88,13 @@ int		*parse_rgb(char *trim);
 
 // validators
 bool	is_valid_path(char *path);
-bool	validate_rgb(char **strarr);
+bool	validate_rgb(char *trim, char **strarr);
 
 // cleaning
 void	free_map(t_map *map);
+void	exit_with_error(t_textures *tex, char *error_type, char *message);
+void	free_rgb(char ***strarr, int **intarr);
+void	print_error(char *error_type, char *message);
 
 // helpers
 char	**read_lines(int fd);

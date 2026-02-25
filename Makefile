@@ -13,7 +13,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SRC  = is_valid_path.c parse_textures.c parse_map.c free_map.c \
+SRC  = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c free_map.c \
 		read_lines.c parse_player.c expand_tabs.c parser_cleanup.c \
 
 
@@ -21,7 +21,7 @@ OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 TEST_NAMES = test_parse_map test_expand_tabs \
 				 test_parse_player test_read_lines \
-				 test_rgb
+				 test_rgb test_parse_textures
 
 TESTS      = $(addprefix $(OBJ_DIR)/,$(TEST_NAMES))
 
