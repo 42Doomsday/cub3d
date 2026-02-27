@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_rgb.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:34:30 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/25 21:22:06 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/27 17:13:39 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	*parse_rgb(char *val)
 	if (!validate_rgb(val, strarr) || !intarr)
 	{
 		free_rgb(&strarr, &intarr);
-		free(val);
 		return (NULL);
 	}
 	i = 0;

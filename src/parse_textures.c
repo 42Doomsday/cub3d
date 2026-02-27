@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 13:53:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/25 21:28:46 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/27 17:12:41 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*extract_path(char *trim);
 bool	verify_tex_struct(t_textures *tex);
 
 static const t_texture_map  g_tex_map[] =
-{ 
+{
 	{NORTH, "NO", offsetof(t_textures, north)},
 	{SOUTH, "SO", offsetof(t_textures, south)},
 	{EAST, "EA", offsetof(t_textures, east)},
@@ -98,7 +98,7 @@ void	add_texture_vals(t_textures *out, char *trim)
 	int		*rgb;
 	void	*mem_ptr;
 	int		i;
-	
+
 	val = ft_strdup(extract_path(trim));
 	if (!val)
 		return ;
@@ -109,6 +109,7 @@ void	add_texture_vals(t_textures *out, char *trim)
 		{
 			mem_ptr = (char *)out + g_tex_map[i].member;
 			*(const char **)mem_ptr = val;
+			return ;
 		}
 		i++;
 	}
@@ -117,6 +118,7 @@ void	add_texture_vals(t_textures *out, char *trim)
 		out->floor = rgb;
 	if (ft_strncmp(trim, "C", 1) == 0)
 		out->ceiling = rgb;
+	free(val);
 }
 
 char	*extract_path(char *trim)
