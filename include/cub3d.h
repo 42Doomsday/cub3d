@@ -19,10 +19,12 @@
 # include <stdarg.h>
 
 # include "libft.h"
+ #include "MLX42.h"
 
 #define TAB_SIZE 4
 #define VALID_CHARS_MAP "\t\n\v\f\r 01NEWS"
 #define VALID_PLAYER_SIDES "NEWS"
+#define EXTENSION ".cub"
 
 typedef enum	e_texture
 {
