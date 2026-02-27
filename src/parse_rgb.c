@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:34:30 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/27 17:13:39 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/27 17:51:12 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,3 @@ bool	check_length_arr(char **strarr)
 {
 	return (ft_strarr_len(strarr) == 3);
 }
-

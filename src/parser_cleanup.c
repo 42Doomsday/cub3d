@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cleanup.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 00:22:59 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/25 16:28:54 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/27 17:50:59 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_error(char *error_type, char *message)
 void	free_textures(t_textures *tex)
 {
 	if (!tex)
-		return;
+		return ;
 	free(tex->north);
 	free(tex->south);
 	free(tex->east);
@@ -51,4 +51,3 @@ void	free_rgb(char ***strarr, int **intarr)
 		free(*intarr);
 	return ;
 }
-
