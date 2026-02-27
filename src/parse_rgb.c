@@ -28,6 +28,7 @@ int	*parse_rgb(char *val)
 	if (!validate_rgb(val, strarr) || !intarr)
 	{
 		free_rgb(&strarr, &intarr);
+		free(val);
 		return (NULL);
 	}
 	i = 0;
@@ -36,6 +37,7 @@ int	*parse_rgb(char *val)
 		intarr[i] = ft_atoi(strarr[i]);
 		i++;
 	}
+	ft_strarr_free(&strarr);
 	return (intarr);
 }
 
