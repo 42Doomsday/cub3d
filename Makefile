@@ -15,6 +15,7 @@ VALGRIND = valgrind \
 
 SRC  = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c free_map.c \
 		read_lines.c parse_player.c expand_tabs.c parser_cleanup.c \
+		helpers.c
 
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)

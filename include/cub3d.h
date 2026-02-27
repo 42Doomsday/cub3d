@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/25 20:01:56 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/27 17:46:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #define VALID_CHARS_MAP "\t\n\v\f\r 01NEWS"
 #define VALID_PLAYER_SIDES "NEWS"
 
-typedef enum	e_texture 
+typedef enum	e_texture
 {
 	NORTH,
 	SOUTH,
@@ -46,7 +46,7 @@ typedef struct s_textures
 	int	*tex[T_COUNT];
 }	t_textures;
 
-typedef enum	e_error_class 
+typedef enum	e_error_class
 {
 	MAP,
 	TEX,
@@ -99,5 +99,6 @@ void	print_error(char *error_type, char *message);
 // helpers
 char	**read_lines(int fd);
 t_list	*expand_tabs(t_list *lst);
+bool	set_gnl(int fd, char **line);
 
 #endif
