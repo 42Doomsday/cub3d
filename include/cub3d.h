@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/18 14:20:29 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/27 17:46:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@
 #define VALID_PLAYER_SIDES "NEWS"
 #define EXTENSION ".cub"
 
+typedef enum	e_texture
+{
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	FLOOR,
+	CEILING,
+	T_COUNT
+}	t_texture_id;
+
 typedef struct s_textures
 {
 	char *north;
@@ -34,7 +45,28 @@ typedef struct s_textures
 	char *east;
 	int	*floor;
 	int	*ceiling;
+	int	*tex[T_COUNT];
 }	t_textures;
+
+typedef enum	e_error_class
+{
+	MAP,
+	TEX,
+	RGB,
+}	t_error_class;
+
+typedef struct s_error_class
+{
+	t_error_class	error_class;
+	const char		message;
+}	t_error_class_map;
+
+typedef struct	s_texture_map
+{
+	t_texture_id	tex_id;
+	const char		*name;
+	size_t			member;
+}   t_texture_map;
 
 typedef struct s_map
 {
@@ -54,15 +86,21 @@ typedef struct s_player
 bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
 bool	parse_player(char **map, t_player *player);
+int		*parse_rgb(char *trim);
 
 // validators
 bool	is_valid_path(char *path);
+bool	validate_rgb(char *trim, char **strarr);
 
 // cleaning
 void	free_map(t_map *map);
+void	exit_with_error(t_textures *tex, char *error_type, char *message);
+void	free_rgb(char ***strarr, int **intarr);
+void	print_error(char *error_type, char *message);
 
 // helpers
 char	**read_lines(int fd);
 t_list	*expand_tabs(t_list *lst);
+bool	set_gnl(int fd, char **line);
 
 #endif

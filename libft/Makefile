@@ -6,7 +6,7 @@
 #    By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 18:43:41 by clouden           #+#    #+#              #
-#    Updated: 2026/02/05 14:54:33 by clouden          ###   ########.fr        #
+#    Updated: 2026/02/19 18:12:58 by clouden          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,10 @@ CHAR_DIR 	=	chars/
 CHAR_SRCS	=	$(CHAR_DIR)ft_isalnum.c\
 				$(CHAR_DIR)ft_isalpha.c\
 				$(CHAR_DIR)ft_isascii.c\
+				$(CHAR_DIR)ft_isnum.c\
 				$(CHAR_DIR)ft_isdigit.c\
 				$(CHAR_DIR)ft_isprint.c\
+				$(CHAR_DIR)ft_isspace.c\
 				$(CHAR_DIR)ft_tolower.c\
 				$(CHAR_DIR)ft_toupper.c
 
@@ -79,23 +81,24 @@ LIST_SRCS	=	$(LIST_DIR)ft_lstnew.c\
 
 # Define strings
 STR_DIR		=	strings/
-STR_SRCS	=	$(STR_DIR)ft_strlcpy.c\
-				$(STR_DIR)ft_strlcat.c\
-				$(STR_DIR)ft_substr.c\
-				$(STR_DIR)ft_strlen.c\
-				$(STR_DIR)ft_strjoin.c\
-				$(STR_DIR)ft_strtrim.c\
-				$(STR_DIR)ft_strjoin_n.c\
-				$(STR_DIR)ft_split.c\
-				$(STR_DIR)ft_strmapi.c\
-				$(STR_DIR)ft_strchr.c\
-				$(STR_DIR)ft_strdup.c\
-				$(STR_DIR)ft_strnstr.c\
-				$(STR_DIR)ft_strncmp.c\
-				$(STR_DIR)ft_striteri.c\
-				$(STR_DIR)ft_strrchr.c\
+STR_SRCS	=	$(STR_DIR)ft_split.c\
 				$(STR_DIR)ft_strarr_len.c\
 				$(STR_DIR)ft_strarr_join.c\
+				$(STR_DIR)ft_strchr.c\
+				$(STR_DIR)ft_strdup.c\
+				$(STR_DIR)ft_striteri.c\
+				$(STR_DIR)ft_strjoin.c\
+				$(STR_DIR)ft_strjoin_n.c\
+				$(STR_DIR)ft_strlcat.c\
+				$(STR_DIR)ft_strlcpy.c\
+				$(STR_DIR)ft_strlen.c\
+				$(STR_DIR)ft_strmapi.c\
+				$(STR_DIR)ft_strncmp.c\
+				$(STR_DIR)ft_strnstr.c\
+				$(STR_DIR)ft_strrchr.c\
+				$(STR_DIR)ft_strtrim.c\
+				$(STR_DIR)ft_strtrim_wht.c\
+				$(STR_DIR)ft_substr.c\
 
 # Define get_next_line
 GNL_DIR 	= 	get_next_line/

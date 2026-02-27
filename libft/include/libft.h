@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:57:14 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/05 14:53:51 by clouden          ###   ########.fr       */
+/*   Updated: 2026/02/19 18:14:42 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ int			ft_isalnum(int c);
 int			ft_isalpha(int c);
 int			ft_isascii(int c);
 int			ft_isdigit(int c);
+int			ft_isnum(const char *str);
 int			ft_isprint(int c);
+int			ft_isspace(int c);
 int			ft_tolower(int c);
 int			ft_toupper(int c);
 
@@ -102,6 +104,7 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char		*ft_strrchr(const char *s, int c);
 char		*ft_strtrim(char const *s1, char const *set);
+char		*ft_strtrim_wht(char const *s1);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif
