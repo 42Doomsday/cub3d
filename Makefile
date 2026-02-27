@@ -20,11 +20,14 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SOURCES  =
+SOURCES  = main.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
-		helpers/expand_tabs.c helpers/parser_cleanup.c helpers/helpers.c \ helpers/trim_map.c helpers/trim_spaces.c
+		helpers/expand_tabs.c helpers/parser_cleanup.c helpers/set_gnl.c \
+		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
+		helpers/flood_fill.c
+
 
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
 
