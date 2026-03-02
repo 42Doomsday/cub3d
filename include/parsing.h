@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:19 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:25:48 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/02 17:12:04 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 #define FILL '2'
 #define SPACE ' '
+#define WALL '0'
 
 typedef struct s_coords
 {
@@ -38,5 +39,6 @@ bool	is_contiguous(t_map *map);
 void	trim_spaces(t_map *map);
 void	trim_map(t_map *map);
 void	free_map_data(char **data);
+bool	is_closed(char **map, int height);
 
 #endif
