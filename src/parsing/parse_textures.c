@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 13:53:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/27 17:50:34 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/02 18:17:04 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static bool	check_for_tag(char *trim, t_textures *out);
 static void	add_texture_vals(t_textures *out, char *trim);
@@ -67,9 +67,9 @@ static bool	check_for_tag(char *trim, t_textures *out)
 	}
 	if ((ft_strlen(trim) > 2) && ft_isspace(trim[1]))
 	{
-		if (ft_strncmp(trim, "F", 1) == 0)
+		if (ft_strncmp(trim, "F", 1) == 0 && validate_rgb(&trim[2]))
 			return (true);
-		if (ft_strncmp(trim, "C", 1) == 0)
+		if (ft_strncmp(trim, "C", 1) == 0 && validate_rgb(&trim[2]))
 			return (true);
 	}
 	print_error("invalid texture", trim);
