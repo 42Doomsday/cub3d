@@ -6,14 +6,14 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 14:27:59 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:02:57 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/02 13:51:17 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-const static int	g_dx[4] = {1, -1, 0, 0};
-const static int	g_dy[4] = {0, 0, 1, -1};
+static const int	g_dx[4] = {1, -1, 0, 0};
+static const int	g_dy[4] = {0, 0, 1, -1};
 
 static bool	add_back(t_list **queue, int i, int j);
 t_coords	*pop(t_list **queue);
