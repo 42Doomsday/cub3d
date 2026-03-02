@@ -32,7 +32,7 @@ bool	parse_textures(int fd, t_textures *out)
 	bool	flag;
 
 	flag = true;
-	while (flag && set_gnl(fd, &line))
+	while (flag && verify_tex_struct(out) == false && set_gnl(fd, &line))
 	{
 		if (*line != '\n')
 		{
