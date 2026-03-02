@@ -5,6 +5,7 @@ LIBFT_DIR = libft
 MLX_DIR = MLX42
 MLX_BUILD = $(MLX_DIR)/build
 PARSING_DIR = parsing
+PARSING_DIR = parsing
 
 NAME = game
 
@@ -60,6 +61,8 @@ $(OBJ_DIR):
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
 	@cc $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@cc $(CFLAGS) -c $< -o $@
