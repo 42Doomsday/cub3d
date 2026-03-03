@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/02 13:40:08 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/03 23:53:30 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ static void	check_invalid(char **invalid_files, bool expected_result)
 	{
 		ft_bzero(&textures, sizeof(t_textures));
 		fd = get_test_file(invalid_files[i]);
-		result = parse_textures(fd, &textures);
+		if (parse_textures(fd, &textures) != NULL)
+			result = true;
+		else
+			result = false;
 		if (result != expected_result)
 		{
 			puterror(invalid_files[i]);
@@ -96,12 +99,19 @@ static void	check_valid(char **valid_files, bool expected_result)
 	t_textures	textures;
 	int			fd;
 	bool		result;
+	char		*line;
 
 	for (int i = 0; valid_files[i] != NULL; i++)
 	{
 		ft_bzero(&textures, sizeof(t_textures));
 		fd = get_test_file(valid_files[i]);
-		result = parse_textures(fd, &textures);
+		line = parse_textures(fd, &textures);
+		if (line != NULL)
+			result = true;
+		else
+			result = false;
+		free(line);
+		line = NULL;
 		if (result == expected_result)
 		{
 			if (is_not_empty(&textures))

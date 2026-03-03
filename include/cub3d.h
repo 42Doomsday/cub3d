@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/02 18:08:06 by clouden          ###   ########.fr       */
+/*   Updated: 2026/03/03 23:50:11 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_player
 }	t_player;
 
 // parsers
-bool	parse_textures(int fd, t_textures *out);
+char	*parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
 bool	parse_player(char **map, t_player *player);
 int		*parse_rgb(char *trim);
@@ -101,6 +101,7 @@ void	exit_with_error(t_textures *tex, char *error_type, char *message);
 void	free_rgb(char ***strarr, int **intarr);
 void	print_error(char *error_type, char *message);
 void	free_map_data(char **data);
+void	free_textures(t_textures *tex);
 
 // helpers
 char	**read_lines(int fd);

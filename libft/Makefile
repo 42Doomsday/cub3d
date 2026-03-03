@@ -6,7 +6,7 @@
 #    By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 18:43:41 by clouden           #+#    #+#              #
-#    Updated: 2026/02/19 18:12:58 by clouden          ###   ########.fr        #
+#    Updated: 2026/03/03 20:05:39 by clouden          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,12 +59,14 @@ CONV_SRCS	=	$(CONV_DIR)ft_itoa.c\
 # Define memory
 MEM_DIR		=	memory/
 MEM_SRCS	=	$(MEM_DIR)ft_bzero.c\
+				$(MEM_DIR)ft_calloc.c\
 				$(MEM_DIR)ft_memchr.c\
 				$(MEM_DIR)ft_memcmp.c\
 				$(MEM_DIR)ft_memcpy.c\
 				$(MEM_DIR)ft_memmove.c\
 				$(MEM_DIR)ft_memset.c\
-				$(MEM_DIR)ft_calloc.c\
+				$(MEM_DIR)ft_realloc.c\
+				$(MEM_DIR)ft_safe_free.c\
 				$(MEM_DIR)ft_strarr_free.c
 
 # Define lists

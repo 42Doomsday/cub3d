@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 13:53:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/02 18:17:04 by clouden          ###   ########.fr       */
+/*   Updated: 2026/03/03 23:44:29 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,38 @@ static const t_texture_map	g_tex_map[] = {
 {T_COUNT, NULL, 0}
 };
 
-bool	parse_textures(int fd, t_textures *out)
+/*
+ * Returns line if 1 or 0 is first nonspace char
+ * Caller parser should recieve line as first read of next parse_map
+ * if fails, then returns NULL, just like EOF 
+ */
+char	*parse_textures(int fd, t_textures *out)
 {
 	char	*line;
 	char	*trim;
-	bool	flag;
 
-	flag = true;
-	while (flag && verify_tex_struct(out) == false && set_gnl(fd, &line))
+	while (set_gnl(fd, &line))
 	{
-		if (*line != '\n')
+		trim = ft_strtrim_wht(line);
+		if (*trim)
 		{
-			trim = ft_strtrim_wht(line);
-			flag = check_for_tag(trim, out);
-			if (flag)
+			if (*trim == '0' || *trim == '1')
+			{
+				ft_safe_free(&trim);
+				if (verify_tex_struct(out) == false)
+				{
+					free_textures(out);
+					ft_safe_free(&line);
+				}
+				return (line);
+			}
+			if (check_for_tag(trim, out))
 				add_texture_vals(out, trim);
-			free(trim);
 		}
-		free(line);
+		ft_safe_free(&trim);
+		ft_safe_free(&line);
 	}
-	return (flag && verify_tex_struct(out));
+	return (NULL);
 }
 
 static bool	check_for_tag(char *trim, t_textures *out)
