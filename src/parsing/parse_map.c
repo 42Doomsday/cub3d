@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:35:58 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/02 17:38:40 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/04 14:14:00 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ static int	max_strlen(char **lines)
 static bool	is_valid_map(t_map *map, t_player *player)
 {
 	return (
-		is_valid_chars(map->data)
-		&& parse_player(map->data, player)
-		&& is_closed(map->data, map->height)
-		&& is_contiguous(map)
+		msg_on_error(is_valid_chars(map->data), PARSERR, INV_CHARS)
+		&& msg_on_error(parse_player(map->data, player), PARSERR, INV_PLAYER)
+		&& msg_on_error(is_closed(map->data, map->height), PARSERR, ISNT_CLOSED)
+		&& msg_on_error(is_contiguous(map), PARSERR, ISNT_CONTIGUOUS)
 	);
 }
 

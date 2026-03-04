@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 10:32:33 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/04 14:21:11 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,34 +60,30 @@ void on_resize(int32_t width, int32_t height, void *param)
 
 // -----------------------------------------------------------------------------
 
-void	putmap();
 
 int32_t	main(int argc, char **argv)
 {
-	mlx_t*		mlx;
-	t_map		map;
-	t_player	player;
-	int			fd;
+	t_cub3d		info;
 
 	if (argc != 2)
 		return (EXIT_FAILURE);
 
-	fd = open(argv[1], O_RDONLY);
-	if (parse_map(fd, &map, &player) == false)
+	ft_bzero(&info, sizeof(t_cub3d));
+	if (parse(argv[1], &info) == false)
 		return (EXIT_FAILURE);
 
-	mlx = init_mlx();
-	if (mlx == NULL)
+	info.mlx = init_mlx();
+	if (info.mlx == NULL)
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
 
-	printf("Current value of window: %d , %d\n", mlx->width, mlx->height);
-	mlx_resize_hook(mlx, on_resize, mlx);
+	printf("Current value of window: %d , %d\n", info.mlx->width, info.mlx->height);
+	mlx_resize_hook(info.mlx, on_resize, info.mlx);
 
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_loop(info.mlx);
+	mlx_terminate(info.mlx);
 
 	return (EXIT_SUCCESS);
 }

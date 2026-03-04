@@ -27,7 +27,7 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
 		helpers/expand_tabs.c helpers/parser_cleanup.c helpers/set_gnl.c \
 		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
-		helpers/flood_fill.c helpers/is_closed.c
+		helpers/flood_fill.c helpers/is_closed.c parse.c
 
 
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))

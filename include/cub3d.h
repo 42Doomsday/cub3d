@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/02 18:08:06 by clouden          ###   ########.fr       */
+/*   Updated: 2026/03/04 14:17:27 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 
 # include "libft.h"
 # include "MLX42.h"
+
+# define PARSERR "parsing"
+# define INV_CHARS "map contains unallowed characters"
+# define INV_PLAYER "player positioning is invalid"
+# define ISNT_CLOSED "map is not closed with walls"
+# define ISNT_CONTIGUOUS "map isn't contiguous"
+
 
 typedef enum	e_texture
 {
@@ -77,21 +84,31 @@ typedef struct s_player
 	float	y;
 }	t_player;
 
+typedef struct s_cub3d
+{
+	mlx_t		*mlx;
+	t_textures	textures;
+	t_map		map;
+	t_player	player;
+}	t_cub3d;
+
 // parsers
 bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
 bool	parse_player(char **map, t_player *player);
 int		*parse_rgb(char *trim);
+bool	parse(char *filename, t_cub3d *info);
 
 // validators
 bool	is_valid_path(char *path);
-
 // cleaning
 void	free_map(t_map *map);
 void	exit_with_error(t_textures *tex, char *error_type, char *message);
 void	free_rgb(char ***strarr, int **intarr);
 void	print_error(char *error_type, char *message);
+bool	msg_on_error(bool result, char *error_type, char *message);
 void	free_map_data(char **data);
+void	free_textures(t_textures *tex);
 
 // helpers
 char	**read_lines(int fd);
