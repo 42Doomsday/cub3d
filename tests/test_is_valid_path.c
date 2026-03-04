@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:28:54 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/17 17:10:35 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:13:38 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 #define TEST_PATH "tests/examples/path/"
 

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/18 14:20:37 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/04 14:21:11 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 
 #include "cub3d.h"
 
-#define WIDTH 512
-#define HEIGHT 512
+#define DEFAULT_WIDTH 512
+#define DEFAULT_HEIGHT 512
+#define TITLE "cub3d"
 
-static mlx_image_t* image;
+static mlx_image_t*	image;
+static mlx_t*		init_mlx(void);
 
 // -----------------------------------------------------------------------------
 
@@ -46,51 +48,51 @@ void ft_randomize(void* param)
 	}
 }
 
-void ft_hook(void* param)
+void on_resize(int32_t width, int32_t height, void *param)
 {
-	mlx_t* mlx = param;
+	mlx_t*	mlx;
 
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_UP))
-		image->instances[0].y -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		image->instances[0].y += 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		image->instances[0].x -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		image->instances[0].x += 5;
+	mlx = param;
+	mlx->width = width;
+	mlx->height = height;
+	printf("Window resized: %d x %d\n", width, height);
 }
 
 // -----------------------------------------------------------------------------
 
-int32_t	main(void)
+
+int32_t	main(int argc, char **argv)
 {
-	mlx_t* mlx;
+	t_cub3d		info;
 
-	// Gotta error check this stuff
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
+	if (argc != 2)
+		return (EXIT_FAILURE);
+
+	ft_bzero(&info, sizeof(t_cub3d));
+	if (parse(argv[1], &info) == false)
+		return (EXIT_FAILURE);
+
+	info.mlx = init_mlx();
+	if (info.mlx == NULL)
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	if (!(image = mlx_new_image(mlx, 128, 128)))
-	{
-		mlx_close_window(mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
-	{
-		mlx_close_window(mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
 
-	mlx_loop_hook(mlx, ft_randomize, mlx);
-	mlx_loop_hook(mlx, ft_hook, mlx);
+	printf("Current value of window: %d , %d\n", info.mlx->width, info.mlx->height);
+	mlx_resize_hook(info.mlx, on_resize, info.mlx);
 
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_loop(info.mlx);
+	mlx_terminate(info.mlx);
+
 	return (EXIT_SUCCESS);
+}
+
+static mlx_t*	init_mlx(void)
+{
+	mlx_t*	created;
+
+	mlx_set_setting(MLX_MAXIMIZED, true);
+	created = mlx_init(512, 512, TITLE, true);
+	return (created);
 }

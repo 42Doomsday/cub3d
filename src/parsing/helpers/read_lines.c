@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 13:53:25 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/16 16:51:19 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:03:03 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static t_list	*read_to_list(int fd);
 static char		**convert_to_array(t_list *lst);

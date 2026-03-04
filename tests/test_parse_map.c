@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:38:24 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/18 16:45:50 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/04 14:34:19 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 # define TEXTURES_TESTS_PATH "tests/examples/map/"
 

@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_map.c                                         :+:      :+:    :+:   */
+/*   is_valid_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/13 14:31:28 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/13 14:38:10 by dkalgano         ###   ########.fr       */
+/*   Created: 2026/02/06 12:28:10 by dkalgano          #+#    #+#             */
+/*   Updated: 2026/02/23 14:20:04 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
-void	free_map(t_map	*map)
+bool	is_valid_path(char *path)
 {
-	int	idx;
+	int		offset;
+	size_t	path_len;
+	size_t	extension_len;
 
-	if (map == NULL)
-		return ;
-	idx = 0;
-	while (map->data && map->data[idx])
-		free(map->data[idx++]);
-	free(map->data);
+	if (path)
+	{
+		path_len = ft_strlen(path);
+		extension_len = ft_strlen(EXTENSION);
+		if (path_len > extension_len)
+		{
+			offset = path_len - extension_len;
+			if (ft_strncmp(&path[offset], EXTENSION, extension_len) == 0)
+				return (true);
+		}
+	}
+	return (false);
 }

@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_read_lines.c                                  :+:      :+:    :+:   */
+/*   test_trim_spaces.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 17:36:29 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 17:22:44 by dkalgano         ###   ########.fr       */
+/*   Created: 2026/02/23 14:33:43 by dkalgano          #+#    #+#             */
+/*   Updated: 2026/02/23 17:17:44 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
+static bool	base_case(char **exp_arr, char **input, char *test_name);
 static bool	compare_str_arrays(char **arr1, char **arr2);
 static void	puterror(char *filename);
 static void	putsuccess(char *filename);
@@ -20,47 +21,61 @@ static void	print_str_array(char **arr);
 int	main(void)
 {
 
-	int fd = open("tests/examples/map/valid/bagel", O_RDONLY);
-	char *exp_res[] = {
-		"",
-		"",
-		"",
-		"",
-		"         11111111111111",
-		"         1000000E000001",
-		"         10001111110001",
-		"         10001    10001",
-		"         10001111110001",
-		"         10000000000001",
-		"         11111111111111",
-		"",
-		"",
-		"",
+	char	line1[] = " First ";
+	char	line2[] = "  Second  ";
+	char	line3[] = "   Third   ";
+	char	*map_lines[] = {line1, line2, line3, NULL};
+
+	char	*expected_map_lines[] = {
+		"First ",
+		" Second",
+		"  Third",
 		NULL
 	};
 
-	char **res = read_lines(fd);
-	bool result = compare_str_arrays(exp_res, res);
+	char bad_align_line1[] = " a    ";
+	char bad_align_line2[] = "  bbbbbbbbbbbbbbb  ";
+	char bad_align_line3[] = "   cccccccccccccccccccccccccccccccccccccc  ";
 
-	if (result)
-		putsuccess("Bagel");
-	else
-	{
-		puterror("Bagel");
-		printf("Yours:\n");
-		print_str_array(res);
-		printf("Expected:\n");
-		print_str_array(exp_res);
-	}
+	char *bad_align_map[] = {bad_align_line1, bad_align_line2, bad_align_line3, NULL};
 
-	int	idx = 0;
-	while (res[idx])
-		free(res[idx++]);
-	free(res);
+	char *exp_for_bad_align_map[] = {
+		"a    ",
+		" bbbbbbbbbbbbbbb  ",
+		"  cccccccccccccccccccccccccccccccccccccc",
+		NULL
+	};
+
+	bool result = base_case(expected_map_lines, map_lines, "Simple trim");
+	result &= base_case(NULL, NULL, "Null map");
+	result &= base_case(exp_for_bad_align_map, bad_align_map, "Different size lines");
+
 
 	if (result)
 		return (EXIT_SUCCESS);
 	return (EXIT_FAILURE);
+}
+
+static bool	base_case(char **exp_arr, char **input, char *test_name)
+{
+	t_map	map;
+
+	map.data = input;
+	trim_spaces(&map);
+
+	bool result = compare_str_arrays(exp_arr, input);
+
+	if (result)
+		putsuccess(test_name);
+	else
+	{
+		puterror(test_name);
+		printf("Expected map:\n");
+		print_str_array(exp_arr);
+		printf("Your's map:\n");
+		print_str_array(input);
+	}
+	return (result);
 }
 
 static bool	compare_str_arrays(char **arr1, char **arr2)
@@ -89,7 +104,6 @@ static void	putsuccess(char *filename)
 	printf("Test: %s - passed!\n", filename);
 }
 
-
 static void	print_str_array(char **arr)
 {
 	int	i;
@@ -100,6 +114,7 @@ static void	print_str_array(char **arr)
 	while (arr[i])
 	{
 		printf("%s\n", arr[i]);
+		printf("size: %zu\n", ft_strlen(arr[i]));
 		i++;
 	}
 	printf("\n");

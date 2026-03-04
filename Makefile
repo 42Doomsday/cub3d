@@ -4,6 +4,8 @@ OBJ_DIR   = build
 LIBFT_DIR = libft
 MLX_DIR = MLX42
 MLX_BUILD = $(MLX_DIR)/build
+PARSING_DIR = parsing
+PARSING_DIR = parsing
 
 NAME = game
 
@@ -19,10 +21,18 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SRC  = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c free_map.c \
-		read_lines.c parse_player.c expand_tabs.c parser_cleanup.c \
-		helpers.c
+SOURCES  = main.c
 
+PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
+		parse_player.c helpers/free_map.c helpers/read_lines.c \
+		helpers/expand_tabs.c helpers/parser_cleanup.c helpers/set_gnl.c \
+		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
+		helpers/flood_fill.c helpers/is_closed.c parse.c
+
+
+PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
+
+SRC = $(SOURCES) $(PARSING_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
@@ -31,7 +41,9 @@ TEST_OBJ  = $(TEST_SRC:%.c=$(OBJ_DIR)/%.o)
 
 TEST_NAMES = test_parse_map test_expand_tabs \
 				 test_parse_player test_read_lines \
-				 test_rgb test_parse_textures
+				 test_rgb test_parse_textures test_trim_spaces \
+				 test_trim_map test_is_valid_path test_flood_fill \
+				 test_is_closed
 
 TESTS      = $(addprefix $(OBJ_DIR)/,$(TEST_NAMES))
 
@@ -50,7 +62,10 @@ $(OBJ_DIR):
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
 	@cc $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	@cc $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) | $(OBJ_DIR)

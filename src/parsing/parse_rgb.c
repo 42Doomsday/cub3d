@@ -6,15 +6,15 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 22:34:30 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/27 17:51:12 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/04 14:15:31 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
-bool	validate_rgb(char *trim, char **strarr);
+bool	validate_rgb(char *trim);
 bool	comma_cnt(char *trim);
-bool	check_range(int num);
+bool	check_num(char *str);
 bool	check_length_arr(char **strarr);
 
 int	*parse_rgb(char *val)
@@ -25,7 +25,7 @@ int	*parse_rgb(char *val)
 
 	strarr = ft_split(val, ',');
 	intarr = ft_calloc(3, sizeof(int));
-	if (!validate_rgb(val, strarr) || !intarr)
+	if (!intarr)
 	{
 		free_rgb(&strarr, &intarr);
 		return (NULL);
@@ -40,26 +40,29 @@ int	*parse_rgb(char *val)
 	return (intarr);
 }
 
-bool	validate_rgb(char *val, char **strarr)
+bool	validate_rgb(char *val)
 {
-	int	i;
-	int	new;
+	int		i;
+	int		cnt;
+	char	**strarr;
 
 	i = 0;
-	if (!strarr || !*strarr || !comma_cnt(val) || !check_length_arr(strarr))
-		return (false);
-	while (strarr[i])
+	cnt = 0;
+	strarr = ft_split(val, ',');
+	if (strarr)
 	{
-		if (!ft_isnum(strarr[i]))
+		if (comma_cnt(val) && check_length_arr(strarr))
 		{
-			return (false);
+			while (strarr[i])
+			{
+				if (check_num(strarr[i]) == true)
+					cnt++;
+				i++;
+			}
 		}
-		new = ft_atoi(strarr[i]);
-		if (!check_range(new))
-			return (false);
-		i++;
+		ft_strarr_free(&strarr);
 	}
-	return (true);
+	return (cnt == 3);
 }
 
 bool	comma_cnt(char *trim)
@@ -76,9 +79,17 @@ bool	comma_cnt(char *trim)
 	return (cnt == 2);
 }
 
-bool	check_range(int num)
+bool	check_num(char *str)
 {
-	return (num > -1 && num < 256);
+	int	num;
+
+	if (ft_isnum(str))
+	{
+		num = ft_atoi(str);
+		if (num > -1 && num < 256)
+			return (true);
+	}
+	return (false);
 }
 
 bool	check_length_arr(char **strarr)
