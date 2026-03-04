@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:57:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/02 13:40:08 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/04 14:36:54 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # define t_TEXTURESESTS_PATH "tests/examples/textures/"
 
-static void	check_invalid(char **invalid_files, bool expected_result);
-static void	check_valid(char **valid_files, bool expected_result);
+static bool	check_invalid(char **invalid_files, bool expected_result);
+static bool	check_valid(char **valid_files, bool expected_result);
 static void	add_prefix(char **in, char *prefix);
 static int	get_test_file(char *filename);
 static void	puterror(char *filename);
@@ -55,28 +55,35 @@ int	main(void)
 
 	add_prefix(valid_test_files, "valid/");
 
-	check_invalid(invalid_test_files, false);
+	bool result = true;
+
+	result &= check_invalid(invalid_test_files, false);
 	for (int i = 0; invalid_test_files[i] != NULL; i++)
 		free(invalid_test_files[i]);
 
-	check_valid(valid_test_files, true);
+	result &= check_valid(valid_test_files, true);
 	for (int i = 0; valid_test_files[i] != NULL; i++)
 		free(valid_test_files[i]);
 
-	return (EXIT_SUCCESS);
+	if (result)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
-static void	check_invalid(char **invalid_files, bool expected_result)
+static bool	check_invalid(char **invalid_files, bool expected_result)
 {
 	t_textures	textures;
 	int			fd;
 	bool		result;
+	bool		total;
 
+	total = true;
 	for (int i = 0; invalid_files[i] != NULL; i++)
 	{
 		ft_bzero(&textures, sizeof(t_textures));
 		fd = get_test_file(invalid_files[i]);
 		result = parse_textures(fd, &textures);
+		total &= result == expected_result;
 		if (result != expected_result)
 		{
 			puterror(invalid_files[i]);
@@ -89,19 +96,23 @@ static void	check_invalid(char **invalid_files, bool expected_result)
 		free_struct(&textures);
 		flush();
 	}
+	return (total);
 }
 
-static void	check_valid(char **valid_files, bool expected_result)
+static bool	check_valid(char **valid_files, bool expected_result)
 {
 	t_textures	textures;
 	int			fd;
 	bool		result;
+	bool		total;
 
+	total = true;
 	for (int i = 0; valid_files[i] != NULL; i++)
 	{
 		ft_bzero(&textures, sizeof(t_textures));
 		fd = get_test_file(valid_files[i]);
 		result = parse_textures(fd, &textures);
+		total &= result == expected_result;
 		if (result == expected_result)
 		{
 			if (is_not_empty(&textures))
@@ -122,6 +133,7 @@ static void	check_valid(char **valid_files, bool expected_result)
 		free_struct(&textures);
 		flush();
 	}
+	return (total);
 }
 
 static void	add_prefix(char **in, char *prefix)
