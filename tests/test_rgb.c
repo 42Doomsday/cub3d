@@ -1,5 +1,5 @@
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static void	puterror(char *filename);
 static void	putsuccess(char *filename);
@@ -43,7 +43,7 @@ int main(void)
 		strarr = ft_split(trim, ',');
 		if (!strarr)
 			continue;
-		results = validate_rgb(trim, strarr);
+		results = validate_rgb(trim);
 		if (results == false)
 			putsuccess(invalid_cases[i]);
 		else

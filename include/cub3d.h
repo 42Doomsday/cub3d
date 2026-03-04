@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/02 13:39:39 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/02 18:08:06 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int		*parse_rgb(char *trim);
 
 // validators
 bool	is_valid_path(char *path);
-bool	validate_rgb(char *trim, char **strarr);
 
 // cleaning
 void	free_map(t_map *map);
