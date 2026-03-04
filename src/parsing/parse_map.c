@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:35:58 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:02:35 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/02 17:38:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	count_rows(char **lines);
 static int	max_strlen(char **lines);
-static bool	is_closed(char **map, int size);
+static bool	is_valid_map(t_map *map, t_player *player);
 static bool	is_valid_chars(char **lines);
 
 bool	parse_map(int fd, t_map *map, t_player *player)
@@ -31,8 +31,7 @@ bool	parse_map(int fd, t_map *map, t_player *player)
 			map->data = lines;
 			map->height = count_rows(lines);
 			map->width = max_strlen(lines);
-			is_valid = is_valid_chars(lines) && parse_player(map->data, player)
-				&& is_closed(map->data, map->width) && is_contiguous(map);
+			is_valid = is_valid_map(map, player);
 			if (is_valid)
 				trim_map(map);
 		}
@@ -48,33 +47,6 @@ static int	count_rows(char **lines)
 	while (lines && lines[counter])
 		counter++;
 	return (counter);
-}
-
-static bool	is_closed(char **map, int size)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == '0')
-			{
-				if (i == 0 || i == size - 1 || j == 0 || map[i][j + 1] == '\0')
-					return (false);
-				if (map[i + 1][j] == ' ' || map[i - 1][j] == ' ')
-					return (false);
-				if (map[i][j + 1] == ' ' || (j > 0 && map[i][j - 1] == ' '))
-					return (false);
-			}
-			j++;
-		}
-		i++;
-	}
-	return (true);
 }
 
 static int	max_strlen(char **lines)
@@ -93,6 +65,16 @@ static int	max_strlen(char **lines)
 		idx++;
 	}
 	return (max);
+}
+
+static bool	is_valid_map(t_map *map, t_player *player)
+{
+	return (
+		is_valid_chars(map->data)
+		&& parse_player(map->data, player)
+		&& is_closed(map->data, map->height)
+		&& is_contiguous(map)
+	);
 }
 
 static bool	is_valid_chars(char **lines)

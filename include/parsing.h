@@ -23,6 +23,7 @@
 
 #define FILL '2'
 #define SPACE ' '
+#define WALL '0'
 
 typedef struct s_coords
 {
@@ -39,5 +40,6 @@ void	trim_spaces(t_map *map);
 void	trim_map(t_map *map);
 void	free_map_data(char **data);
 bool	validate_rgb(char *trim);
+bool	is_closed(char **map, int height);
 
 #endif

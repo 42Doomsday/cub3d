@@ -27,7 +27,7 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
 		helpers/expand_tabs.c helpers/parser_cleanup.c helpers/set_gnl.c \
 		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
-		helpers/flood_fill.c
+		helpers/flood_fill.c helpers/is_closed.c
 
 
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
@@ -42,7 +42,8 @@ TEST_OBJ  = $(TEST_SRC:%.c=$(OBJ_DIR)/%.o)
 TEST_NAMES = test_parse_map test_expand_tabs \
 				 test_parse_player test_read_lines \
 				 test_rgb test_parse_textures test_trim_spaces \
-				 test_trim_map test_is_valid_path test_flood_fill
+				 test_trim_map test_is_valid_path test_flood_fill \
+				 test_is_closed
 
 TESTS      = $(addprefix $(OBJ_DIR)/,$(TEST_NAMES))
 

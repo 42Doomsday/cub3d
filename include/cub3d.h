@@ -21,12 +21,6 @@
 # include "libft.h"
 # include "MLX42.h"
 
-#define TAB_SIZE 4
-#define VALID_CHARS_MAP "\t\n\v\f\r 01NEWS"
-#define VALID_PLAYER_SIDES "NEWS"
-#define MAP_CHARACTERS "NEWS01"
-#define EXTENSION ".cub"
-
 typedef enum	e_texture
 {
 	NORTH,
@@ -37,9 +31,6 @@ typedef enum	e_texture
 	CEILING,
 	T_COUNT
 }	t_texture_id;
-
-#define FILL '2'
-#define SPACE ' '
 
 typedef struct s_textures
 {
