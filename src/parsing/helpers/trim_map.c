@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 11:05:56 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:03:05 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/05 14:09:54 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 static void	trim_empty_lines(t_map *map);
 static bool	is_empty_line(char *line);
 
-void	trim_map(t_map *map)
+bool	trim_map(t_map *map)
 {
 	trim_empty_lines(map);
 	trim_spaces(map);
+	return (true);
 }
 
 static void	trim_empty_lines(t_map *map)

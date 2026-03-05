@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 17:20:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:13:47 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/05 13:52:55 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static bool	simple_test(void)
 		NULL
 	};
 	parse_player(map, &player);
-	if (player.x == 5 && player.y == 1 && player.side == 'N')
+	if (player.x == 5 && player.y == 1 && player.rotation == 0)
 	{
 		putsuccess("Simple map");
 		return (true);
@@ -64,7 +64,7 @@ static bool	bad_map_test(void)
 		NULL
 	};
 	parse_player(map, &player);
-	if (player.x == 0 && player.y == 0 && player.side == 0)
+	if (player.x == 0 && player.y == 0 && player.rotation == 0)
 	{
 		putsuccess("Bad map test");
 		return (true);
