@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:35:58 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/05 14:11:07 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:25:36 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	parse_map(int fd, t_map *map, t_player *player)
 			map->data = lines;
 			map->height = count_rows(lines);
 			map->width = max_strlen(lines);
-			return (is_valid_map(map, player));
+			is_valid = is_valid_map(map, player);
 		}
 	}
 	return (is_valid);
