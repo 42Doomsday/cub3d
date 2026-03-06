@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/06 13:48:41 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 14:23:42 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,22 @@ typedef struct s_cub3d
 	t_player	player;
 }	t_cub3d;
 
+typedef struct s_ivec2
+{
+	int	x;
+	int	y;
+}	t_ivec2;
+
+typedef struct s_player_draw
+{
+	mlx_image_t	*img;
+	t_ivec2		center;
+	int			radius;
+	int			ray_len;
+	int			thickness;
+	float		angle;
+}	t_player_draw;
+
 // parsers
 bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
@@ -134,7 +150,10 @@ bool	is_contiguous(t_map *map);
 void	trim_spaces(t_map *map);
 bool	trim_map(t_map *map);
 
-// game
+// minimap
 void	move_player_forward(t_map *map, t_player *player);
+void	put_player(mlx_image_t *img, t_map *map, t_player *player);
+int		get_rgba(int r, int g, int b, int a);
+int		get_block_size(t_map *map, int32_t width, int32_t height);
 
 #endif

@@ -163,4 +163,3 @@ static bool	collides_on_y(t_map *map, float dy, float cur_x, float new_y)
 	}
 	return (false);
 }
-

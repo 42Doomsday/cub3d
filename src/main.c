@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/06 13:51:56 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 14:24:37 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,6 @@
 static mlx_image_t*	image;
 static mlx_t*		init_mlx(void);
 static t_cub3d		info;
-
-int get_rgba(int r, int g, int b, int a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-int	get_block_size(t_map *map, int32_t width, int32_t height)
-{
-	int	size1;
-	int	size2;
-
-	size1 = width / map->width;
-	size2 = height / map->height;
-	if (size1 < size2)
-		return (size1);
-	return (size2);
-}
 
 void	put_square(int x, int y, int size, uint32_t pixel)
 {
@@ -129,40 +112,6 @@ void	put_grid(t_map *map)
 	}
 }
 
-void put_player(t_map *map, t_player *player)
-{
-    int block = get_block_size(map, image->width, image->height);
-
-    int cx = (int)(player->x * block) + block / 2;
-    int cy = (int)(player->y * block) + block / 2;
-
-    int radius = block / 4;
-    int x, y;
-
-    float angle = (90.0f - player->rotation) * M_PI / 180.0f;
-
-    for (y = -radius; y <= radius; y++)
-        for (x = -radius; x <= radius; x++)
-            if (x*x + y*y <= radius*radius)
-                mlx_put_pixel(image, cx + x, cy + y, get_rgba(0, 255, 0, 255));
-
-    int line_length = block / 2;
-    int thickness = block / 20;
-
-    for (int i = 0; i <= line_length; i++)
-    {
-        float px = (radius + i) * cos(angle);
-        float py = -(radius + i) * sin(angle);
-
-        for (int ty = -thickness/2; ty <= thickness/2; ty++)
-            for (int tx = -thickness/2; tx <= thickness/2; tx++)
-                mlx_put_pixel(image,
-                              cx + (int)(px + 0.5f) + tx,
-                              cy + (int)(py + 0.5f) + ty,
-                              get_rgba(255, 0, 0, 255));
-    }
-}
-
 void on_resize(int32_t width, int32_t height, void *param)
 {
 	mlx_t*	mlx;
@@ -175,7 +124,7 @@ void on_resize(int32_t width, int32_t height, void *param)
 	image = mlx_new_image(info.mlx, info.mlx->width, info.mlx->height);
 	put_map(&info.map);
 	put_grid(&info.map);
-	put_player(&info.map, &info.player);
+	put_player(image, &info.map, &info.player);
 	mlx_image_to_window(info.mlx, image, 0, 0);
 }
 
@@ -193,7 +142,7 @@ void ft_hook(void* param)
 		move_player_forward(&info.map, &info.player);
 	put_map(&info.map);
 	put_grid(&info.map);
-	put_player(&info.map, &info.player);
+	put_player(image, &info.map, &info.player);
 }
 
 int32_t	main(int argc, char **argv)
@@ -215,7 +164,7 @@ int32_t	main(int argc, char **argv)
 
 	image = mlx_new_image(info.mlx, info.mlx->width, info.mlx->height);
 	put_map(&info.map);
-	put_player(&info.map, &info.player);
+	put_player(image, &info.map, &info.player);
 	mlx_image_to_window(info.mlx, image, 0, 0);
 
 	mlx_loop_hook(info.mlx, ft_hook, info.mlx);

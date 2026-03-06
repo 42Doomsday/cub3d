@@ -29,7 +29,7 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
 		helpers/flood_fill.c helpers/is_closed.c parse.c
 
-MINIMAP_SOURCES = move_player.c
+MINIMAP_SOURCES = move_player.c put_player.c helpers/utils.c
 
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
