@@ -13,20 +13,21 @@
 #include "cub3d.h"
 
 static t_player_draw	make_draw_params(mlx_image_t *img,
-							t_map *map, t_player *player);
+						t_map *map, t_player *player);
 static void				put_circle(mlx_image_t *img,
-							t_ivec2 center, int radius);
-static void				put_ray_pixel(mlx_image_t *img,
-							t_ivec2 center, t_player_draw params, int step);
+						t_ivec2 center, int radius);
+static void				put_ray_pixel(mlx_image_t *img, t_ivec2 point,
+						int thickness, uint32_t color);
 static void				put_direction_ray(mlx_image_t *img,
-							t_player_draw params);
+						t_player_draw params);
 
 /**
- * @brief Draws the player on the minimap as a filled circle with a
- *        direction ray indicating the facing angle.
+ * @brief Draws the player on the minimap as a filled circle with two
+ *        direction rays showing the vertical and horizontal tile edge
+ *        crossings from the player's current position.
  *
  * @param img     Target MLX image to draw onto.
- * @param map     Pointer to the map used to derive the block size.
+ * @param map     Pointer to the map used to derive block size and walls.
  * @param player  Pointer to the player whose position and rotation to draw.
  */
 void	put_player(mlx_image_t *img, t_map *map, t_player *player)
@@ -41,9 +42,8 @@ void	put_player(mlx_image_t *img, t_map *map, t_player *player)
 /**
  * @brief Computes all screen-space drawing parameters for the player.
  *
- * Derives pixel center, radius, ray length, brush thickness and the
- * facing angle in radians from the player's current world state and
- * the block size of the minimap.
+ * Derives pixel center, radius, ray length, brush thickness, facing angle,
+ * world position and block size from the player's current state.
  *
  * @param img     Target MLX image (stored into the result for convenience).
  * @param map     Pointer to the map used to compute the block size.
@@ -57,9 +57,13 @@ static t_player_draw	make_draw_params(mlx_image_t *img,
 	int				block_size;
 
 	params.img = img;
+	params.map = map;
 	block_size = get_block_size(map, img->width, img->height);
+	params.block_size = block_size;
 	params.center.x = (int)(player->x * block_size) + block_size / 2;
 	params.center.y = (int)(player->y * block_size) + block_size / 2;
+	params.world_pos.x = player->x;
+	params.world_pos.y = player->y;
 	params.radius = block_size / 4;
 	params.ray_len = block_size / 2;
 	params.thickness = block_size / 20;
@@ -101,62 +105,73 @@ static void	put_circle(mlx_image_t *img, t_ivec2 center, int radius)
 }
 
 /**
- * @brief Draws a single thick point of the direction ray at a given step
- *        distance from the edge of the player circle.
+ * @brief Draws one pixel of a direction ray at screen position @p point.
  *
- * Computes the floating-point screen offset for this step from the angle
- * stored in @p params, then paints a square brush of size params.thickness
- * centred on that offset.
+ * Paints a square brush of size @p thickness centred on the given pixel
+ * coordinates using the provided @p color.
  *
- * @param img     Target MLX image.
- * @param center  Pixel centre of the player circle.
- * @param params  Drawing parameters providing angle, radius and thickness.
- * @param step    Current step index along the ray (0 = circle edge).
+ * @param img        Target MLX image.
+ * @param point      Screen-space pixel coordinates of this ray point.
+ * @param thickness  Side length of the square brush in pixels.
+ * @param color      RGBA colour to paint.
  */
-static void	put_ray_pixel(mlx_image_t *img, t_ivec2 center,
-				t_player_draw params, int step)
+static void	put_ray_pixel(mlx_image_t *img, t_ivec2 point,
+				int thickness, uint32_t color)
 {
-	float	offset_x;
-	float	offset_y;
-	int		brush_x;
-	int		brush_y;
+	int	brush_x;
+	int	brush_y;
+	int	pixel_x;
+	int	pixel_y;
 
-	offset_x = (params.radius + step) * cosf(params.angle);
-	offset_y = -(params.radius + step) * sinf(params.angle);
-	brush_y = -(params.thickness / 2);
-	while (brush_y <= params.thickness / 2)
+	brush_y = -(thickness / 2);
+	while (brush_y <= thickness / 2)
 	{
-		brush_x = -(params.thickness / 2);
-		while (brush_x <= params.thickness / 2)
+		brush_x = -(thickness / 2);
+		while (brush_x <= thickness / 2)
 		{
-			mlx_put_pixel(img,
-				center.x + (int)(offset_x + 0.5f) + brush_x,
-				center.y + (int)(offset_y + 0.5f) + brush_y,
-				get_rgba(255, 0, 0, 255));
+			pixel_x = point.x + brush_x;
+			pixel_y = point.y + brush_y;
+			if (pixel_x >= 0 && pixel_x < (int)img->width
+				&& pixel_y >= 0 && pixel_y < (int)img->height)
+				mlx_put_pixel(img, pixel_x, pixel_y, color);
 			brush_x++;
 		}
 		brush_y++;
 	}
 }
 
-/**
- * @brief Draws the full direction ray from the edge of the player circle
- *        outward along the facing angle.
- *
- * Steps along the ray one pixel at a time, forwarding each step index
- * to put_ray_pixel() which computes the exact screen position.
- *
- * @param img     Target MLX image.
- * @param params  Drawing parameter struct produced by make_draw_params().
- */
 static void	put_direction_ray(mlx_image_t *img, t_player_draw params)
 {
-	int	step;
+	t_vec2		origin;
+	t_vec2		hits[2];
+	t_ivec2		screen_hit;
+	t_ivec2		point;
+	int			ray;
+	int			step;
 
-	step = 0;
-	while (step <= params.ray_len)
+	origin.x = params.world_pos.x + 0.5f;
+	origin.y = params.world_pos.y + 0.5f;
+	cast_ray_both_edges(origin, params.angle, hits);
+	ray = 0;
+	while (ray < 2)
 	{
-		put_ray_pixel(img, params.center, params, step);
-		step++;
+		screen_hit.x = (int)(hits[ray].x * params.block_size);
+		screen_hit.y = (int)(hits[ray].y * params.block_size);
+		step = 0;
+		while (step <= 100)
+		{
+			point.x = params.center.x
+				+ (screen_hit.x - params.center.x) * step / 100;
+			point.y = params.center.y
+				+ (screen_hit.y - params.center.y) * step / 100;
+			if (ray == 0)
+				put_ray_pixel(img, point, params.thickness,
+					get_rgba(255, 0, 0, 255));
+			else
+				put_ray_pixel(img, point, params.thickness,
+					get_rgba(0, 0, 255, 255));
+			step++;
+		}
+		ray++;
 	}
 }

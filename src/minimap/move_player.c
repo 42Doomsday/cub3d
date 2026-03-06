@@ -14,16 +14,15 @@
 
 static t_vec2	direction_from_angle(float rotation);
 static bool		is_wall(t_map *map, int col, int row);
-static bool		collides_on_x(t_map *map, float dx, float new_x, float cur_y);
-static bool		collides_on_y(t_map *map, float dy, float cur_x, float new_y);
+static float	resolve_x(t_map *map, float dx, float new_x, float cur_y);
+static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
 
 /**
  * @brief Moves the player one step forward in the direction they are facing.
  *
- * Movement is resolved separately on each axis (X then Y) so that the player
- * can slide along walls instead of stopping dead on diagonal contact.
- * Each axis is tested for collision independently; only the blocked axis is
- * suppressed.
+ * Movement is resolved separately on each axis so that the player can slide
+ * along walls.  Each axis is either applied freely or snapped to the wall
+ * surface at exactly PLAYER_R distance.
  *
  * @param map     Pointer to the map structure used for collision checks.
  * @param player  Pointer to the player whose position will be updated.
@@ -31,30 +30,24 @@ static bool		collides_on_y(t_map *map, float dy, float cur_x, float new_y);
 void	move_player_forward(t_map *map, t_player *player)
 {
 	t_vec2	dir;
-	float	new_x;
-	float	new_y;
 
 	dir = direction_from_angle(player->rotation);
 	dir.x *= PLAYER_STEP;
 	dir.y *= PLAYER_STEP;
-	new_x = player->x + dir.x;
-	new_y = player->y + dir.y;
-	if (!collides_on_x(map, dir.x, new_x, player->y))
-		player->x = new_x;
-	if (!collides_on_y(map, dir.y, player->x, new_y))
-		player->y = new_y;
+	player->x = resolve_x(map, dir.x, player->x + dir.x, player->y);
+	player->y = resolve_y(map, dir.y, player->x, player->y + dir.y);
 }
 
 /**
  * @brief Converts a player rotation angle (degrees) into a world-space
- *        movement direction vector.
+ *        movement direction vector of unit length.
  *
  * Rotation is measured clockwise from north (0° = up, 90° = right).
- * Internally the angle is converted to the standard mathematical convention
- * so that it can be fed directly to cosf() and sinf().
+ * The angle is converted to standard mathematical convention before
+ * being passed to cosf() and sinf().
  *
  * @param rotation  Player's current rotation in degrees.
- * @return          Direction vector (dx, dy) of unit length.
+ * @return          Normalised direction vector (dx, dy).
  */
 static t_vec2	direction_from_angle(float rotation)
 {
@@ -71,8 +64,7 @@ static t_vec2	direction_from_angle(float rotation)
  * @brief Returns true if tile (col, row) is a wall or out of map bounds.
  *
  * Any tile that is not the open-floor character '0' is treated as solid.
- * Out-of-bounds coordinates are also considered solid to prevent the player
- * from walking off the map edge.
+ * Out-of-bounds coordinates are also considered solid.
  *
  * @param map   Pointer to the map structure.
  * @param col   Tile column index (X axis).
@@ -89,77 +81,84 @@ static bool	is_wall(t_map *map, int col, int row)
 }
 
 /**
- * @brief Checks for a wall collision when the player moves along the X axis.
+ * @brief Resolves the final X position after attempting to move to new_x.
  *
- * The player is modelled as an axis-aligned square with half-size PLAYER_R.
- * Only the leading edge in the direction of movement (@p dx) is tested.
- * All tiles that overlap the player's vertical extent at the new X position
- * are checked.
+ * If no wall blocks the path, new_x is returned as-is.  If a wall is
+ * found, the player is snapped flush against it at exactly PLAYER_R
+ * distance so that no gap or overlap remains.
  *
  * @param map    Pointer to the map structure.
- * @param dx     Horizontal displacement this frame (can be negative).
- * @param new_x  Candidate X grid position after applying the step.
- * @param cur_y  Current  Y grid position (unchanged on X-only move).
- * @return       true if a blocking tile is found, false if movement is free.
+ * @param dx     Horizontal displacement this frame (sign gives direction).
+ * @param new_x  Candidate X position after applying the step.
+ * @param cur_y  Current Y position (unchanged during X resolution).
+ * @return       The furthest reachable X position this frame.
  */
-static bool	collides_on_x(t_map *map, float dx, float new_x, float cur_y)
+static float	resolve_x(t_map *map, float dx, float new_x, float cur_y)
 {
-	float	cx;
-	float	cy;
+	float	center_x;
+	float	center_y;
 	int		tile_x;
 	int		tile_y;
 	int		tile_y_bot;
 
-	cx = new_x + 0.5f;
-	cy = cur_y + 0.5f;
+	center_x = new_x + 0.5f;
+	center_y = cur_y + 0.5f;
 	if (dx > 0)
-		tile_x = (int)floorf(cx + PLAYER_R);
+		tile_x = (int)floorf(center_x + PLAYER_HITBOX_R);
 	else
-		tile_x = (int)floorf(cx - PLAYER_R);
-	tile_y = (int)floorf(cy - PLAYER_R);
-	tile_y_bot = (int)floorf(cy + PLAYER_R - EPS);
+		tile_x = (int)floorf(center_x - PLAYER_HITBOX_R);
+	tile_y = (int)floorf(center_y - PLAYER_R);
+	tile_y_bot = (int)floorf(center_y + PLAYER_R - EPS);
 	while (tile_y <= tile_y_bot)
 	{
 		if (is_wall(map, tile_x, tile_y))
-			return (true);
+		{
+			if (dx > 0)
+				return (tile_x - PLAYER_HITBOX_R - 0.5f);
+			return (tile_x + 1 + PLAYER_HITBOX_R - 0.5f);
+		}
 		tile_y++;
 	}
-	return (false);
+	return (new_x);
 }
 
 /**
- * @brief Checks for a wall collision when the player moves along the Y axis.
+ * @brief Resolves the final Y position after attempting to move to new_y.
  *
- * Mirrors the logic of collides_on_x() but sweeps horizontally across the
- * player's width while testing the leading edge in the Y direction.
+ * Mirrors the logic of resolve_x() along the Y axis.  On collision the
+ * player is snapped flush against the wall at exactly PLAYER_R distance.
  *
  * @param map    Pointer to the map structure.
- * @param dy     Vertical displacement this frame (can be negative).
- * @param cur_x  Current  X grid position (unchanged on Y-only move).
- * @param new_y  Candidate Y grid position after applying the step.
- * @return       true if a blocking tile is found, false if movement is free.
+ * @param dy     Vertical displacement this frame (sign gives direction).
+ * @param cur_x  Current X position (unchanged during Y resolution).
+ * @param new_y  Candidate Y position after applying the step.
+ * @return       The furthest reachable Y position this frame.
  */
-static bool	collides_on_y(t_map *map, float dy, float cur_x, float new_y)
+static float	resolve_y(t_map *map, float dy, float cur_x, float new_y)
 {
-	float	cx;
-	float	cy;
+	float	center_x;
+	float	center_y;
+	int		tile_y;
 	int		tile_x;
 	int		tile_x_right;
-	int		tile_y;
 
-	cx = cur_x + 0.5f;
-	cy = new_y + 0.5f;
+	center_x = cur_x + 0.5f;
+	center_y = new_y + 0.5f;
 	if (dy > 0)
-		tile_y = (int)floorf(cy + PLAYER_R);
+		tile_y = (int)floorf(center_y + PLAYER_HITBOX_R);
 	else
-		tile_y = (int)floorf(cy - PLAYER_R);
-	tile_x = (int)floorf(cx - PLAYER_R);
-	tile_x_right = (int)floorf(cx + PLAYER_R - EPS);
+		tile_y = (int)floorf(center_y - PLAYER_HITBOX_R);
+	tile_x = (int)floorf(center_x - PLAYER_R);
+	tile_x_right = (int)floorf(center_x + PLAYER_R - EPS);
 	while (tile_x <= tile_x_right)
 	{
 		if (is_wall(map, tile_x, tile_y))
-			return (true);
+		{
+			if (dy > 0)
+				return (tile_y - PLAYER_HITBOX_R - 0.5f);
+			return (tile_y + 1 + PLAYER_HITBOX_R - 0.5f);
+		}
 		tile_x++;
 	}
-	return (false);
+	return (new_y);
 }

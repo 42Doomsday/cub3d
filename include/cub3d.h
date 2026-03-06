@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/06 14:23:42 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 16:59:06 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 
 # define PLAYER_STEP     0.142857f   /* 1.0f / 7.0f */
 # define PLAYER_R        0.25f
+# define PLAYER_HITBOX_R   0.3f
 # define PLAYER_ROT_STEP 5.0f
 # define EPS             0.0001f
 
@@ -116,7 +117,10 @@ typedef struct s_ivec2
 typedef struct s_player_draw
 {
 	mlx_image_t	*img;
+	t_map		*map;
 	t_ivec2		center;
+	t_vec2		world_pos;
+	int			block_size;
 	int			radius;
 	int			ray_len;
 	int			thickness;
@@ -155,5 +159,7 @@ void	move_player_forward(t_map *map, t_player *player);
 void	put_player(mlx_image_t *img, t_map *map, t_player *player);
 int		get_rgba(int r, int g, int b, int a);
 int		get_block_size(t_map *map, int32_t width, int32_t height);
+t_vec2	cast_ray_to_wall(t_vec2 origin, float angle);
+void	cast_ray_both_edges(t_vec2 origin, float angle, t_vec2 out[2]);
 
 #endif
