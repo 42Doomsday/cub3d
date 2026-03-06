@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 17:20:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/05 13:52:55 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:16:28 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ static bool	simple_test(void)
 {
 	t_player	player;
 	ft_bzero(&player, sizeof(player));
+	char	line[] = "10000N1";
 	char	*map[] = {
 		"1111111",
-		"10000N1",
+		line,
 		"1000001",
 		"1111111",
 		NULL
@@ -80,9 +81,10 @@ static bool	duplicated_player_test(void)
 {
 	t_player	player;
 	ft_bzero(&player, sizeof(player));
+	char	line[] = "1E00001";
 	char	*map[] = {
 		"1111111",
-		"1E00001",
+		line,
 		"100N001",
 		"1111111",
 		NULL
