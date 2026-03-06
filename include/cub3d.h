@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/05 14:11:24 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:48:41 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdarg.h>
+# include <math.h>
 
 # include "libft.h"
 # include "MLX42.h"
@@ -26,6 +27,20 @@
 # define INV_PLAYER "player positioning is invalid"
 # define ISNT_CLOSED "map is not closed with walls"
 # define ISNT_CONTIGUOUS "map isn't contiguous"
+
+# define PLAYER_STEP     0.142857f   /* 1.0f / 7.0f */
+# define PLAYER_R        0.25f
+# define PLAYER_ROT_STEP 5.0f
+# define EPS             0.0001f
+
+# define M_PI 3.14159265358979323846
+# define EPS 0.0001f
+
+typedef struct s_vec2
+{
+	float	x;
+	float	y;
+}	t_vec2;
 
 
 typedef enum	e_texture
@@ -118,5 +133,8 @@ bool	flood_fill(char **map, int x, int y);
 bool	is_contiguous(t_map *map);
 void	trim_spaces(t_map *map);
 bool	trim_map(t_map *map);
+
+// game
+void	move_player_forward(t_map *map, t_player *player);
 
 #endif

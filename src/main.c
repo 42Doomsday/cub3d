@@ -6,26 +6,19 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/05 16:46:25 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:51:56 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <math.h>
 
 #include "cub3d.h"
 
 #define DEFAULT_WIDTH 512
 #define DEFAULT_HEIGHT 512
 #define TITLE "cub3d"
-
-#ifndef M_PI
-# define M_PI 3.14159265358979323846
-#endif
-
-#define EPS 0.0001f
 
 static mlx_image_t*	image;
 static mlx_t*		init_mlx(void);
@@ -193,75 +186,14 @@ void ft_hook(void* param)
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
 	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-	{
-		info.player.rotation += 5;
-		put_map(&info.map);
-		put_grid(&info.map);
-		put_player(&info.map, &info.player);
-	}
+		info.player.rotation += PLAYER_ROT_STEP;
 	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-	{
-		info.player.rotation -= 5;
-		put_map(&info.map);
-		put_grid(&info.map);
-		put_player(&info.map, &info.player);
-	}
+		info.player.rotation -= PLAYER_ROT_STEP;
 	if (mlx_is_key_down(mlx, MLX_KEY_W))
-	{
-		float step = 1.0f / 7.0f;
-		float angle = (90.0f - info.player.rotation) * M_PI / 180.0f;
-		float r = 0.25f;
-
-		float dx = cos(angle) * step;
-		float dy = -sin(angle) * step;
-
-		// --- движение по X ---
-		float new_x = info.player.x + dx;
-		float cx = new_x + 0.5f; // реальный центр в мировых координатах
-		int x_check = (dx > 0) ? (int)floor(cx + r) : (int)floor(cx - r);
-		int y_top    = (int)floor(info.player.y + 0.5f - r);
-		int y_bottom = (int)floor(info.player.y + 0.5f + r - EPS);
-
-		bool collision_x = false;
-		for (int y = y_top; y <= y_bottom; y++)
-		{
-			if (x_check < 0 || x_check >= info.map.width
-				|| y < 0 || y >= info.map.height
-				|| info.map.data[y][x_check] != '0')
-			{
-				collision_x = true;
-				break;
-			}
-		}
-		if (!collision_x)
-			info.player.x = new_x;
-
-		// --- движение по Y ---
-		float new_y = info.player.y + dy;
-		float cy = new_y + 0.5f; // реальный центр
-		int y_check = (dy > 0) ? (int)floor(cy + r) : (int)floor(cy - r);
-		int x_left  = (int)floor(info.player.x + 0.5f - r);
-		int x_right = (int)floor(info.player.x + 0.5f + r - EPS);
-
-		bool collision_y = false;
-		for (int x = x_left; x <= x_right; x++)
-		{
-			if (x < 0 || x >= info.map.width
-				|| y_check < 0 || y_check >= info.map.height
-				|| info.map.data[y_check][x] != '0')
-			{
-				collision_y = true;
-				break;
-			}
-		}
-		if (!collision_y)
-			info.player.y = new_y;
-
-		// --- отрисовка ---
-		put_map(&info.map);
-		put_grid(&info.map);
-		put_player(&info.map, &info.player);
-	}
+		move_player_forward(&info.map, &info.player);
+	put_map(&info.map);
+	put_grid(&info.map);
+	put_player(&info.map, &info.player);
 }
 
 int32_t	main(int argc, char **argv)

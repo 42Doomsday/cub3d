@@ -5,7 +5,7 @@ LIBFT_DIR = libft
 MLX_DIR = MLX42
 MLX_BUILD = $(MLX_DIR)/build
 PARSING_DIR = parsing
-PARSING_DIR = parsing
+MINIMAP_DIR = minimap
 
 NAME = game
 
@@ -29,10 +29,12 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
 		helpers/flood_fill.c helpers/is_closed.c parse.c
 
+MINIMAP_SOURCES = move_player.c
 
+MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
 
-SRC = $(SOURCES) $(PARSING_SRC)
+SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
