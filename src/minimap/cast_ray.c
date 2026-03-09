@@ -12,120 +12,126 @@
 
 #include "cub3d.h"
 
-static t_vec2	get_ray_dir(float angle);
-static float	dist_to_vertical_edge(t_vec2 origin, t_vec2 ray_dir);
-static float	dist_to_horizontal_edge(t_vec2 origin, t_vec2 ray_dir);
+bool    is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map);
+float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord);
+t_vec2	normilize(float angle);
 
-/**
- * @brief Finds the first grid boundary crossing from @p origin along
- *        @p angle, staying within the current tile.
- *
- * Computes the distance to the nearest vertical grid line and the nearest
- * horizontal grid line separately, then returns the intersection point of
- * whichever is closer.
- *
- * @param origin  Ray origin in world-space tile coordinates.
- * @param angle   Ray direction in radians (standard math convention).
- * @return        World-space coordinates of the first tile edge crossing.
- */
-t_vec2	cast_ray_to_wall(t_vec2 origin, float angle)
+t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map)
 {
-	t_vec2	ray_dir;
-	float	dist_x;
-	float	dist_y;
+	t_vec2	curent_coords;
+	t_vec2	unit_vector;
 
-	ray_dir = get_ray_dir(angle);
-	dist_x = dist_to_vertical_edge(origin, ray_dir);
-	dist_y = dist_to_horizontal_edge(origin, ray_dir);
-	if (dist_x < dist_y)
-		return ((t_vec2){origin.x + ray_dir.x * dist_x,
-			origin.y + ray_dir.y * dist_x});
-	return ((t_vec2){origin.x + ray_dir.x * dist_y,
-		origin.y + ray_dir.y * dist_y});
+	curent_coords = origin;
+	unit_vector = normilize(angle);
+	while (42)
+	{
+		printf("Cur x: %f, cur y: %f\n", curent_coords.x, curent_coords.y);
+		curent_coords = cast_ray_to_border(curent_coords, angle);
+		int result = is_wall(curent_coords, unit_vector, map);
+		if (result == 1 || result == 2)
+			return (curent_coords);
+	}
 }
 
-/**
- * @brief Returns both tile edge crossings: vertical and horizontal.
- *
- * Instead of picking the closer one, both intersection points are written
- * into @p out so the caller can draw both rays independently.
- *
- * @param origin  Ray origin in world-space tile coordinates.
- * @param angle   Ray direction in radians (standard math convention).
- * @param out     Output array of exactly two t_vec2: [0] = vertical edge
- *                crossing, [1] = horizontal edge crossing.
- */
-void	cast_ray_both_edges(t_vec2 origin, float angle, t_vec2 out[2])
+bool    is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map)
 {
-	t_vec2	ray_dir;
-	float	dist_x;
-	float	dist_y;
+    int     x;
+    int     y;
+    bool    on_x_border;
+    bool    on_y_border;
 
-	ray_dir = get_ray_dir(angle);
-	dist_x = dist_to_vertical_edge(origin, ray_dir);
-	dist_y = dist_to_horizontal_edge(origin, ray_dir);
-	printf("Ray - x:%f y:%f\n", ray_dir.x, ray_dir.y);
-	printf("DistX - %f\n", dist_x);
-	printf("DistY - %f\n", dist_y);
-	out[0].x = origin.x + ray_dir.x * dist_x;
-	out[0].y = origin.y + ray_dir.y * dist_x;
-	out[1].x = origin.x + ray_dir.x * dist_y;
-	out[1].y = origin.y + ray_dir.y * dist_y;
+    on_x_border = fabs(coords.x - round(coords.x)) < 1e-5;
+    on_y_border = fabs(coords.y - round(coords.y)) < 1e-5;
+
+    if (on_x_border && unit_vector.x < 0)
+        x = (int)floor(coords.x) - 1;
+    else
+        x = (int)floor(coords.x);
+
+    if (on_y_border && unit_vector.y < 0)
+        y = (int)floor(coords.y) - 1;
+    else
+        y = (int)floor(coords.y);
+
+    // Защита от выхода за пределы карты
+    if (x < 0 || y < 0 || y >= map->height || x >= map->width)
+        return (true);
+
+    if (on_x_border && on_y_border)
+	{
+		int x2 = (unit_vector.x < 0) ? (int)floor(coords.x) - 1 : (int)floor(coords.x);
+		int y2 = (unit_vector.y < 0) ? (int)floor(coords.y) - 1 : (int)floor(coords.y);
+		int x_neighbor = (int)floor(coords.x); // клетка по оси X
+		int y_neighbor = (int)floor(coords.y); // клетка по оси Y
+
+		// Проверяем обе смежные клетки (не диагональную)
+		if (x_neighbor >= 0 && x_neighbor < map->width
+			&& y2 >= 0 && y2 < map->height)
+			if (map->data[y2][x_neighbor] == '1' || map->data[y2][x_neighbor] == ' ')
+				return (true);
+		if (x2 >= 0 && x2 < map->width
+			&& y_neighbor >= 0 && y_neighbor < map->height)
+			if (map->data[y_neighbor][x2] == '1' || map->data[y_neighbor][x2] == ' ')
+				return (true);
+	}
+    return (map->data[y][x] == '1' || map->data[y][x] == ' ');
 }
 
-/**
- * @brief Builds a unit direction vector from a radian angle.
- *
- * @param angle  Ray angle in radians (standard math convention).
- * @return       Normalised direction vector.
- */
-static t_vec2	get_ray_dir(float angle)
-{
-	t_vec2	ray_dir;
 
-	ray_dir.x = cosf(angle);
-	ray_dir.y = -sinf(angle);
-	return (ray_dir);
+// value in is_wall: 27, 10
+// Cur x: 26.919550, cur y: 10.000000
+
+t_vec2	cast_ray_to_border(t_vec2 origin, float angle)
+{
+	t_vec2	point;
+	t_vec2	unit_vector;
+	float	dist;
+	float	dist_second;
+
+	unit_vector = normilize(angle);
+	dist = find_dist(origin, unit_vector, 0);
+	dist_second = find_dist(origin, unit_vector, 1);
+	if (dist_second < dist)
+		dist = dist_second;
+	point.x = origin.x + dist * unit_vector.x;
+	point.y = origin.y + dist * unit_vector.y;
+	return (point);
 }
 
-/**
- * @brief Computes the distance along the ray to the nearest vertical
- *        grid line (left or right edge of the current tile).
- *
- * @param origin   Ray origin in world-space tile coordinates.
- * @param ray_dir  Normalised ray direction vector.
- * @return         Distance to the nearest vertical tile edge.
- */
-static float	dist_to_vertical_edge(t_vec2 origin, t_vec2 ray_dir)
+float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord)
 {
-	float	edge_x;
+	float	origin_value;
+	float	unit_value;
+	float	destination;
 
-	if (ray_dir.x == 0)
-		return (1e30f);
-	if (ray_dir.x > 0)
-		edge_x = floorf(origin.x) + 1.0f;
+	if (coord == 0)
+	{
+		origin_value = origin.x;
+		unit_value = unit_vector.x;
+	}
 	else
-		edge_x = floorf(origin.x);
-	return ((edge_x - origin.x) / ray_dir.x);
+	{
+		origin_value = origin.y;
+		unit_value = unit_vector.y;
+	}
+	if (unit_value == 0)
+		return (1e30);
+	if (unit_value > 0)
+		destination = floor(origin_value) + 1.0f;
+	else
+	{
+		destination = floor(origin_value);
+		if (destination == origin_value)
+			destination -= 1.0f;
+	}
+	return ((destination - origin_value) / unit_value);
 }
 
-/**
- * @brief Computes the distance along the ray to the nearest horizontal
- *        grid line (top or bottom edge of the current tile).
- *
- * @param origin   Ray origin in world-space tile coordinates.
- * @param ray_dir  Normalised ray direction vector.
- * @return         Distance to the nearest horizontal tile edge.
- */
-static float	dist_to_horizontal_edge(t_vec2 origin, t_vec2 ray_dir)
+t_vec2	normilize(float angle)
 {
-	float	edge_y;
+	t_vec2	unit_vector;
 
-	if (ray_dir.y == 0)
-		return (1e30f);
-	if (ray_dir.y > 0)
-		edge_y = floorf(origin.y) + 1.0f;
-	else
-		edge_y = floorf(origin.y);
-	return ((edge_y - origin.y) / ray_dir.y);
+	unit_vector.x = cos(angle);
+	unit_vector.y = -sin(angle);
+	return (unit_vector);
 }

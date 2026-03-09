@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/06 16:59:06 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/09 13:38:27 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void	move_player_forward(t_map *map, t_player *player);
 void	put_player(mlx_image_t *img, t_map *map, t_player *player);
 int		get_rgba(int r, int g, int b, int a);
 int		get_block_size(t_map *map, int32_t width, int32_t height);
-t_vec2	cast_ray_to_wall(t_vec2 origin, float angle);
-void	cast_ray_both_edges(t_vec2 origin, float angle, t_vec2 out[2]);
+t_vec2	cast_ray_to_border(t_vec2 origin, float angle);
+t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map);
 
 #endif

@@ -16,10 +16,7 @@ static t_player_draw	make_draw_params(mlx_image_t *img,
 						t_map *map, t_player *player);
 static void				put_circle(mlx_image_t *img,
 						t_ivec2 center, int radius);
-static void				put_ray_pixel(mlx_image_t *img, t_ivec2 point,
-						int thickness, uint32_t color);
-static void				put_direction_ray(mlx_image_t *img,
-						t_player_draw params);
+static void				put_direction_ray(t_player_draw params);
 
 /**
  * @brief Draws the player on the minimap as a filled circle with two
@@ -35,8 +32,8 @@ void	put_player(mlx_image_t *img, t_map *map, t_player *player)
 	t_player_draw	params;
 
 	params = make_draw_params(img, map, player);
+	put_direction_ray(params);
 	put_circle(params.img, params.center, params.radius);
-	put_direction_ray(params.img, params);
 }
 
 /**
@@ -104,74 +101,54 @@ static void	put_circle(mlx_image_t *img, t_ivec2 center, int radius)
 	}
 }
 
-/**
- * @brief Draws one pixel of a direction ray at screen position @p point.
- *
- * Paints a square brush of size @p thickness centred on the given pixel
- * coordinates using the provided @p color.
- *
- * @param img        Target MLX image.
- * @param point      Screen-space pixel coordinates of this ray point.
- * @param thickness  Side length of the square brush in pixels.
- * @param color      RGBA colour to paint.
- */
-static void	put_ray_pixel(mlx_image_t *img, t_ivec2 point,
-				int thickness, uint32_t color)
+void put_line(mlx_image_t *img, t_vec2 start, t_vec2 end, uint32_t color)
 {
-	int	brush_x;
-	int	brush_y;
-	int	pixel_x;
-	int	pixel_y;
+    int dx = abs((int)end.x - (int)start.x);
+    int dy = abs((int)end.y - (int)start.y);
+    int sx = start.x < end.x ? 1 : -1;
+    int sy = start.y < end.y ? 1 : -1;
+    int err = dx - dy;
+    int x = (int)start.x;
+    int y = (int)start.y;
 
-	brush_y = -(thickness / 2);
-	while (brush_y <= thickness / 2)
-	{
-		brush_x = -(thickness / 2);
-		while (brush_x <= thickness / 2)
-		{
-			pixel_x = point.x + brush_x;
-			pixel_y = point.y + brush_y;
-			if (pixel_x >= 0 && pixel_x < (int)img->width
-				&& pixel_y >= 0 && pixel_y < (int)img->height)
-				mlx_put_pixel(img, pixel_x, pixel_y, color);
-			brush_x++;
-		}
-		brush_y++;
-	}
+    while (1)
+    {
+        mlx_put_pixel(img, x, y, color);
+        if (x == (int)end.x && y == (int)end.y)
+            break;
+        int e2 = 2 * err;
+        if (e2 > -dy) { err -= dy; x += sx; }
+        if (e2 < dx)  { err += dx; y += sy; }
+    }
 }
 
-static void	put_direction_ray(mlx_image_t *img, t_player_draw params)
+static void	put_direction_ray(t_player_draw params)
 {
-	t_vec2		origin;
-	t_vec2		hits[2];
-	t_ivec2		screen_hit;
-	t_ivec2		point;
-	int			ray;
-	int			step;
+	t_vec2  origin;
+	t_vec2  wall_coords;
+	t_vec2  start_px;
+	t_vec2  end_px;
+	float   fov;
+	float   ray_angle;
+	float   step;
+	int     rays;
+	int     i;
 
+	fov = 60.0f * M_PI / 180.0f;
+	rays = 100;
+	step = fov / rays;
 	origin.x = params.world_pos.x + 0.5f;
 	origin.y = params.world_pos.y + 0.5f;
-	cast_ray_both_edges(origin, params.angle, hits);
-	ray = 0;
-	while (ray < 2)
+	start_px.x = origin.x * params.block_size;
+	start_px.y = origin.y * params.block_size;
+	i = 0;
+	while (i < rays)
 	{
-		screen_hit.x = (int)(hits[ray].x * params.block_size);
-		screen_hit.y = (int)(hits[ray].y * params.block_size);
-		step = 0;
-		while (step <= 100)
-		{
-			point.x = params.center.x
-				+ (screen_hit.x - params.center.x) * step / 100;
-			point.y = params.center.y
-				+ (screen_hit.y - params.center.y) * step / 100;
-			if (ray == 0)
-				put_ray_pixel(img, point, params.thickness,
-					get_rgba(255, 0, 0, 255));
-			else
-				put_ray_pixel(img, point, params.thickness,
-					get_rgba(0, 0, 255, 255));
-			step++;
-		}
-		ray++;
+		ray_angle = (params.angle - fov / 2) + step * i;
+		wall_coords = cast_ray_to_wall(origin, ray_angle, params.map);
+		end_px.x = wall_coords.x * params.block_size;
+		end_px.y = wall_coords.y * params.block_size;
+		put_line(params.img, start_px, end_px, get_rgba(0, 215, 0, 200));
+		i++;
 	}
 }
