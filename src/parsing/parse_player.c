@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 15:00:03 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/06 13:24:56 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/10 17:13:45 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ static void	set_params(t_player *player, int x, int y, char **map)
 
 	side = map[y][x];
 	if (side == 'N')
-		player->rotation = 0;
+		player->dir = 0;
 	else if (side == 'E')
-		player->rotation = 90;
+		player->dir = 90;
 	else if (side == 'S')
-		player->rotation = 180;
+		player->dir = 180;
 	else if (side == 'W')
-		player->rotation = 270;
+		player->dir = 270;
 	player->y = y;
 	player->x = x;
 	map[y][x] = '0';

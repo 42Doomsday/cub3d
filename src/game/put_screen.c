@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/10 16:50:33 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/10 17:14:02 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	put_game_screen(mlx_image_t *img, t_map *map, t_player *player)
 	fov = 60.0f * M_PI / 180.0f;
 	origin.x = player->x + 0.5f;
 	origin.y = player->y + 0.5f;
-	angle = (90.0f - player->rotation) * M_PI / 180.0f;
+	angle = (90.0f - player->dir) * M_PI / 180.0f;
 	get_all_rays(rays_arr, img->width, origin, map, angle, fov);
 	build_walls(img, rays_arr, img->width, fov);
 }

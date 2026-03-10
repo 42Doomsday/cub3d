@@ -64,7 +64,7 @@ static t_player_draw	make_draw_params(mlx_image_t *img,
 	params.radius = block_size / 4;
 	params.ray_len = block_size / 2;
 	params.thickness = block_size / 20;
-	params.angle = (90.0f - player->rotation) * M_PI / 180.0f;
+	params.angle = (90.0f - player->dir) * M_PI / 180.0f;
 	return (params);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/10 13:09:28 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/10 17:13:09 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ typedef struct s_map
 
 typedef struct s_player
 {
-	float	rotation;
+	float	dir;
 	float	x;
 	float	y;
 }	t_player;
