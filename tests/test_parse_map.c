@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:38:24 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/05 13:52:08 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:18:20 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,6 @@ static bool	is_not_empty_map(t_map *map)
 static bool	is_not_empty_player(t_player *player)
 {
 	return (
-		player->rotation &&
 		player->x &&
 		player->y
 	);

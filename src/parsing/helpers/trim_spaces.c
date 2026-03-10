@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 12:34:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 17:47:25 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:21:30 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	find_border_idx(char **map, int flag);
 static int	count_idx(char *line, int flag);
 static int	get_last_idx(char *line);
+static int	max_strlen(char **lines);
 
 #define UNDEFINT -1
 #define LEADING 0
@@ -44,6 +45,7 @@ void	trim_spaces(t_map *map)
 			data[idx][border_idx] = '\0';
 		idx++;
 	}
+	map->width = max_strlen(map->data);
 }
 
 static int	find_border_idx(char **map, int flag)
@@ -102,4 +104,22 @@ static int	get_last_idx(char *line)
 			idx -= 1;
 	}
 	return (idx);
+}
+
+static int	max_strlen(char **lines)
+{
+	int	max;
+	int	len;
+	int	idx;
+
+	max = -1;
+	idx = 0;
+	while (lines && lines[idx])
+	{
+		len = ft_strlen(lines[idx]);
+		if (len > max)
+			max = len;
+		idx++;
+	}
+	return (max);
 }

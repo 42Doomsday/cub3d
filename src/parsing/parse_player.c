@@ -6,14 +6,14 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 15:00:03 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/05 13:51:39 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:24:56 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
 static bool	is_player(int c);
-static void	set_params(t_player *player, int x, int y, int side);
+static void	set_params(t_player *player, int x, int y, char **map);
 static bool	is_already_found(bool flag);
 
 bool	parse_player(char **map, t_player *player)
@@ -35,8 +35,7 @@ bool	parse_player(char **map, t_player *player)
 			{
 				if (is_already_found(found))
 					return (false);
-				set_params(player, j, i, map[i][j]);
-				map[i][j] = '0';
+				set_params(player, j, i, map);
 				found = true;
 			}
 			j++;
@@ -56,8 +55,11 @@ static bool	is_already_found(bool flag)
 	return (flag == true);
 }
 
-static void	set_params(t_player *player, int x, int y, int side)
+static void	set_params(t_player *player, int x, int y, char **map)
 {
+	char	side;
+
+	side = map[y][x];
 	if (side == 'N')
 		player->rotation = 0;
 	else if (side == 'E')
@@ -68,4 +70,5 @@ static void	set_params(t_player *player, int x, int y, int side)
 		player->rotation = 270;
 	player->y = y;
 	player->x = x;
+	map[y][x] = '0';
 }
