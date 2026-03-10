@@ -16,6 +16,22 @@ bool    is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map);
 float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord);
 t_vec2	normilize(float angle);
 
+float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map)
+{
+	t_vec2	wall;
+	t_vec2	unit_vector;
+	float	dist_x;
+	float	dist_y;
+	float	dist;
+
+	wall = cast_ray_to_wall(origin, angle, map);
+	unit_vector = normilize(angle);
+	dist_x = fabs(wall.x - origin.x);
+	dist_y = fabs(wall.y - origin.y);
+	dist = sqrt(dist_x * dist_x + dist_y * dist_y);
+	return (dist);
+}
+
 t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map)
 {
 	t_vec2	curent_coords;
@@ -25,7 +41,6 @@ t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map)
 	unit_vector = normilize(angle);
 	while (42)
 	{
-		printf("Cur x: %f, cur y: %f\n", curent_coords.x, curent_coords.y);
 		curent_coords = cast_ray_to_border(curent_coords, angle);
 		int result = is_wall(curent_coords, unit_vector, map);
 		if (result == 1 || result == 2)
@@ -76,10 +91,6 @@ bool    is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map)
 	}
     return (map->data[y][x] == '1' || map->data[y][x] == ' ');
 }
-
-
-// value in is_wall: 27, 10
-// Cur x: 26.919550, cur y: 10.000000
 
 t_vec2	cast_ray_to_border(t_vec2 origin, float angle)
 {

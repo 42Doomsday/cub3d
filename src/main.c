@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/06 14:24:37 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/10 16:32:29 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #define TITLE "cub3d"
 
 static mlx_image_t*	image;
+static mlx_image_t*	image2;
 static mlx_t*		init_mlx(void);
 static t_cub3d		info;
 
@@ -70,20 +71,31 @@ void	put_map(t_map *map)
 	}
 }
 
-void	put_block_outline(int x, int y, int size, uint32_t color)
+void    put_block_outline(int x, int y, int size, uint32_t color)
 {
-	int	i;
+    int thickness;
+    int i;
+    int t;
 
-	i = 0;
-	while (i < size)
-	{
-		mlx_put_pixel(image, x + i, y, color);
-		mlx_put_pixel(image, x + i, y + size - 1, color);
-		mlx_put_pixel(image, x, y + i, color);
-		mlx_put_pixel(image, x + size - 1, y + i, color);
-		i++;
-	}
+    thickness = size / 64; // адаптивная толщина, минимум нужно защитить
+    if (thickness < 1)
+        thickness = 1;
+    i = 0;
+    while (i < size)
+    {
+        t = 0;
+        while (t < thickness)
+        {
+            mlx_put_pixel(image, x + i, y + t, color);           // верх
+            mlx_put_pixel(image, x + i, y + size - 1 - t, color); // низ
+            mlx_put_pixel(image, x + t, y + i, color);           // лево
+            mlx_put_pixel(image, x + size - 1 - t, y + i, color); // право
+            t++;
+        }
+        i++;
+    }
 }
+
 
 void	put_grid(t_map *map)
 {
@@ -121,16 +133,21 @@ void on_resize(int32_t width, int32_t height, void *param)
 	mlx->height = height;
 	printf("Window resized: %d x %d\n", width, height);
 	mlx_delete_image(info.mlx, image);
-	image = mlx_new_image(info.mlx, info.mlx->width, info.mlx->height);
+	mlx_delete_image(info.mlx, image2);
+	image = mlx_new_image(info.mlx, info.mlx->width * 0.2f, info.mlx->height * 0.2f);
+	image2 = mlx_new_image(info.mlx, info.mlx->width, info.mlx->height);
+	put_game_screen(image2, &info.map, &info.player);
+	put_map(&info.map);
 	put_map(&info.map);
 	put_grid(&info.map);
 	put_player(image, &info.map, &info.player);
+	mlx_image_to_window(info.mlx, image2, 0, 0);
 	mlx_image_to_window(info.mlx, image, 0, 0);
 }
 
 void ft_hook(void* param)
 {
-	mlx_t* mlx = param;
+	mlx_t*	mlx = param;
 
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
@@ -140,6 +157,7 @@ void ft_hook(void* param)
 		info.player.rotation -= PLAYER_ROT_STEP;
 	if (mlx_is_key_down(mlx, MLX_KEY_W))
 		move_player_forward(&info.map, &info.player);
+	put_game_screen(image2, &info.map, &info.player);
 	put_map(&info.map);
 	put_grid(&info.map);
 	put_player(image, &info.map, &info.player);
@@ -162,10 +180,12 @@ int32_t	main(int argc, char **argv)
 		return(EXIT_FAILURE);
 	}
 
-	image = mlx_new_image(info.mlx, info.mlx->width, info.mlx->height);
+	image = mlx_new_image(info.mlx, info.mlx->width * 0.2f, info.mlx->height * 0.2f);
+	image2 = mlx_new_image(info.mlx, info.mlx->width, info.mlx->height);
 	put_map(&info.map);
 	put_player(image, &info.map, &info.player);
 	mlx_image_to_window(info.mlx, image, 0, 0);
+	mlx_image_to_window(info.mlx, image2, 0, 0);
 
 	mlx_loop_hook(info.mlx, ft_hook, info.mlx);
 	mlx_resize_hook(info.mlx, on_resize, info.mlx);

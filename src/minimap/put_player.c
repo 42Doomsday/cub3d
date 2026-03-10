@@ -16,7 +16,7 @@ static t_player_draw	make_draw_params(mlx_image_t *img,
 						t_map *map, t_player *player);
 static void				put_circle(mlx_image_t *img,
 						t_ivec2 center, int radius);
-static void				put_direction_ray(t_player_draw params);
+static void				put_direction_ray(t_player_draw params, t_player *player);
 
 /**
  * @brief Draws the player on the minimap as a filled circle with two
@@ -32,7 +32,7 @@ void	put_player(mlx_image_t *img, t_map *map, t_player *player)
 	t_player_draw	params;
 
 	params = make_draw_params(img, map, player);
-	put_direction_ray(params);
+	put_direction_ray(params, player);
 	put_circle(params.img, params.center, params.radius);
 }
 
@@ -122,8 +122,9 @@ void put_line(mlx_image_t *img, t_vec2 start, t_vec2 end, uint32_t color)
     }
 }
 
-static void	put_direction_ray(t_player_draw params)
+static void	put_direction_ray(t_player_draw params, t_player *player)
 {
+	(void)player;
 	t_vec2  origin;
 	t_vec2  wall_coords;
 	t_vec2  start_px;
@@ -135,7 +136,7 @@ static void	put_direction_ray(t_player_draw params)
 	int     i;
 
 	fov = 60.0f * M_PI / 180.0f;
-	rays = 100;
+	rays = params.img->width / 10;
 	step = fov / rays;
 	origin.x = params.world_pos.x + 0.5f;
 	origin.y = params.world_pos.y + 0.5f;

@@ -6,6 +6,7 @@ MLX_DIR = MLX42
 MLX_BUILD = $(MLX_DIR)/build
 PARSING_DIR = parsing
 MINIMAP_DIR = minimap
+GAME_DIR = game
 
 NAME = game
 
@@ -31,10 +32,13 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 
 MINIMAP_SOURCES = move_player.c put_player.c helpers/utils.c cast_ray.c
 
+GAME_SOURCES = put_screen.c
+
+GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
 
-SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC)
+SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
