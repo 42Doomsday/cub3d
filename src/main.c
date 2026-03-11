@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 16:49:48 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:35:49 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,41 @@
 #define MINIMAP_PROCENT_SIZE 0.2f
 #define TITLE "cub3d"
 
-static mlx_t*	init_mlx(void);
+static void	put_minimap_image(t_cub3d *info);
+static void	put_game_image(t_cub3d *info);
+static void	on_resize(int32_t width, int32_t height, void *param);
+static void ft_hook(void* param);
 
-void	update_mlx_size(t_cub3d *info, int32_t width, int32_t height)
+int32_t	main(int argc, char **argv)
 {
-	info->mlx->width = width;
-	info->mlx->height = height;
+	static t_cub3d	info;
+
+	if (argc != 2)
+		return (EXIT_FAILURE);
+
+	if (parse(argv[1], &info) == false)
+		return (EXIT_FAILURE);
+
+	mlx_set_setting(MLX_MAXIMIZED, true);
+	info.mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
+	if (info.mlx == NULL)
+	{
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+
+	put_game_image(&info);
+	put_minimap_image(&info);
+
+	mlx_loop_hook(info.mlx, ft_hook, &info);
+	mlx_resize_hook(info.mlx, on_resize, &info);
+	mlx_loop(info.mlx);
+	mlx_terminate(info.mlx);
+
+	return (EXIT_SUCCESS);
 }
 
-void	put_minimap_image(t_cub3d *info)
+static void	put_minimap_image(t_cub3d *info)
 {
 	int32_t	width;
 	int32_t	height;
@@ -44,7 +70,7 @@ void	put_minimap_image(t_cub3d *info)
 	mlx_image_to_window(info->mlx, info->minimap, margin, margin);
 }
 
-void	put_game_image(t_cub3d *info)
+static void	put_game_image(t_cub3d *info)
 {
 	int32_t	width;
 	int32_t	height;
@@ -57,12 +83,14 @@ void	put_game_image(t_cub3d *info)
 	mlx_image_to_window(info->mlx, info->game, 0, 0);
 }
 
-void on_resize(int32_t width, int32_t height, void *param)
+static void on_resize(int32_t width, int32_t height, void *param)
 {
 	t_cub3d*	info;
 
 	info = param;
-	update_mlx_size(info, width, height);
+	info->mlx->width = width;
+	info->mlx->height = height;
+
 	printf("Window resized: %d x %d\n", width, height);
 
 	mlx_delete_image(info->mlx, info->game);
@@ -72,7 +100,8 @@ void on_resize(int32_t width, int32_t height, void *param)
 	put_minimap_image(info);
 }
 
-void ft_hook(void* param)
+
+static void ft_hook(void* param)
 {
 	t_cub3d		*info;
 	t_player	*player;
@@ -91,39 +120,3 @@ void ft_hook(void* param)
 	put_minimap(info);
 }
 
-int32_t	main(int argc, char **argv)
-{
-	static t_cub3d	info;
-
-	if (argc != 2)
-		return (EXIT_FAILURE);
-
-	if (parse(argv[1], &info) == false)
-		return (EXIT_FAILURE);
-
-	info.mlx = init_mlx();
-	if (info.mlx == NULL)
-	{
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-
-	put_game_image(&info);
-	put_minimap_image(&info);
-
-	mlx_loop_hook(info.mlx, ft_hook, &info);
-	mlx_resize_hook(info.mlx, on_resize, &info);
-	mlx_loop(info.mlx);
-	mlx_terminate(info.mlx);
-
-	return (EXIT_SUCCESS);
-}
-
-static mlx_t*	init_mlx(void)
-{
-	mlx_t*	created;
-
-	mlx_set_setting(MLX_MAXIMIZED, true);
-	created = mlx_init(512, 512, TITLE, true);
-	return (created);
-}
