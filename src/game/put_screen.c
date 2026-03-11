@@ -6,32 +6,27 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 12:37:28 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:57:13 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	get_all_rays(float *array, size_t size, t_vec2 start_coords, t_map *map, float angle, float fov);
+static void	get_all_rays(float *array, size_t size, t_map *map, t_player *player, float fov);
 static void	build_walls(mlx_image_t *image, float *rays, size_t size, float fov);
 
 
 void	put_game_screen(mlx_image_t *img, t_map *map, t_player *player)
 {
 	float	rays_arr[img->width];
-	t_vec2	origin;
-	float	angle;
 	float	fov;
 
 	fov = 60.0f * M_PI / 180.0f;
-	origin.x = player->x + 0.5f;
-	origin.y = player->y + 0.5f;
-	angle = (90.0f - player->dir) * M_PI / 180.0f;
-	get_all_rays(rays_arr, img->width, origin, map, angle, fov);
+	get_all_rays(rays_arr, img->width, map,  player, fov);
 	build_walls(img, rays_arr, img->width, fov);
 }
 
-static void	get_all_rays(float *array, size_t size, t_vec2 start_coords, t_map *map, float angle, float fov)
+static void	get_all_rays(float *array, size_t size, t_map *map, t_player *player, float fov)
 {
 	size_t	i;
 	float	cur_angle;
@@ -41,9 +36,9 @@ static void	get_all_rays(float *array, size_t size, t_vec2 start_coords, t_map *
 	i = 0;
 	while (i < size)
 	{
-		cur_angle = (angle - fov / 2) + step * (size - i);
-		array[i] = get_dist_to_wall(start_coords, cur_angle, map);
-		array[i] *= cos(cur_angle - angle); // Fish-eye correction
+		cur_angle = (player->dir.radians - fov / 2) + step * (size - i);
+		array[i] = get_dist_to_wall(player->coords, cur_angle, map);
+		array[i] *= cos(cur_angle - player->dir.radians); // Fish-eye correction
 		i++;
 	}
 }

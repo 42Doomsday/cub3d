@@ -28,13 +28,22 @@ static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
  */
 void	move_player_forward(t_map *map, t_player *player)
 {
-	t_vec2	dir;
+	t_vec2	displacement;
 
-	dir = direction_from_angle(player->dir);
-	dir.x *= PLAYER_STEP;
-	dir.y *= PLAYER_STEP;
-	player->x = resolve_x(map, dir.x, player->x + dir.x, player->y);
-	player->y = resolve_y(map, dir.y, player->x, player->y + dir.y);
+	displacement.x = player->dir.unit.x * PLAYER_STEP;
+	displacement.y = player->dir.unit.y * PLAYER_STEP;
+	player->coords.x = resolve_x(
+		map,
+		displacement.x,
+		player->coords.x + displacement.x,
+		player->coords.y
+	);
+	player->coords.y = resolve_y(
+		map,
+		displacement.y,
+		player->coords.x,
+		player->coords.y + displacement.y
+	);
 }
 
 /**
@@ -78,8 +87,8 @@ static float	resolve_x(t_map *map, float dx, float new_x, float cur_y)
 	int		tile_y;
 	int		tile_y_bot;
 
-	center_x = new_x + 0.5f;
-	center_y = cur_y + 0.5f;
+	center_x = new_x;
+	center_y = cur_y;
 	if (dx > 0)
 		tile_x = (int)floorf(center_x + PLAYER_HITBOX_R);
 	else
@@ -91,8 +100,8 @@ static float	resolve_x(t_map *map, float dx, float new_x, float cur_y)
 		if (is_wall(map, tile_x, tile_y))
 		{
 			if (dx > 0)
-				return (tile_x - PLAYER_HITBOX_R - 0.5f);
-			return (tile_x + 1 + PLAYER_HITBOX_R - 0.5f);
+				return (tile_x - PLAYER_HITBOX_R);
+			return (tile_x + 1 + PLAYER_HITBOX_R);
 		}
 		tile_y++;
 	}
@@ -119,8 +128,8 @@ static float	resolve_y(t_map *map, float dy, float cur_x, float new_y)
 	int		tile_x;
 	int		tile_x_right;
 
-	center_x = cur_x + 0.5f;
-	center_y = new_y + 0.5f;
+	center_x = cur_x;
+	center_y = new_y;
 	if (dy > 0)
 		tile_y = (int)floorf(center_y + PLAYER_HITBOX_R);
 	else
@@ -132,8 +141,8 @@ static float	resolve_y(t_map *map, float dy, float cur_x, float new_y)
 		if (is_wall(map, tile_x, tile_y))
 		{
 			if (dy > 0)
-				return (tile_y - PLAYER_HITBOX_R - 0.5f);
-			return (tile_y + 1 + PLAYER_HITBOX_R - 0.5f);
+				return (tile_y - PLAYER_HITBOX_R);
+			return (tile_y + 1 + PLAYER_HITBOX_R);
 		}
 		tile_x++;
 	}

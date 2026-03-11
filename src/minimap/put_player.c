@@ -34,15 +34,13 @@ static t_player_draw	make_draw_params(t_cub3d *info)
 
 	player = &info->player;
 	block_size = info->minimap_bs;
-	params.center.x = (int)(player->x * block_size);
-	params.center.y = (int)(player->y * block_size);
+	params.center.x = (int)(player->coords.x * block_size);
+	params.center.y = (int)(player->coords.y * block_size);
 	params.radius = block_size / 4;
 	params.ray_len = block_size / 2;
 	params.thickness = block_size / 20;
-	params.dir_rad = (90.0f - info->player.dir) * M_PI / 180.0f;
-	params.start_px.x = info->player.x * info->minimap_bs;
-	params.start_px.y = info->player.y * info->minimap_bs;
-	params.origin = get_player_vector(&info->player);
+	params.start_px.x = info->player.coords.x * info->minimap_bs;
+	params.start_px.y = info->player.coords.y * info->minimap_bs;
 	return (params);
 }
 
@@ -61,8 +59,8 @@ static void	put_direction_ray(t_player_draw prms, t_cub3d *info)
 	i = 0;
 	while (i < rays)
 	{
-		ray_angle = (prms.dir_rad - fov / 2) + step * i;
-		prms.wall_coords = cast_ray_to_wall(prms.origin, ray_angle, &info->map);
+		ray_angle = (info->player.dir.radians - fov / 2) + step * i;
+		prms.wall_coords = cast_ray_to_wall(info->player.coords, ray_angle, &info->map);
 		prms.end_px.x = prms.wall_coords.x * info->minimap_bs;
 		prms.end_px.y = prms.wall_coords.y * info->minimap_bs;
 		put_line(

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 16:38:51 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:54:20 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,17 @@ typedef struct s_map
 	int		width;
 }	t_map;
 
+typedef struct s_direction
+{
+	float	degree;
+	float	radians;
+	t_vec2	unit;
+}	t_direct;
+
 typedef struct s_player
 {
-	float	dir;
-	float	x;
-	float	y;
+	t_direct	dir;
+	t_vec2		coords;
 }	t_player;
 
 typedef struct s_cub3d
@@ -122,12 +128,10 @@ typedef struct s_player_draw
 	t_ivec2		center;
 	t_vec2		start_px;
 	t_vec2		end_px;
-	t_vec2		origin;
 	t_vec2		wall_coords;
 	int			radius;
 	int			ray_len;
 	int			thickness;
-	float		dir_rad;
 }	t_player_draw;
 
 // parsers
@@ -171,5 +175,6 @@ t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map);
 float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map);
 void	put_game_screen(mlx_image_t *img, t_map *map, t_player *player);
 t_vec2	direction_from_angle(float rotation);
+void	update_player_degree(t_player *player, float degree);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 15:43:05 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:49:48 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,17 @@ void on_resize(int32_t width, int32_t height, void *param)
 
 void ft_hook(void* param)
 {
-	t_cub3d*	info;
+	t_cub3d		*info;
+	t_player	*player;
 
 	info = param;
+	player = &info->player;
 	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(info->mlx);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_LEFT))
-		info->player.dir -= PLAYER_ROT_STEP;
+		update_player_degree(player, player->dir.degree - PLAYER_ROT_STEP);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
-		info->player.dir += PLAYER_ROT_STEP;
+		update_player_degree(player, player->dir.degree + PLAYER_ROT_STEP);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_W))
 		move_player_forward(&info->map, &info->player);
 	put_game_screen(info->game, &info->map, &info->player);

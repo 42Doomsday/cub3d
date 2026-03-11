@@ -7,6 +7,7 @@ MLX_BUILD = $(MLX_DIR)/build
 PARSING_DIR = parsing
 MINIMAP_DIR = minimap
 GAME_DIR = game
+HELPERS_DIR = helpers
 
 NAME = game
 
@@ -34,11 +35,14 @@ MINIMAP_SOURCES = move_player.c put_player.c helpers/utils.c cast_ray.c put_mini
 
 GAME_SOURCES = put_screen.c
 
+HELPERS_SOURCES = update_player_degree.c
+
 GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
+HELPERS_SRC = $(addprefix $(HELPERS_DIR)/, $(HELPERS_SOURCES))
 
-SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC)
+SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) $(HELPERS_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

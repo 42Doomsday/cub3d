@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 15:00:03 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 15:35:10 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:47:53 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ static void	set_params(t_player *player, int x, int y, char **map)
 
 	side = map[y][x];
 	if (side == 'N')
-		player->dir = 0;
+		update_player_degree(player, 0);
 	else if (side == 'E')
-		player->dir = 90;
+		update_player_degree(player, 90);
 	else if (side == 'S')
-		player->dir = 180;
+		update_player_degree(player, 180);
 	else if (side == 'W')
-		player->dir = 270;
-	player->y = y + 0.5f;
-	player->x = x + 0.5f;
+		update_player_degree(player, 270);
+	player->coords.y = y + 0.5f;
+	player->coords.x = x + 0.5f;
 	map[y][x] = '0';
 }

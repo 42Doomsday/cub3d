@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 14:11:45 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 16:35:25 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:55:19 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_vec2	get_player_vector(t_player *player)
 {
 	t_vec2	coords;
 
-	coords.x = player->x;
-	coords.y = player->y;
+	coords.x = player->coords.x;
+	coords.y = player->coords.y;
 	return (coords);
 }
 
