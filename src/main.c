@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/10 17:13:25 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 12:38:24 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,9 @@ void ft_hook(void* param)
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
 	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		info.player.dir += PLAYER_ROT_STEP;
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
 		info.player.dir -= PLAYER_ROT_STEP;
+	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
+		info.player.dir += PLAYER_ROT_STEP;
 	if (mlx_is_key_down(mlx, MLX_KEY_W))
 		move_player_forward(&info.map, &info.player);
 	put_game_screen(image2, &info.map, &info.player);

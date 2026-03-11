@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/10 17:14:02 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 12:37:28 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	get_all_rays(float *array, size_t size, t_vec2 start_coords, t_map *
 	i = 0;
 	while (i < size)
 	{
-		cur_angle = (angle - fov / 2) + step * i;
+		cur_angle = (angle - fov / 2) + step * (size - i);
 		array[i] = get_dist_to_wall(start_coords, cur_angle, map);
 		array[i] *= cos(cur_angle - angle); // Fish-eye correction
 		i++;
@@ -61,7 +61,7 @@ static void	build_walls(mlx_image_t *image, float *rays, size_t size, float fov)
 		int top = (image->height / 2) - (col_height / 2);
 		int bot = (image->height / 2) + (col_height / 2);
 		if (top < 0) top = 0;
-		if (bot > (int)image->height) bot = image->height;
+		if (bot > (int)image->height)bot = image->height;
 		int j = 0;
 		while (j < top)
 		{
