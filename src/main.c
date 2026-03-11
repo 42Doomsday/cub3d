@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 13:16:14 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:42:53 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,34 @@
 
 #define DEFAULT_WIDTH 512
 #define DEFAULT_HEIGHT 512
+#define MINIMAP_PROCENT_SIZE 0.2f
 #define TITLE "cub3d"
 
 static mlx_t*	init_mlx(void);
 
+void	put_minimap_image(t_cub3d *info)
+{
+	int32_t	width;
+	int32_t	height;
+
+	width = info->mlx->width * MINIMAP_PROCENT_SIZE;
+	height = info->mlx->height * MINIMAP_PROCENT_SIZE;
+	info->minimap = mlx_new_image(info->mlx, width, height);
+	put_minimap(info);
+	mlx_image_to_window(info->mlx, info->minimap, 0, 0);
+}
+
+void	put_game_image(t_cub3d *info)
+{
+	int32_t	width;
+	int32_t	height;
+
+	width = info->mlx->width;
+	height = info->mlx->height;
+	info->game = mlx_new_image(info->mlx, width, height);
+	put_game_screen(info->game, &info->map, &info->player);
+	mlx_image_to_window(info->mlx, info->game, 0, 0);
+}
 
 void on_resize(int32_t width, int32_t height, void *param)
 {
@@ -30,15 +54,14 @@ void on_resize(int32_t width, int32_t height, void *param)
 	info = param;
 	info->mlx->width = width;
 	info->mlx->height = height;
+
 	printf("Window resized: %d x %d\n", width, height);
-	mlx_delete_image(info->mlx, info->minimap);
+
 	mlx_delete_image(info->mlx, info->game);
-	info->minimap = mlx_new_image(info->mlx, info->mlx->width * 0.2f, info->mlx->height * 0.2f);
-	info->game = mlx_new_image(info->mlx, info->mlx->width, info->mlx->height);
-	put_game_screen(info->game, &info->map, &info->player);
-	put_minimap(info);
-	mlx_image_to_window(info->mlx, info->game, 0, 0);
-	mlx_image_to_window(info->mlx, info->minimap, 0, 0);
+	put_game_image(info);
+
+	mlx_delete_image(info->mlx, info->minimap);
+	put_minimap_image(info);
 }
 
 void ft_hook(void* param)
@@ -76,8 +99,8 @@ int32_t	main(int argc, char **argv)
 		return(EXIT_FAILURE);
 	}
 
-	info.minimap = mlx_new_image(info.mlx, info.mlx->width * 0.2f, info.mlx->height * 0.2f);
-	info.game = mlx_new_image(info.mlx, info.mlx->width, info.mlx->height);
+	put_game_image(&info);
+	put_minimap_image(&info);
 
 	mlx_loop_hook(info.mlx, ft_hook, &info);
 	mlx_resize_hook(info.mlx, on_resize, &info);
