@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:29:49 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:31:36 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ void	free_rgb(char ***strarr, int **intarr);
 void	exit_with_error(t_textures *tex, char *error_type, char *message);
 void	print_error(char *error_type, char *message);
 bool	msg_on_error(bool result, char *error_type, char *message);
-
 
 // core
 void	move_player_forward(t_map *map, t_player *player);

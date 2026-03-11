@@ -23,7 +23,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SOURCES  = main.c
+SOURCES  = main.c utils.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
@@ -31,7 +31,7 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
 		helpers/flood_fill.c helpers/is_closed.c parse.c
 
-MINIMAP_SOURCES =  put_player.c helpers/utils.c put_minimap.c helpers/put_line.c helpers/put_circle.c
+MINIMAP_SOURCES =  put_player.c put_minimap.c helpers/put_line.c helpers/put_circle.c
 
 GAME_SOURCES = put_screen.c
 
