@@ -31,7 +31,7 @@ void	move_player_forward(t_map *map, t_player *player)
 {
 	t_vec2	dir;
 
-	dir = direction_from_angle(player->rotation);
+	dir = direction_from_angle(player->dir);
 	dir.x *= PLAYER_STEP;
 	dir.y *= PLAYER_STEP;
 	player->x = resolve_x(map, dir.x, player->x + dir.x, player->y);

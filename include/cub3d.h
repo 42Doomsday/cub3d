@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/10 17:13:09 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:09:11 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,12 @@ typedef struct s_cub3d
 	t_textures	textures;
 	t_map		map;
 	t_player	player;
+	mlx_image_t	*minimap;
+	mlx_image_t	*game;
+	int			block_size;
+	float		dir_rad;
 }	t_cub3d;
+
 
 typedef struct s_ivec2
 {
