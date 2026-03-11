@@ -15,7 +15,6 @@
 static t_player_draw	make_draw_params(t_cub3d *info);
 static void				put_direction_ray(t_player_draw params, t_cub3d *info);
 
-
 void	put_player(t_cub3d *info)
 {
 	t_player_draw	params;

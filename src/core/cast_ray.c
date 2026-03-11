@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-bool    is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map);
+bool	is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map);
 float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord);
 t_vec2	normilize(float angle);
 

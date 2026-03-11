@@ -7,7 +7,7 @@ MLX_BUILD = $(MLX_DIR)/build
 PARSING_DIR = parsing
 MINIMAP_DIR = minimap
 GAME_DIR = game
-HELPERS_DIR = helpers
+CORE_DIR = core
 
 NAME = game
 
@@ -31,18 +31,18 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
 		helpers/flood_fill.c helpers/is_closed.c parse.c
 
-MINIMAP_SOURCES = move_player.c put_player.c helpers/utils.c cast_ray.c put_minimap.c helpers/put_line.c helpers/put_circle.c
+MINIMAP_SOURCES =  put_player.c helpers/utils.c put_minimap.c helpers/put_line.c helpers/put_circle.c
 
 GAME_SOURCES = put_screen.c
 
-HELPERS_SOURCES = update_player_degree.c
+CORE_SOURCES = update_player_degree.c move_player_forward.c cast_ray.c
 
 GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
-HELPERS_SRC = $(addprefix $(HELPERS_DIR)/, $(HELPERS_SOURCES))
+CORE_SRC = $(addprefix $(CORE_DIR)/, $(CORE_SOURCES))
 
-SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) $(HELPERS_SRC)
+SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) $(CORE_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
