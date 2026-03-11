@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 13:42:53 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:46:12 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,25 @@
 
 static mlx_t*	init_mlx(void);
 
+void	update_mlx_size(t_cub3d *info, int32_t width, int32_t height)
+{
+	info->mlx->width = width;
+	info->mlx->height = height;
+	info->block_size = get_block_size(&info->map, width, height);
+}
+
 void	put_minimap_image(t_cub3d *info)
 {
 	int32_t	width;
 	int32_t	height;
+	int32_t	margin;
 
 	width = info->mlx->width * MINIMAP_PROCENT_SIZE;
 	height = info->mlx->height * MINIMAP_PROCENT_SIZE;
+	margin = width * MINIMAP_PROCENT_SIZE * MINIMAP_PROCENT_SIZE;
 	info->minimap = mlx_new_image(info->mlx, width, height);
 	put_minimap(info);
-	mlx_image_to_window(info->mlx, info->minimap, 0, 0);
+	mlx_image_to_window(info->mlx, info->minimap, margin, margin);
 }
 
 void	put_game_image(t_cub3d *info)
@@ -52,9 +61,7 @@ void on_resize(int32_t width, int32_t height, void *param)
 	t_cub3d*	info;
 
 	info = param;
-	info->mlx->width = width;
-	info->mlx->height = height;
-
+	update_mlx_size(info, width, height);
 	printf("Window resized: %d x %d\n", width, height);
 
 	mlx_delete_image(info->mlx, info->game);
