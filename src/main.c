@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 13:46:12 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 15:43:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	update_mlx_size(t_cub3d *info, int32_t width, int32_t height)
 {
 	info->mlx->width = width;
 	info->mlx->height = height;
-	info->block_size = get_block_size(&info->map, width, height);
 }
 
 void	put_minimap_image(t_cub3d *info)
@@ -40,6 +39,7 @@ void	put_minimap_image(t_cub3d *info)
 	height = info->mlx->height * MINIMAP_PROCENT_SIZE;
 	margin = width * MINIMAP_PROCENT_SIZE * MINIMAP_PROCENT_SIZE;
 	info->minimap = mlx_new_image(info->mlx, width, height);
+	info->minimap_bs = get_block_size(&info->map, width, height);
 	put_minimap(info);
 	mlx_image_to_window(info->mlx, info->minimap, margin, margin);
 }
@@ -52,6 +52,7 @@ void	put_game_image(t_cub3d *info)
 	width = info->mlx->width;
 	height = info->mlx->height;
 	info->game = mlx_new_image(info->mlx, width, height);
+	info->game_bs = get_block_size(&info->map, width, height);
 	put_game_screen(info->game, &info->map, &info->player);
 	mlx_image_to_window(info->mlx, info->game, 0, 0);
 }
@@ -97,7 +98,6 @@ int32_t	main(int argc, char **argv)
 
 	if (parse(argv[1], &info) == false)
 		return (EXIT_FAILURE);
-
 
 	info.mlx = init_mlx();
 	if (info.mlx == NULL)

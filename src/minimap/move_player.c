@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 
-static t_vec2	direction_from_angle(float rotation);
 static bool		is_wall(t_map *map, int col, int row);
 static float	resolve_x(t_map *map, float dx, float new_x, float cur_y);
 static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
@@ -36,28 +35,6 @@ void	move_player_forward(t_map *map, t_player *player)
 	dir.y *= PLAYER_STEP;
 	player->x = resolve_x(map, dir.x, player->x + dir.x, player->y);
 	player->y = resolve_y(map, dir.y, player->x, player->y + dir.y);
-}
-
-/**
- * @brief Converts a player rotation angle (degrees) into a world-space
- *        movement direction vector of unit length.
- *
- * Rotation is measured clockwise from north (0° = up, 90° = right).
- * The angle is converted to standard mathematical convention before
- * being passed to cosf() and sinf().
- *
- * @param rotation  Player's current rotation in degrees.
- * @return          Normalised direction vector (dx, dy).
- */
-static t_vec2	direction_from_angle(float rotation)
-{
-	t_vec2	dir;
-	float	radians;
-
-	radians = (90.0f - rotation) * M_PI / 180.0f;
-	dir.x = cosf(radians);
-	dir.y = -sinf(radians);
-	return (dir);
 }
 
 /**

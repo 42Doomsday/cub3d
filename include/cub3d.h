@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 13:15:34 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:38:51 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ typedef struct s_vec2
 	float	y;
 }	t_vec2;
 
+typedef struct s_ivec2
+{
+	int	x;
+	int	y;
+}	t_ivec2;
 
 typedef enum	e_texture
 {
@@ -107,29 +112,22 @@ typedef struct s_cub3d
 	t_map		map;
 	t_player	player;
 	mlx_image_t	*minimap;
+	int			minimap_bs;
 	mlx_image_t	*game;
-	int			block_size;
-	float		dir_rad;
+	int			game_bs;
 }	t_cub3d;
-
-
-typedef struct s_ivec2
-{
-	int	x;
-	int	y;
-}	t_ivec2;
 
 typedef struct s_player_draw
 {
-	mlx_image_t	*img;
-	t_map		*map;
 	t_ivec2		center;
-	t_vec2		world_pos;
-	int			block_size;
+	t_vec2		start_px;
+	t_vec2		end_px;
+	t_vec2		origin;
+	t_vec2		wall_coords;
 	int			radius;
 	int			ray_len;
 	int			thickness;
-	float		angle;
+	float		dir_rad;
 }	t_player_draw;
 
 // parsers
@@ -161,13 +159,17 @@ bool	trim_map(t_map *map);
 
 // minimap
 void	move_player_forward(t_map *map, t_player *player);
-void	put_player(mlx_image_t *img, t_map *map, t_player *player);
+void	put_player(t_cub3d *info);
 void	put_minimap(t_cub3d *info);
 int		get_rgba(int r, int g, int b, int a);
 int		get_block_size(t_map *map, int32_t width, int32_t height);
+void	put_line(mlx_image_t *img, t_vec2 start, t_vec2 end, uint32_t color);
+void	put_circle(mlx_image_t *img, t_ivec2 center, int radius);
+t_vec2	get_player_vector(t_player *player);
 t_vec2	cast_ray_to_border(t_vec2 origin, float angle);
 t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map);
 float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map);
 void	put_game_screen(mlx_image_t *img, t_map *map, t_player *player);
+t_vec2	direction_from_angle(float rotation);
 
 #endif
