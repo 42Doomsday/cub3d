@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 13:09:11 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:15:34 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ bool	trim_map(t_map *map);
 // minimap
 void	move_player_forward(t_map *map, t_player *player);
 void	put_player(mlx_image_t *img, t_map *map, t_player *player);
+void	put_minimap(t_cub3d *info);
 int		get_rgba(int r, int g, int b, int a);
 int		get_block_size(t_map *map, int32_t width, int32_t height);
 t_vec2	cast_ray_to_border(t_vec2 origin, float angle);

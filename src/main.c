@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 13:09:57 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:16:14 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,105 +22,6 @@
 
 static mlx_t*	init_mlx(void);
 
-void	put_square(mlx_image_t *minimap, int x, int y, int size, uint32_t pixel)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	while (j < size)
-	{
-		i = 0;
-		while (i < size)
-		{
-			mlx_put_pixel(minimap, x + i, y + j, pixel);
-			i++;
-		}
-		j++;
-	}
-}
-
-void	put_map(t_cub3d *info)
-{
-	char **maap;
-	int	y;
-	int	x;
-	int	block;
-	int32_t	pixel;
-
-	maap = info->map.data;
-	y = 0;
-	block = get_block_size(&info->map, info->minimap->width, info->minimap->height);
-	while (maap && maap[y])
-	{
-		x = 0;
-		while (maap[y][x])
-		{
-			pixel = get_rgba(50, 50, 50, 255);
-			if (maap[y][x] == '1')
-				pixel = get_rgba(100, 100, 100, 255);
-			else if (maap[y][x] == '0')
-				pixel = get_rgba(255, 255, 255, 255);
-			put_square(info->minimap, x * block, y * block, block, pixel);
-			x++;
-		}
-		y++;
-	}
-}
-
-void    put_block_outline(mlx_image_t *minimap, int x, int y, int size, uint32_t color)
-{
-	int thickness;
-	int i;
-	int t;
-
-	thickness = size / 64;
-	if (thickness < 1)
-		thickness = 1;
-	i = 0;
-	while (i < size)
-	{
-		t = 0;
-		while (t < thickness)
-		{
-			mlx_put_pixel(minimap, x + i, y + t, color);           // верх
-			mlx_put_pixel(minimap, x + i, y + size - 1 - t, color); // низ
-			mlx_put_pixel(minimap, x + t, y + i, color);           // лево
-			mlx_put_pixel(minimap, x + size - 1 - t, y + i, color); // право
-			t++;
-		}
-		i++;
-	}
-}
-
-
-void	put_grid(t_cub3d *info)
-{
-	int		x, y;
-	char	**maap;
-	int		block;
-
-	block = get_block_size(&info->map, info->minimap->width, info->minimap->height);
-	maap = info->map.data;
-
-	y = 0;
-	while (maap && maap[y])
-	{
-		x = 0;
-		while (maap[y][x])
-		{
-			put_block_outline(
-				info->minimap,
-				x * block,
-				y * block,
-				block,
-				get_rgba(33, 33, 33, 255)
-			);
-			x++;
-		}
-		y++;
-	}
-}
 
 void on_resize(int32_t width, int32_t height, void *param)
 {
@@ -135,9 +36,7 @@ void on_resize(int32_t width, int32_t height, void *param)
 	info->minimap = mlx_new_image(info->mlx, info->mlx->width * 0.2f, info->mlx->height * 0.2f);
 	info->game = mlx_new_image(info->mlx, info->mlx->width, info->mlx->height);
 	put_game_screen(info->game, &info->map, &info->player);
-	put_map(info);
-	put_grid(info);
-	put_player(info->minimap, &info->map, &info->player);
+	put_minimap(info);
 	mlx_image_to_window(info->mlx, info->game, 0, 0);
 	mlx_image_to_window(info->mlx, info->minimap, 0, 0);
 }
@@ -156,9 +55,7 @@ void ft_hook(void* param)
 	if (mlx_is_key_down(info->mlx, MLX_KEY_W))
 		move_player_forward(&info->map, &info->player);
 	put_game_screen(info->game, &info->map, &info->player);
-	put_map(info);
-	put_grid(info);
-	put_player(info->minimap, &info->map, &info->player);
+	put_minimap(info);
 }
 
 int32_t	main(int argc, char **argv)
