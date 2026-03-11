@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:17:22 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:29:49 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,17 +123,6 @@ typedef struct s_cub3d
 	int			game_bs;
 }	t_cub3d;
 
-typedef struct s_player_draw
-{
-	t_ivec2		center;
-	t_vec2		start_px;
-	t_vec2		end_px;
-	t_vec2		wall_coords;
-	int			radius;
-	int			ray_len;
-	int			thickness;
-}	t_player_draw;
-
 // parsers
 bool	parse_textures(int fd, t_textures *out);
 bool	parse_map(int fd, t_map *map, t_player *player);
@@ -143,38 +132,32 @@ bool	parse(char *filename, t_cub3d *info);
 
 // validators
 bool	is_valid_path(char *path);
+
 // cleaning
 void	free_map(t_map *map);
-void	exit_with_error(t_textures *tex, char *error_type, char *message);
-void	free_rgb(char ***strarr, int **intarr);
-void	print_error(char *error_type, char *message);
-bool	msg_on_error(bool result, char *error_type, char *message);
 void	free_map_data(char **data);
 void	free_textures(t_textures *tex);
+void	free_rgb(char ***strarr, int **intarr);
+void	exit_with_error(t_textures *tex, char *error_type, char *message);
+void	print_error(char *error_type, char *message);
+bool	msg_on_error(bool result, char *error_type, char *message);
 
-// helpers
-char	**read_lines(int fd);
-t_list	*expand_tabs(t_list *lst);
-bool	set_gnl(int fd, char **line);
-bool	flood_fill(char **map, int x, int y);
-bool	is_contiguous(t_map *map);
-void	trim_spaces(t_map *map);
-bool	trim_map(t_map *map);
 
-// minimap
+// core
 void	move_player_forward(t_map *map, t_player *player);
-void	put_player(t_cub3d *info);
-void	put_minimap(t_cub3d *info);
-int		get_rgba(int r, int g, int b, int a);
-int		get_block_size(t_map *map, int32_t width, int32_t height);
-void	put_line(mlx_image_t *img, t_vec2 start, t_vec2 end, uint32_t color);
-void	put_circle(mlx_image_t *img, t_ivec2 center, int radius);
-t_vec2	get_player_vector(t_player *player);
+float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map);
 t_vec2	cast_ray_to_border(t_vec2 origin, float angle);
 t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map);
-float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map);
-void	put_game_screen(mlx_image_t *img, t_map *map, t_player *player);
-t_vec2	direction_from_angle(float rotation);
 void	update_player_degree(t_player *player, float degree);
+
+// minimap
+void	put_minimap(t_cub3d *info);
+
+// game
+void	put_game_screen(mlx_image_t *img, t_map *map, t_player *player);
+
+// utils
+int		get_block_size(t_map *map, int32_t width, int32_t height);
+int		get_rgba(int r, int g, int b, int a);
 
 #endif

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "minimap.h"
 
 static t_player_draw	make_draw_params(t_cub3d *info);
 static void				put_direction_ray(t_player_draw params, t_cub3d *info);

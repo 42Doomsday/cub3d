@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:10:30 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 16:10:45 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:30:35 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "minimap.h"
 
 void	put_circle(mlx_image_t *img, t_ivec2 center, int radius)
 {

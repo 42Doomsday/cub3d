@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 13:13:33 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 15:31:13 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:30:17 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "minimap.h"
 
 static void	put_grid(t_cub3d *info);
 static void	put_square(mlx_image_t *minimap, int x, int y, int size, uint32_t pixel);

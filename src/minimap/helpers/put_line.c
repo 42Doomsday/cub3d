@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 15:56:48 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 16:09:39 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:30:29 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "minimap.h"
 
 static t_ivec2	get_sxy(t_vec2 start, t_vec2 end);
 

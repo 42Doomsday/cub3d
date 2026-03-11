@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:19 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/05 14:11:18 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:26:51 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ typedef struct s_coords
 	int	y;
 }	t_coords;
 
+
+
+
 // map
 char	**read_lines(int fd);
 t_list	*expand_tabs(t_list *lst);
@@ -41,5 +44,8 @@ bool	trim_map(t_map *map);
 void	free_map_data(char **data);
 bool	validate_rgb(char *trim);
 bool	is_closed(char **map, int height);
+
+// textures
+bool	set_gnl(int fd, char **line);
 
 #endif
