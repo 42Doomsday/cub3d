@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:35:49 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:39:12 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 static void	put_minimap_image(t_cub3d *info);
 static void	put_game_image(t_cub3d *info);
 static void	on_resize(int32_t width, int32_t height, void *param);
-static void ft_hook(void* param);
+static void	ft_hook(void *param);
 
 int32_t	main(int argc, char **argv)
 {
@@ -32,7 +32,6 @@ int32_t	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (EXIT_FAILURE);
-
 	if (parse(argv[1], &info) == false)
 		return (EXIT_FAILURE);
 
@@ -83,7 +82,7 @@ static void	put_game_image(t_cub3d *info)
 	mlx_image_to_window(info->mlx, info->game, 0, 0);
 }
 
-static void on_resize(int32_t width, int32_t height, void *param)
+static void	on_resize(int32_t width, int32_t height, void *param)
 {
 	t_cub3d*	info;
 
@@ -100,8 +99,7 @@ static void on_resize(int32_t width, int32_t height, void *param)
 	put_minimap_image(info);
 }
 
-
-static void ft_hook(void* param)
+static void	ft_hook(void *param)
 {
 	t_cub3d		*info;
 	t_player	*player;
@@ -119,4 +117,3 @@ static void ft_hook(void* param)
 	put_game_screen(info->game, &info->map, &info->player);
 	put_minimap(info);
 }
-

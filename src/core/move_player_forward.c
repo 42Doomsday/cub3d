@@ -33,17 +33,17 @@ void	move_player_forward(t_map *map, t_player *player)
 	displacement.x = player->dir.unit.x * PLAYER_STEP;
 	displacement.y = player->dir.unit.y * PLAYER_STEP;
 	player->coords.x = resolve_x(
-		map,
-		displacement.x,
-		player->coords.x + displacement.x,
-		player->coords.y
-	);
+			map,
+			displacement.x,
+			player->coords.x + displacement.x,
+			player->coords.y
+			);
 	player->coords.y = resolve_y(
-		map,
-		displacement.y,
-		player->coords.x,
-		player->coords.y + displacement.y
-	);
+			map,
+			displacement.y,
+			player->coords.x,
+			player->coords.y + displacement.y
+			);
 }
 
 /**

@@ -48,38 +48,36 @@ t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map)
 	}
 }
 
-bool    is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map)
+bool	is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map)
 {
-    int     x;
-    int     y;
-    bool    on_x_border;
-    bool    on_y_border;
+	int		 x;
+	int		y;
+	bool	on_x_border;
+	bool	on_y_border;
 
-    on_x_border = fabs(coords.x - round(coords.x)) < 1e-5;
-    on_y_border = fabs(coords.y - round(coords.y)) < 1e-5;
+	on_x_border = fabs(coords.x - round(coords.x)) < 1e-5;
+	on_y_border = fabs(coords.y - round(coords.y)) < 1e-5;
 
-    if (on_x_border && unit_vector.x < 0)
-        x = (int)floor(coords.x) - 1;
-    else
-        x = (int)floor(coords.x);
+	if (on_x_border && unit_vector.x < 0)
+		x = (int)floor(coords.x) - 1;
+	else
+		x = (int)floor(coords.x);
 
-    if (on_y_border && unit_vector.y < 0)
-        y = (int)floor(coords.y) - 1;
-    else
-        y = (int)floor(coords.y);
+	if (on_y_border && unit_vector.y < 0)
+		y = (int)floor(coords.y) - 1;
+	else
+		y = (int)floor(coords.y);
 
-    // Защита от выхода за пределы карты
-    if (x < 0 || y < 0 || y >= map->height || x >= map->width)
-        return (true);
+	if (x < 0 || y < 0 || y >= map->height || x >= map->width)
+		return (true);
 
-    if (on_x_border && on_y_border)
+	if (on_x_border && on_y_border)
 	{
 		int x2 = (unit_vector.x < 0) ? (int)floor(coords.x) - 1 : (int)floor(coords.x);
 		int y2 = (unit_vector.y < 0) ? (int)floor(coords.y) - 1 : (int)floor(coords.y);
-		int x_neighbor = (int)floor(coords.x); // клетка по оси X
-		int y_neighbor = (int)floor(coords.y); // клетка по оси Y
+		int x_neighbor = (int)floor(coords.x);
+		int y_neighbor = (int)floor(coords.y);
 
-		// Проверяем обе смежные клетки (не диагональную)
 		if (x_neighbor >= 0 && x_neighbor < map->width
 			&& y2 >= 0 && y2 < map->height)
 			if (map->data[y2][x_neighbor] == '1' || map->data[y2][x_neighbor] == ' ')
@@ -89,7 +87,7 @@ bool    is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map)
 			if (map->data[y_neighbor][x2] == '1' || map->data[y_neighbor][x2] == ' ')
 				return (true);
 	}
-    return (map->data[y][x] == '1' || map->data[y][x] == ' ');
+	return (map->data[y][x] == '1' || map->data[y][x] == ' ');
 }
 
 t_vec2	cast_ray_to_border(t_vec2 origin, float angle)

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:31:36 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:58:56 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct	s_texture_map
 	t_texture_id	tex_id;
 	const char		*name;
 	size_t			member;
-}   t_texture_map;
+}	t_texture_map;
 
 typedef struct s_map
 {

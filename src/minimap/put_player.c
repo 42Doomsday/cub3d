@@ -24,7 +24,6 @@ void	put_player(t_cub3d *info)
 	put_circle(info->minimap, params.center, params.radius);
 }
 
-
 static t_player_draw	make_draw_params(t_cub3d *info)
 {
 	t_player_draw	params;
@@ -42,7 +41,6 @@ static t_player_draw	make_draw_params(t_cub3d *info)
 	params.start_px.y = info->player.coords.y * info->minimap_bs;
 	return (params);
 }
-
 
 static void	put_direction_ray(t_player_draw prms, t_cub3d *info)
 {
