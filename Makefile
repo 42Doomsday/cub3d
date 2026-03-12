@@ -78,8 +78,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@cc $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) | $(OBJ_DIR)
-	@cc $(CFLAGS) $< $(TEST_OBJ) $(LIBFT) -o $@
+$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) $(MLX)| $(OBJ_DIR)
+	@cc $(CFLAGS) $(EXTRA_FLAGS) $< $(TEST_OBJ) $(LIBFT) $(MLX) -o $@
 
 re: fclean $(NAME)
 
