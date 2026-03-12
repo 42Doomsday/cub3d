@@ -12,9 +12,11 @@
 
 #include "cub3d.h"
 
-bool	is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map);
-float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord);
-t_vec2	normilize(float angle);
+bool			is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map);
+float			find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord);
+static t_vec2	is_on_edges(t_vec2 coords);
+static int		get_block_coord(bool on_edge, float current, float unit_value);
+t_vec2			normilize(float angle);
 
 float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map)
 {
@@ -50,44 +52,38 @@ t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map)
 
 bool	is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map)
 {
-	int		 x;
+	t_vec2	on_edges;
+	int		x;
 	int		y;
-	bool	on_x_border;
-	bool	on_y_border;
 
-	on_x_border = fabs(coords.x - round(coords.x)) < 1e-5;
-	on_y_border = fabs(coords.y - round(coords.y)) < 1e-5;
-
-	if (on_x_border && unit_vector.x < 0)
-		x = (int)floor(coords.x) - 1;
-	else
-		x = (int)floor(coords.x);
-
-	if (on_y_border && unit_vector.y < 0)
-		y = (int)floor(coords.y) - 1;
-	else
-		y = (int)floor(coords.y);
-
+	if (map->data[(int)floor(coords.y)][(int)floor(coords.x)] == '1')
+		return (true);
+	on_edges = is_on_edges(coords);
+	x = get_block_coord(on_edges.x, coords.x, unit_vector.x);
+	y = get_block_coord(on_edges.y, coords.y, unit_vector.y);
 	if (x < 0 || y < 0 || y >= map->height || x >= map->width)
 		return (true);
+	return (map->data[y][x] == '1');
+}
 
-	if (on_x_border && on_y_border)
-	{
-		int x2 = (unit_vector.x < 0) ? (int)floor(coords.x) - 1 : (int)floor(coords.x);
-		int y2 = (unit_vector.y < 0) ? (int)floor(coords.y) - 1 : (int)floor(coords.y);
-		int x_neighbor = (int)floor(coords.x);
-		int y_neighbor = (int)floor(coords.y);
+static t_vec2	is_on_edges(t_vec2 coords)
+{
+	t_vec2	result;
 
-		if (x_neighbor >= 0 && x_neighbor < map->width
-			&& y2 >= 0 && y2 < map->height)
-			if (map->data[y2][x_neighbor] == '1' || map->data[y2][x_neighbor] == ' ')
-				return (true);
-		if (x2 >= 0 && x2 < map->width
-			&& y_neighbor >= 0 && y_neighbor < map->height)
-			if (map->data[y_neighbor][x2] == '1' || map->data[y_neighbor][x2] == ' ')
-				return (true);
-	}
-	return (map->data[y][x] == '1' || map->data[y][x] == ' ');
+	result.x = fabs(coords.x - round(coords.x)) < 1e-6;
+	result.y = fabs(coords.y - round(coords.y)) < 1e-6;
+	return (result);
+}
+
+static int	get_block_coord(bool on_edge, float current, float unit_value)
+{
+	int	coord;
+
+	if (on_edge && unit_value < 0)
+		coord = (int)floor(current) - 1;
+	else
+		coord = (int)floor(current);
+	return (coord);
 }
 
 t_vec2	cast_ray_to_border(t_vec2 origin, float angle)
