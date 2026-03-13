@@ -15,6 +15,7 @@
 bool			is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map);
 float			find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord);
 static t_vec2	is_on_edges(t_vec2 coords);
+static bool		is_wall_or_space_on_coords(t_map *map, int x, int y);
 static int		get_block_coord(bool on_edge, float current, float unit_value);
 t_vec2			normilize(float angle);
 
@@ -36,42 +37,64 @@ float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map)
 
 t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map)
 {
-	t_vec2	curent_coords;
+	t_vec2	ray_coords;
 	t_vec2	unit_vector;
 
-	curent_coords = origin;
+	ray_coords = origin;
 	unit_vector = normilize(angle);
 	while (42)
 	{
-		curent_coords = cast_ray_to_border(curent_coords, angle);
-		int result = is_wall(curent_coords, unit_vector, map);
-		if (result == 1 || result == 2)
-			return (curent_coords);
+		ray_coords = cast_ray_to_border(ray_coords, angle);
+		if (is_wall(ray_coords, unit_vector, map))
+			return (ray_coords);
 	}
 }
 
-bool	is_wall(t_vec2 coords, t_vec2 unit_vector, t_map *map)
+bool	is_wall(t_vec2 start, t_vec2 unit_vector, t_map *map)
 {
 	t_vec2	on_edges;
 	int		x;
 	int		y;
 
-	if (map->data[(int)floor(coords.y)][(int)floor(coords.x)] == '1')
-		return (true);
-	on_edges = is_on_edges(coords);
-	x = get_block_coord(on_edges.x, coords.x, unit_vector.x);
-	y = get_block_coord(on_edges.y, coords.y, unit_vector.y);
+	x = floor(start.x);
+	y = floor(start.y);
+	if (x == 0 || y == 0)
+		printf("Alarm\n");
+	on_edges = is_on_edges(start);
+	if (on_edges.x && on_edges.y)
+	{
+		if (is_wall_or_space_on_coords(map, x - 1, y - 1))
+			return (true);
+	}
+	else if (on_edges.x || on_edges.y)
+	{
+		x = get_block_coord(on_edges.x, start.x, unit_vector.x);
+		y = get_block_coord(on_edges.y, start.y, unit_vector.y);
+	}
+	return (is_wall_or_space_on_coords(map, x, y));
+}
+
+static bool	is_wall_or_space_on_coords(t_map *map, int x, int y)
+{
+	char	block_value;
+
 	if (x < 0 || y < 0 || y >= map->height || x >= map->width)
+	{
+		printf("Trying to access invalid coords: x:%d, y:%d\n", x, y);
 		return (true);
-	return (map->data[y][x] == '1');
+	}
+	block_value = map->data[y][x];
+	if (block_value == '1' || block_value == ' ')
+		return (true);
+	return (false);
 }
 
 static t_vec2	is_on_edges(t_vec2 coords)
 {
 	t_vec2	result;
 
-	result.x = fabs(coords.x - round(coords.x)) < 1e-6;
-	result.y = fabs(coords.y - round(coords.y)) < 1e-6;
+	result.x = fabs(coords.x - round(coords.x)) < __FLT_EPSILON__;
+	result.y = fabs(coords.y - round(coords.y)) < __FLT_EPSILON__;
 	return (result);
 }
 
