@@ -6,14 +6,13 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 14:06:28 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/13 14:06:54 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/13 14:13:08 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static t_vec2	is_on_edges(t_vec2 coords);
-static bool		is_wall_or_space_on_coords(t_map *map, int x, int y);
 static int		get_block_coord(bool on_edge, float current, float unit_value);
 
 bool	is_wall(t_vec2 start, t_vec2 unit_vector, t_map *map)
@@ -41,11 +40,13 @@ bool	is_wall(t_vec2 start, t_vec2 unit_vector, t_map *map)
 	return (is_wall_or_space_on_coords(map, x, y));
 }
 
-static bool	is_wall_or_space_on_coords(t_map *map, int x, int y)
+bool	is_wall_or_space_on_coords(t_map *map, int x, int y)
 {
 	char	block_value;
 
-	if (x < 0 || y < 0 || y >= map->height || x >= map->width)
+	if (x < 0 || x >= map->width)
+		return (true);
+	if (y < 0 || y >= map->height)
 		return (true);
 	block_value = map->data[y][x];
 	if (block_value == '1' || block_value == ' ')

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/13 14:07:34 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/13 14:11:37 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ t_vec2	cast_ray_to_border(t_vec2 origin, float angle);
 t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map);
 void	update_player_degree(t_player *player, float degree);
 bool	is_wall(t_vec2 start, t_vec2 unit_vector, t_map *map);
+bool	is_wall_or_space_on_coords(t_map *map, int x, int y);
 
 // minimap
 void	put_minimap(t_cub3d *info);
