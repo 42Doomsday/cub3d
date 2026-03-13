@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-static bool		is_wall(t_map *map, int col, int row);
+static bool		is_wall_simple(t_map *map, int col, int row);
 static float	resolve_x(t_map *map, float dx, float new_x, float cur_y);
 static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
 
@@ -57,7 +57,7 @@ void	move_player_forward(t_map *map, t_player *player)
  * @param row   Tile row index    (Y axis).
  * @return      true if the tile blocks movement, false otherwise.
  */
-static bool	is_wall(t_map *map, int col, int row)
+static bool	is_wall_simple(t_map *map, int col, int row)
 {
 	if (col < 0 || col >= map->width)
 		return (true);
@@ -97,7 +97,7 @@ static float	resolve_x(t_map *map, float dx, float new_x, float cur_y)
 	tile_y_bot = (int)floorf(center_y + PLAYER_R - EPS);
 	while (tile_y <= tile_y_bot)
 	{
-		if (is_wall(map, tile_x, tile_y))
+		if (is_wall_simple(map, tile_x, tile_y))
 		{
 			if (dx > 0)
 				return (tile_x - PLAYER_HITBOX_R);
@@ -138,7 +138,7 @@ static float	resolve_y(t_map *map, float dy, float cur_x, float new_y)
 	tile_x_right = (int)floorf(center_x + PLAYER_R - EPS);
 	while (tile_x <= tile_x_right)
 	{
-		if (is_wall(map, tile_x, tile_y))
+		if (is_wall_simple(map, tile_x, tile_y))
 		{
 			if (dy > 0)
 				return (tile_y - PLAYER_HITBOX_R);
