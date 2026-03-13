@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 14:06:28 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/13 14:13:08 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/13 16:56:55 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ bool	is_wall(t_vec2 start, t_vec2 unit_vector, t_map *map)
 		on_edges = is_on_edges(start);
 		if (on_edges.x && on_edges.y)
 		{
-			x -= 1;
-			y -= 1;
+			if (is_wall_or_space_on_coords(map, x - 1, y - 1))
+				return (true);
 		}
 		else if (on_edges.x || on_edges.y)
 		{
