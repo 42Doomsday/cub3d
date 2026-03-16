@@ -11,12 +11,14 @@ CORE_DIR = core
 
 NAME = game
 
+CC = cc
+
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_BUILD)/libmlx42.a
 
 CFLAGS = -Wall -Wextra -Werror -Iinclude -g
-GUI_FLAGS = -lglfw -pthread
-MATH_FLAGS = -lm -ldl
+GUI_FLAGS = -lglfw -pthread -ldl
+MATH_FLAG = -lm
 
 VALGRIND = valgrind \
 	--leak-check=full \
@@ -67,18 +69,15 @@ $(MLX):
 	@cmake -S $(MLX_DIR) -B $(MLX_BUILD)
 	@cmake --build $(MLX_BUILD) -j4
 
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@cc $(CFLAGS) $(MATH_FLAGS) $(GUI_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
+	@$(CC) $(CFLAGS) $(GUI_FLAGS) $(OBJ) $(LIBFT) $(MLX) $(MATH_FLAG) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	@cc $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) | $(OBJ_DIR)
-	@cc $(CFLAGS) $(MATH_FLAGS) $< $(TEST_OBJ) $(LIBFT) -o $@
+$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT)
+	@$(CC) $(CFLAGS) $< $(TEST_OBJ) $(LIBFT) $(MATH_FLAG) -o $@
 
 re: fclean $(NAME)
 
@@ -117,6 +116,8 @@ test-leaks: $(TESTS)
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf $(LIBFT)
+	@rm -rf $(MLX42)
 
 clean:
 	@rm -rf $(OBJ_DIR)
