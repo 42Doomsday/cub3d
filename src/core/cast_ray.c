@@ -23,7 +23,6 @@ float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map)
 	float	dist;
 
 	wall = cast_ray_to_wall(origin, angle, map);
-	unit_vector = normilize(angle);
 	dist_x = fabs(wall.x - origin.x);
 	dist_y = fabs(wall.y - origin.y);
 	dist = sqrt(dist_x * dist_x + dist_y * dist_y);
