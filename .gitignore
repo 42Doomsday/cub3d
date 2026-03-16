@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux,c,visualstudiocode,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,c,visualstudiocode,windows
 
+# Out game
+game
+
 ### C ###
 # Prerequisites
 *.d
