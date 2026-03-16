@@ -18,7 +18,6 @@ t_vec2	normilize(float angle);
 float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map)
 {
 	t_vec2	wall;
-	t_vec2	unit_vector;
 	float	dist_x;
 	float	dist_y;
 	float	dist;
