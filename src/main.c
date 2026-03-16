@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 18:28:03 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 18:36:41 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void	put_game_image(t_cub3d *info)
 	get_all_rays(&info->rays, &info->map, &info->player);
 	info->game = mlx_new_image(info->mlx, width, height);
 	info->game_bs = get_block_size(&info->map, width, height);
-	put_game_screen(info->game, &info->rays);
+	put_game_screen(info->game, &info->textures, &info->rays);
 	mlx_image_to_window(info->mlx, info->game, 0, 0);
 }
 
@@ -149,6 +149,6 @@ static void	ft_hook(void *param)
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
 		move_player(&info->map, &info->player, 190);
 	get_all_rays(&info->rays, &info->map, &info->player);
-	put_game_screen(info->game, &info->rays);
+	put_game_screen(info->game, &info->textures, &info->rays);
 	put_minimap(info);
 }

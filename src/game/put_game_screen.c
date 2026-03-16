@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_screen.c                                       :+:      :+:    :+:   */
+/*   put_game_screen.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 16:35:38 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 18:36:10 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	put_game_screen(mlx_image_t *image, t_rays *rays)
+void	put_game_screen(mlx_image_t *image, t_textures *text, t_rays *rays)
 {
 	size_t	i;
 	float	proj_plane;
+	int		pixel;
 
 	proj_plane = (image->width / 2.0f) / tan(rays->fov / 2.0f);
 	i = 0;
@@ -29,7 +30,8 @@ void	put_game_screen(mlx_image_t *image, t_rays *rays)
 		int j = 0;
 		while (j < top)
 		{
-			mlx_put_pixel(image, i, j, get_rgba(30, 30, 30, 255));
+			pixel = get_rgba(text->ceiling[0], text->ceiling[1], text->ceiling[2], 255);
+			mlx_put_pixel(image, i, j, pixel);
 			j++;
 		}
 		while (j < bot)
@@ -39,7 +41,8 @@ void	put_game_screen(mlx_image_t *image, t_rays *rays)
 		}
 		while (j < (int)image->height)
 		{
-			mlx_put_pixel(image, i, j, get_rgba(80, 60, 40, 255));
+			pixel = get_rgba(text->floor[0], text->floor[1], text->floor[2], 255);
+			mlx_put_pixel(image, i, j, pixel);
 			j++;
 		}
 		i++;
