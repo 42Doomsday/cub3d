@@ -15,8 +15,8 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_BUILD)/libmlx42.a
 
 CFLAGS = -Wall -Wextra -Werror -Iinclude -g
-GUI_FLAGS = -lglfw -ldl -pthread
-MATH_FLAGS = -lm
+GUI_FLAGS = -lglfw -pthread
+MATH_FLAGS = -lm -ldl
 
 VALGRIND = valgrind \
 	--leak-check=full \
