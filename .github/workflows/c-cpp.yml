@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: isntall_open_gnl
-      run: apt install -y libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev
     - name: run_tests
       run: make test
     - name: install_valgrind

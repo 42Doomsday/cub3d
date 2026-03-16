@@ -35,7 +35,7 @@ MINIMAP_SOURCES =  put_player.c put_minimap.c helpers/put_line.c helpers/put_cir
 
 GAME_SOURCES = put_screen.c
 
-CORE_SOURCES = update_player_degree.c move_player_forward.c cast_ray.c is_wall.c
+CORE_SOURCES = move_player_forward.c cast_ray.c is_wall.c
 
 GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
@@ -46,7 +46,7 @@ SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) $(CORE_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-TEST_SRC  = $(filter-out main.c, $(SRC))
+TEST_SRC  = $(PARSING_SRC) utils.c
 TEST_OBJ  = $(TEST_SRC:%.c=$(OBJ_DIR)/%.o)
 
 TEST_NAMES = test_parse_map test_expand_tabs \
@@ -74,12 +74,10 @@ $(NAME): $(LIBFT) $(MLX) $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(dir $@)
 	@cc $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) $(MLX)| $(OBJ_DIR)
-	@cc $(CFLAGS) $(EXTRA_FLAGS) $< $(TEST_OBJ) $(LIBFT) $(MLX) -o $@
+$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) | $(OBJ_DIR)
+	@cc $(CFLAGS) $(EXTRA_FLAGS) $< $(TEST_OBJ) $(LIBFT) -o $@
 
 re: fclean $(NAME)
 
