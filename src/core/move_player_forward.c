@@ -15,12 +15,16 @@
 static float	resolve_x(t_map *map, float dx, float new_x, float cur_y);
 static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
 
-void	move_player_forward(t_map *map, t_player *player)
+void	move_player(t_map *map, t_player *player, float degree)
 {
 	t_vec2	displacement;
+	t_vec2	normilized;
+	float	radians;
 
-	displacement.x = player->dir.unit.x * PLAYER_STEP;
-	displacement.y = player->dir.unit.y * PLAYER_STEP;
+	radians = convert_degree_to_radians(degree);
+	normilized = normilize(player->dir.radians + radians);
+	displacement.x = normilized.x * PLAYER_STEP;
+	displacement.y = normilized.y * PLAYER_STEP;
 	player->coords.x = resolve_x(
 			map,
 			displacement.x,

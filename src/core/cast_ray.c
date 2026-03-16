@@ -87,12 +87,3 @@ float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord)
 	}
 	return ((destination - origin_value) / unit_value);
 }
-
-t_vec2	normilize(float angle)
-{
-	t_vec2	unit_vector;
-
-	unit_vector.x = cos(angle);
-	unit_vector.y = -sin(angle);
-	return (unit_vector);
-}

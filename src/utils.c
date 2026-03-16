@@ -6,14 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 14:11:45 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 12:27:36 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 17:45:57 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static t_vec2	normilize(float angle);
-static float	convert_degree_to_radians(float degree);
 
 int	get_rgba(int r, int g, int b, int a)
 {
@@ -42,12 +39,12 @@ void	update_player_degree(t_player *player, float degree)
 	player->dir.unit = normilize(radians);
 }
 
-static float	convert_degree_to_radians(float degree)
+float	convert_degree_to_radians(float degree)
 {
 	return ((90.0f - degree) * M_PI / 180.0f);
 }
 
-static t_vec2	normilize(float radians)
+t_vec2	normilize(float radians)
 {
 	t_vec2	unit_vector;
 

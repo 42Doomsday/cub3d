@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 16:42:41 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 17:36:15 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	print_error(char *error_type, char *message);
 bool	msg_on_error(bool result, char *error_type, char *message);
 
 // core
-void	move_player_forward(t_map *map, t_player *player);
+void	move_player(t_map *map, t_player *player, float step);
 float	get_dist_to_wall(t_vec2 origin, t_vec2 wall);
 t_vec2	cast_ray_to_border(t_vec2 origin, float angle);
 t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map);
@@ -175,5 +175,7 @@ void	put_game_screen(mlx_image_t *image, t_rays *rays);
 // utils
 int		get_block_size(t_map *map, int32_t width, int32_t height);
 int		get_rgba(int r, int g, int b, int a);
+float	convert_degree_to_radians(float degree);
+t_vec2	normilize(float radians);
 
 #endif
