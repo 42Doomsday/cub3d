@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 17:56:41 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 18:28:03 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int32_t	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (EXIT_FAILURE);
+
 	if (parse(argv[1], &info) == false)
 		return (EXIT_FAILURE);
 

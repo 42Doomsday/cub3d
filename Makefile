@@ -36,7 +36,7 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 
 MINIMAP_SOURCES =  put_player.c put_minimap.c helpers/put_line.c helpers/put_circle.c
 
-GAME_SOURCES = put_screen.c
+GAME_SOURCES = put_game_screen.c
 
 CORE_SOURCES = move_player_forward.c cast_ray.c is_wall.c
 
