@@ -15,7 +15,8 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_BUILD)/libmlx42.a
 
 CFLAGS = -Wall -Wextra -Werror -Iinclude -g
-EXTRA_FLAGS = -lglfw -ldl -pthread -lm
+GUI_FLAGS = -lglfw -ldl -pthread
+MATH_FLAGS = -lm
 
 VALGRIND = valgrind \
 	--leak-check=full \
@@ -70,14 +71,14 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@cc $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
+	@cc $(CFLAGS) $(MATH_FLAGS) $(GUI_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@cc $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) | $(OBJ_DIR)
-	@cc $(CFLAGS) $(EXTRA_FLAGS) $< $(TEST_OBJ) $(LIBFT) -o $@
+	@cc $(CFLAGS) $(MATH_FLAGS) $< $(TEST_OBJ) $(LIBFT) -o $@
 
 re: fclean $(NAME)
 
