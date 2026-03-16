@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 17:28:23 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:29:25 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 18:23:55 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,14 @@
 
 typedef struct s_player_draw
 {
-	t_ivec2		center;
-	t_vec2		start_px;
-	t_vec2		end_px;
-	t_vec2		wall_coords;
+	t_icoords	center;
+	t_coords	start_px;
+	t_coords	end_px;
 	int			radius;
-	int			ray_len;
-	int			thickness;
 }	t_player_draw;
 
 void	put_player(t_cub3d *info);
-void	put_line(mlx_image_t *img, t_vec2 start, t_vec2 end, uint32_t color);
-void	put_circle(mlx_image_t *img, t_ivec2 center, int radius);
+void	put_line(mlx_image_t *img, t_coords start, t_coords end, uint32_t color);
+void	put_circle(mlx_image_t *img, t_icoords center, int radius);
 
 #endif

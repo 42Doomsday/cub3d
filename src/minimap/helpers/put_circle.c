@@ -6,13 +6,13 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 16:10:30 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:30:35 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 18:17:43 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minimap.h"
 
-void	put_circle(mlx_image_t *img, t_ivec2 center, int radius)
+void	put_circle(mlx_image_t *img, t_icoords center, int radius)
 {
 	int	offset_x;
 	int	offset_y;

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 17:36:15 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 18:25:50 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,17 @@ typedef struct s_vec2
 	float	y;
 }	t_vec2;
 
-typedef struct s_ivec2
+typedef struct s_coords
+{
+	float	x;
+	float	y;
+}	t_coords;
+
+typedef struct s_icoords
 {
 	int	x;
 	int	y;
-}	t_ivec2;
+}	t_icoords;
 
 typedef enum	e_texture
 {
@@ -108,21 +114,15 @@ typedef struct s_direction
 typedef struct s_player
 {
 	t_direct	dir;
-	t_vec2		coords;
+	t_coords	coords;
 }	t_player;
-
-typedef struct s_coords
-{
-	float	x;
-	float	y;
-}	t_coords;
 
 typedef	struct s_rays
 {
-	float	fov;
-	t_vec2	*coords;
-	float	*distances;
-	size_t	count;
+	float		fov;
+	t_coords	*coords;
+	float		*distances;
+	size_t		count;
 }	t_rays;
 
 typedef struct s_cub3d
@@ -159,11 +159,10 @@ bool	msg_on_error(bool result, char *error_type, char *message);
 
 // core
 void	move_player(t_map *map, t_player *player, float step);
-float	get_dist_to_wall(t_vec2 origin, t_vec2 wall);
-t_vec2	cast_ray_to_border(t_vec2 origin, float angle);
-t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map);
+float	get_dist_to_wall(t_coords origin, t_coords wall);
+t_coords	cast_ray_to_wall(t_coords origin, float angle, t_map *map);
 void	update_player_degree(t_player *player, float degree);
-bool	is_wall(t_vec2 start, t_vec2 unit_vector, t_map *map);
+bool	is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
 bool	is_wall_or_space_on_coords(t_map *map, int x, int y);
 
 // minimap

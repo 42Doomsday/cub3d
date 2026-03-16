@@ -12,10 +12,10 @@
 
 #include "cub3d.h"
 
-float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord);
-t_vec2	normilize(float angle);
+static t_coords	cast_ray_to_border(t_coords origin, float angle);
+static float	find_dist(t_coords origin, t_vec2 unit_vector, bool coord);
 
-float	get_dist_to_wall(t_vec2 origin, t_vec2 wall)
+float	get_dist_to_wall(t_coords origin, t_coords wall)
 {
 	float	dist_x;
 	float	dist_y;
@@ -27,10 +27,10 @@ float	get_dist_to_wall(t_vec2 origin, t_vec2 wall)
 	return (dist);
 }
 
-t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map)
+t_coords	cast_ray_to_wall(t_coords origin, float angle, t_map *map)
 {
-	t_vec2	ray_coords;
-	t_vec2	unit_vector;
+	t_coords	ray_coords;
+	t_vec2		unit_vector;
 
 	ray_coords = origin;
 	unit_vector = normilize(angle);
@@ -42,12 +42,12 @@ t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map)
 	}
 }
 
-t_vec2	cast_ray_to_border(t_vec2 origin, float angle)
+static t_coords	cast_ray_to_border(t_coords origin, float angle)
 {
-	t_vec2	point;
-	t_vec2	unit_vector;
-	float	dist;
-	float	dist_second;
+	t_coords	point;
+	t_vec2		unit_vector;
+	float		dist;
+	float		dist_second;
 
 	unit_vector = normilize(angle);
 	dist = find_dist(origin, unit_vector, 0);
@@ -59,7 +59,7 @@ t_vec2	cast_ray_to_border(t_vec2 origin, float angle)
 	return (point);
 }
 
-float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord)
+static float	find_dist(t_coords origin, t_vec2 unit_vector, bool coord)
 {
 	float	origin_value;
 	float	unit_value;

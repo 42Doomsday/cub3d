@@ -17,9 +17,9 @@ static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
 
 void	move_player(t_map *map, t_player *player, float degree)
 {
-	t_vec2	displacement;
-	t_vec2	normilized;
-	float	radians;
+	t_coords	displacement;
+	t_vec2		normilized;
+	float		radians;
 
 	radians = convert_degree_to_radians(degree);
 	normilized = normilize(player->dir.radians + radians);

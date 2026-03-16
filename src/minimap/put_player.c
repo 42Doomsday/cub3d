@@ -35,8 +35,6 @@ static t_player_draw	make_draw_params(t_cub3d *info)
 	params.center.x = (int)(player->coords.x * block_size);
 	params.center.y = (int)(player->coords.y * block_size);
 	params.radius = block_size / 4;
-	params.ray_len = block_size / 2;
-	params.thickness = block_size / 20;
 	params.start_px.x = info->player.coords.x * info->minimap_bs;
 	params.start_px.y = info->player.coords.y * info->minimap_bs;
 	return (params);

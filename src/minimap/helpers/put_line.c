@@ -6,25 +6,25 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 15:56:48 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:30:29 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 18:19:18 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minimap.h"
 
-static t_ivec2	get_sxy(t_vec2 start, t_vec2 end);
+static t_icoords	get_step_xy(t_coords start, t_coords end);
 
-void put_line(mlx_image_t *img, t_vec2 start, t_vec2 end, uint32_t color)
+void put_line(mlx_image_t *img, t_coords start, t_coords end, uint32_t color)
 {
-	t_ivec2	xy;
-	t_ivec2	dxy;
-	t_ivec2	sxy;
+	t_icoords	xy;
+	t_icoords	dxy;
+	t_icoords	sxy;
 	int		err;
 	int		e2;
 
 	dxy.x = abs((int)end.x - (int)start.x);
 	dxy.y = abs((int)end.y - (int)start.y);
-	sxy = get_sxy(start, end);
+	sxy = get_step_xy(start, end);
 	xy.x = start.x;
 	xy.y = start.y;
 	err = dxy.x - dxy.y;
@@ -47,17 +47,17 @@ void put_line(mlx_image_t *img, t_vec2 start, t_vec2 end, uint32_t color)
 	}
 }
 
-static t_ivec2	get_sxy(t_vec2 start, t_vec2 end)
+static t_icoords	get_step_xy(t_coords start, t_coords end)
 {
-	t_ivec2	sxy;
+	t_icoords	step_xy;
 
 	if (start.x < end.x)
-		sxy.x = 1;
+		step_xy.x = 1;
 	else
-		sxy.x = -1;
+		step_xy.x = -1;
 	if (start.y < end.y)
-		sxy.y = 1;
+		step_xy.y = 1;
 	else
-		sxy.y = -1;
-	return (sxy);
+		step_xy.y = -1;
+	return (step_xy);
 }
