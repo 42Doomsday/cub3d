@@ -6,11 +6,11 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 14:03:39 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/04 14:24:11 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:27:48 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parsing.h"
 
 static void	flush(int fd);
 

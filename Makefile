@@ -5,15 +5,20 @@ LIBFT_DIR = libft
 MLX_DIR = MLX42
 MLX_BUILD = $(MLX_DIR)/build
 PARSING_DIR = parsing
-PARSING_DIR = parsing
+MINIMAP_DIR = minimap
+GAME_DIR = game
+CORE_DIR = core
 
 NAME = game
+
+CC = cc
 
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_BUILD)/libmlx42.a
 
 CFLAGS = -Wall -Wextra -Werror -Iinclude -g
-EXTRA_FLAGS = -lglfw -ldl -pthread -lm
+GUI_FLAGS = -lglfw -pthread -ldl
+MATH_FLAG = -lm
 
 VALGRIND = valgrind \
 	--leak-check=full \
@@ -21,7 +26,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SOURCES  = main.c
+SOURCES  = main.c utils.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
@@ -29,14 +34,22 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
 		helpers/flood_fill.c helpers/is_closed.c parse.c
 
+MINIMAP_SOURCES =  put_player.c put_minimap.c helpers/put_line.c helpers/put_circle.c
 
+GAME_SOURCES = put_screen.c
+
+CORE_SOURCES = move_player_forward.c cast_ray.c is_wall.c
+
+GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
+MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
+CORE_SRC = $(addprefix $(CORE_DIR)/, $(CORE_SOURCES))
 
-SRC = $(SOURCES) $(PARSING_SRC)
+SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) $(CORE_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-TEST_SRC  = $(filter-out main.c, $(SRC))
+TEST_SRC  = $(PARSING_SRC) utils.c
 TEST_OBJ  = $(TEST_SRC:%.c=$(OBJ_DIR)/%.o)
 
 TEST_NAMES = test_parse_map test_expand_tabs \
@@ -56,20 +69,15 @@ $(MLX):
 	@cmake -S $(MLX_DIR) -B $(MLX_BUILD)
 	@cmake --build $(MLX_BUILD) -j4
 
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@cc $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
+	@$(CC) $(CFLAGS) $(GUI_FLAGS) $(OBJ) $(LIBFT) $(MLX) $(MATH_FLAG) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(dir $@)
-	@cc $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT) | $(OBJ_DIR)
-	@cc $(CFLAGS) $< $(TEST_OBJ) $(LIBFT) -o $@
+$(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT)
+	@$(CC) $(CFLAGS) $< $(TEST_OBJ) $(LIBFT) $(MATH_FLAG) -o $@
 
 re: fclean $(NAME)
 
@@ -108,6 +116,8 @@ test-leaks: $(TESTS)
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf $(LIBFT)
+	@rm -rf $(MLX42)
 
 clean:
 	@rm -rf $(OBJ_DIR)

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 17:20:00 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/02/23 14:13:47 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/12 14:05:42 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,16 @@ static bool	simple_test(void)
 {
 	t_player	player;
 	ft_bzero(&player, sizeof(player));
+	char	line[] = "10000N1";
 	char	*map[] = {
 		"1111111",
-		"10000N1",
+		line,
 		"1000001",
 		"1111111",
 		NULL
 	};
 	parse_player(map, &player);
-	if (player.x == 5 && player.y == 1 && player.side == 'N')
+	if (player.coords.x == 5.5f && player.coords.y == 1.5f && player.dir.degree == 0)
 	{
 		putsuccess("Simple map");
 		return (true);
@@ -64,7 +65,7 @@ static bool	bad_map_test(void)
 		NULL
 	};
 	parse_player(map, &player);
-	if (player.x == 0 && player.y == 0 && player.side == 0)
+	if (player.coords.x == 0 && player.coords.y == 0 && player.dir.degree == 0)
 	{
 		putsuccess("Bad map test");
 		return (true);
@@ -80,9 +81,10 @@ static bool	duplicated_player_test(void)
 {
 	t_player	player;
 	ft_bzero(&player, sizeof(player));
+	char	line[] = "1E00001";
 	char	*map[] = {
 		"1111111",
-		"1E00001",
+		line,
 		"100N001",
 		"1111111",
 		NULL
