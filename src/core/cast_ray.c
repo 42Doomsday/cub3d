@@ -15,14 +15,12 @@
 float	find_dist(t_vec2 origin, t_vec2 unit_vector, bool coord);
 t_vec2	normilize(float angle);
 
-float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map)
+float	get_dist_to_wall(t_vec2 origin, t_vec2 wall)
 {
-	t_vec2	wall;
 	float	dist_x;
 	float	dist_y;
 	float	dist;
 
-	wall = cast_ray_to_wall(origin, angle, map);
 	dist_x = fabs(wall.x - origin.x);
 	dist_y = fabs(wall.y - origin.y);
 	dist = sqrt(dist_x * dist_x + dist_y * dist_y);

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/13 14:05:34 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:50:38 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,26 @@ static void	put_minimap_image(t_cub3d *info);
 static void	put_game_image(t_cub3d *info);
 static void	on_resize(int32_t width, int32_t height, void *param);
 static void	ft_hook(void *param);
+
+void	get_all_rays(t_rays *rays, t_map *map, t_player *player)
+{
+	size_t	i;
+	float	proj_plane_dist;
+	float	offset;
+	float	cur_angle;
+
+	proj_plane_dist = (rays->count / 2.0f) / tan(rays->fov / 2.0f);
+	i = 0;
+	while (i < rays->count)
+	{
+		offset = (rays->count - i) - (rays->count / 2.0f) + 0.5f;
+		cur_angle = player->dir.radians + atan2f(offset, proj_plane_dist);
+		rays->coords[i] = cast_ray_to_wall(player->coords, cur_angle, map);
+		rays->distances[i] = get_dist_to_wall(player->coords, rays->coords[i]);
+		rays->distances[i] *= cosf(cur_angle - player->dir.radians);
+		i++;
+	}
+}
 
 int32_t	main(int argc, char **argv)
 {
@@ -76,9 +96,16 @@ static void	put_game_image(t_cub3d *info)
 
 	width = info->mlx->width;
 	height = info->mlx->height;
+	info->rays.count = width;
+	info->rays.fov = 60.0f * M_PI / 180.0f;
+	free(info->rays.coords);
+	info->rays.coords = malloc(width * sizeof(t_vec2));
+	free(info->rays.distances);
+	info->rays.distances = malloc(width * sizeof(float));
+	get_all_rays(&info->rays, &info->map, &info->player);
 	info->game = mlx_new_image(info->mlx, width, height);
 	info->game_bs = get_block_size(&info->map, width, height);
-	put_game_screen(info->game, &info->map, &info->player);
+	put_game_screen(info->game, &info->rays);
 	mlx_image_to_window(info->mlx, info->game, 0, 0);
 }
 
@@ -114,6 +141,7 @@ static void	ft_hook(void *param)
 		update_player_degree(player, player->dir.degree + PLAYER_ROT_STEP);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_W))
 		move_player_forward(&info->map, &info->player);
-	put_game_screen(info->game, &info->map, &info->player);
+	get_all_rays(&info->rays, &info->map, &info->player);
+	put_game_screen(info->game, &info->rays);
 	put_minimap(info);
 }

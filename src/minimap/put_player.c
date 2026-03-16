@@ -13,14 +13,14 @@
 #include "minimap.h"
 
 static t_player_draw	make_draw_params(t_cub3d *info);
-static void				put_direction_ray(t_player_draw params, t_cub3d *info);
+static void				put_direction_ray(t_player_draw prms, t_cub3d *info, t_rays *rays);
 
 void	put_player(t_cub3d *info)
 {
 	t_player_draw	params;
 
 	params = make_draw_params(info);
-	put_direction_ray(params, info);
+	put_direction_ray(params, info, &info->rays);
 	put_circle(info->minimap, params.center, params.radius);
 }
 
@@ -42,24 +42,15 @@ static t_player_draw	make_draw_params(t_cub3d *info)
 	return (params);
 }
 
-static void	put_direction_ray(t_player_draw prms, t_cub3d *info)
+static void	put_direction_ray(t_player_draw prms, t_cub3d *info, t_rays *rays)
 {
-	float	fov;
-	float	ray_angle;
-	float	step;
-	int		rays;
-	int		i;
+	size_t	i;
 
-	fov = 60.0f * M_PI / 180.0f;
-	rays = info->minimap->width / 10;
-	step = fov / rays;
 	i = 0;
-	while (i < rays)
+	while (i < rays->count)
 	{
-		ray_angle = (info->player.dir.radians - fov / 2) + step * i;
-		prms.wall_coords = cast_ray_to_wall(info->player.coords, ray_angle, &info->map);
-		prms.end_px.x = prms.wall_coords.x * info->minimap_bs;
-		prms.end_px.y = prms.wall_coords.y * info->minimap_bs;
+		prms.end_px.x = rays->coords[i].x * info->minimap_bs;
+		prms.end_px.y = rays->coords[i].y * info->minimap_bs;
 		put_line(
 			info->minimap,
 			prms.start_px,

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/13 14:11:37 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:42:41 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,20 @@ typedef struct s_player
 	t_vec2		coords;
 }	t_player;
 
+typedef struct s_coords
+{
+	float	x;
+	float	y;
+}	t_coords;
+
+typedef	struct s_rays
+{
+	float	fov;
+	t_vec2	*coords;
+	float	*distances;
+	size_t	count;
+}	t_rays;
+
 typedef struct s_cub3d
 {
 	mlx_t		*mlx;
@@ -121,6 +135,7 @@ typedef struct s_cub3d
 	int			minimap_bs;
 	mlx_image_t	*game;
 	int			game_bs;
+	t_rays		rays;
 }	t_cub3d;
 
 // parsers
@@ -144,7 +159,7 @@ bool	msg_on_error(bool result, char *error_type, char *message);
 
 // core
 void	move_player_forward(t_map *map, t_player *player);
-float	get_dist_to_wall(t_vec2 origin, float angle, t_map *map);
+float	get_dist_to_wall(t_vec2 origin, t_vec2 wall);
 t_vec2	cast_ray_to_border(t_vec2 origin, float angle);
 t_vec2	cast_ray_to_wall(t_vec2 origin, float angle, t_map *map);
 void	update_player_degree(t_player *player, float degree);
@@ -155,7 +170,7 @@ bool	is_wall_or_space_on_coords(t_map *map, int x, int y);
 void	put_minimap(t_cub3d *info);
 
 // game
-void	put_game_screen(mlx_image_t *img, t_map *map, t_player *player);
+void	put_game_screen(mlx_image_t *image, t_rays *rays);
 
 // utils
 int		get_block_size(t_map *map, int32_t width, int32_t height);

@@ -6,55 +6,22 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 16:00:18 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:35:38 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	get_all_rays(float *array, size_t size, t_map *map, t_player *player, float fov);
-static void	build_walls(mlx_image_t *image, float *rays, size_t size, float fov);
-
-
-void	put_game_screen(mlx_image_t *img, t_map *map, t_player *player)
-{
-	float	rays_arr[img->width];
-	float	fov;
-
-	fov = 90.0f * M_PI / 180.0f;
-	get_all_rays(rays_arr, img->width, map,  player, fov);
-	build_walls(img, rays_arr, img->width, fov);
-}
-
-static void	get_all_rays(float *array, size_t size, t_map *map, t_player *player, float fov)
-{
-	size_t	i;
-	float	proj_plane_dist;
-	float	offset;
-	float	cur_angle;
-
-	proj_plane_dist = (size / 2.0f) / tan(fov / 2.0f);
-	i = 0;
-	while (i < size)
-	{
-		offset = (size - i) - (size / 2.0f) + 0.5f;
-		cur_angle = player->dir.radians + atan2f(offset, proj_plane_dist);
-		array[i] = get_dist_to_wall(player->coords, cur_angle, map);
-		array[i] *= cosf(cur_angle - player->dir.radians);
-		i++;
-	}
-}
-
-static void	build_walls(mlx_image_t *image, float *rays, size_t size, float fov)
+void	put_game_screen(mlx_image_t *image, t_rays *rays)
 {
 	size_t	i;
 	float	proj_plane;
 
-	proj_plane = (image->width / 2.0f) / tan(fov / 2.0f);
+	proj_plane = (image->width / 2.0f) / tan(rays->fov / 2.0f);
 	i = 0;
-	while (i < size)
+	while (i < rays->count)
 	{
-		int col_height = (int)(proj_plane / rays[i]);
+		int col_height = (int)(proj_plane / rays->distances[i]);
 		int top = (image->height / 2) - (col_height / 2);
 		int bot = (image->height / 2) + (col_height / 2);
 		if (top < 0) top = 0;

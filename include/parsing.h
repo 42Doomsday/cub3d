@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:19 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:31:24 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:40:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@
 #define FILL '2'
 #define SPACE ' '
 #define WALL '0'
-
-typedef struct s_coords
-{
-	int	x;
-	int	y;
-}	t_coords;
 
 // map
 char	**read_lines(int fd);
