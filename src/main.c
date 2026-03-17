@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 18:36:41 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:29:28 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	get_all_rays(t_rays *rays, t_map *map, t_player *player)
 	{
 		offset = (rays->count - i) - (rays->count / 2.0f) + 0.5f;
 		cur_angle = player->dir.radians + atan2f(offset, proj_plane_dist);
-		rays->coords[i] = cast_ray_to_wall(player->coords, cur_angle, map);
-		rays->distances[i] = get_dist_to_wall(player->coords, rays->coords[i]);
+		rays->walls[i] = cast_ray_to_wall(player->coords, cur_angle, map);
+		rays->distances[i] = get_dist_to_wall(player->coords, rays->walls[i].coords);
 		rays->distances[i] *= cosf(cur_angle - player->dir.radians);
 		i++;
 	}
@@ -99,8 +99,8 @@ static void	put_game_image(t_cub3d *info)
 	height = info->mlx->height;
 	info->rays.count = width;
 	info->rays.fov = 60.0f * M_PI / 180.0f;
-	free(info->rays.coords);
-	info->rays.coords = malloc(width * sizeof(t_vec2));
+	free(info->rays.walls);
+	info->rays.walls = malloc(width * sizeof(t_wall_info));
 	free(info->rays.distances);
 	info->rays.distances = malloc(width * sizeof(float));
 	get_all_rays(&info->rays, &info->map, &info->player);

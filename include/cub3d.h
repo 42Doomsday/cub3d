@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 18:35:31 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:28:32 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,16 @@ typedef struct s_player
 	t_coords	coords;
 }	t_player;
 
+typedef struct s_wall_info
+{
+	t_coords		coords;
+	t_texture_id	side;
+}	t_wall_info;
+
 typedef	struct s_rays
 {
 	float		fov;
-	t_coords	*coords;
+	t_wall_info	*walls;
 	float		*distances;
 	size_t		count;
 }	t_rays;
@@ -160,10 +166,11 @@ bool	msg_on_error(bool result, char *error_type, char *message);
 // core
 void	move_player(t_map *map, t_player *player, float step);
 float	get_dist_to_wall(t_coords origin, t_coords wall);
-t_coords	cast_ray_to_wall(t_coords origin, float angle, t_map *map);
+t_wall_info	cast_ray_to_wall(t_coords origin, float angle, t_map *map);
 void	update_player_degree(t_player *player, float degree);
 bool	is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
 bool	is_wall_or_space_on_coords(t_map *map, int x, int y);
+t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);
 
 // minimap
 void	put_minimap(t_cub3d *info);

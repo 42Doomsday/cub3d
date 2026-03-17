@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 18:36:10 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:35:15 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,15 @@ void	put_game_screen(mlx_image_t *image, t_textures *text, t_rays *rays)
 		}
 		while (j < bot)
 		{
-			mlx_put_pixel(image, i, j, get_rgba(180, 100, 60, 255));
+			if (rays->walls[i].side == NORTH)
+				pixel = get_rgba(170, 90, 50, 255);
+			else if (rays->walls[i].side == EAST)
+				pixel = get_rgba(160, 80, 40, 255);
+			else if (rays->walls[i].side == SOUTH)
+				pixel = get_rgba(150, 70, 60, 255);
+			else if (rays->walls[i].side == WEST)
+				pixel = get_rgba(180, 100, 60, 255);
+			mlx_put_pixel(image, i, j, pixel);
 			j++;
 		}
 		while (j < (int)image->height)

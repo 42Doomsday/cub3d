@@ -47,8 +47,8 @@ static void	put_direction_ray(t_player_draw prms, t_cub3d *info, t_rays *rays)
 	i = 0;
 	while (i < rays->count)
 	{
-		prms.end_px.x = rays->coords[i].x * info->minimap_bs;
-		prms.end_px.y = rays->coords[i].y * info->minimap_bs;
+		prms.end_px.x = rays->walls[i].coords.x * info->minimap_bs;
+		prms.end_px.y = rays->walls[i].coords.y * info->minimap_bs;
 		put_line(
 			info->minimap,
 			prms.start_px,

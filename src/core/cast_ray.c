@@ -27,8 +27,9 @@ float	get_dist_to_wall(t_coords origin, t_coords wall)
 	return (dist);
 }
 
-t_coords	cast_ray_to_wall(t_coords origin, float angle, t_map *map)
+t_wall_info	cast_ray_to_wall(t_coords origin, float angle, t_map *map)
 {
+	t_wall_info	result;
 	t_coords	ray_coords;
 	t_vec2		unit_vector;
 
@@ -38,7 +39,11 @@ t_coords	cast_ray_to_wall(t_coords origin, float angle, t_map *map)
 	{
 		ray_coords = cast_ray_to_border(ray_coords, angle);
 		if (is_wall(ray_coords, unit_vector, map))
-			return (ray_coords);
+		{
+			result.coords = ray_coords;
+			result.side = get_side_of_wall(ray_coords, unit_vector);
+			return (result);
+		}
 	}
 }
 
