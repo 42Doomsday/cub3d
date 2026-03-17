@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/17 14:29:28 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/17 16:21:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ static void	put_game_image(t_cub3d *info)
 	get_all_rays(&info->rays, &info->map, &info->player);
 	info->game = mlx_new_image(info->mlx, width, height);
 	info->game_bs = get_block_size(&info->map, width, height);
+	printf("New game_bs is %d\n", info->game_bs);
+	printf("First ray distance %f\n", info->rays.distances[0]);
+	printf("1/distance=%f\n", 1 / info->rays.distances[0]);
+	printf("wall_width_in_px=width/distance=%d\n", (int)(width / info->rays.distances[0]));
+	printf("one_pixel_on_texture=wall_width_in_px/text_size=%d\n", (int)(width / info->rays.distances[0]) / 8);
 	put_game_screen(info->game, &info->textures, &info->rays);
 	mlx_image_to_window(info->mlx, info->game, 0, 0);
 }

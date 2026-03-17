@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 14:06:28 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/17 14:22:01 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/17 17:18:01 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,20 @@ t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector)
 			result = EAST;
 	}
 	return (result);
+}
+
+int	get_cur_px_on_wall(t_coords wall, int wall_width_in_px)
+{
+	bool	cross_x;
+	bool	cross_y;
+	int		cur_px;
+
+	is_on_edges(wall, &cross_x, &cross_y);
+	if (cross_x)
+		cur_px = fabs(wall.y - floorf(wall.y)) * wall_width_in_px;
+	else
+		cur_px = fabs(wall.x - floorf(wall.x)) * wall_width_in_px;
+	return (cur_px);
 }
 
 bool	is_wall_or_space_on_coords(t_map *map, int x, int y)

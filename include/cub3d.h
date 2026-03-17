@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/17 14:28:32 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/17 16:41:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void	update_player_degree(t_player *player, float degree);
 bool	is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
 bool	is_wall_or_space_on_coords(t_map *map, int x, int y);
 t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);
+int	get_cur_px_on_wall(t_coords wall, int wall_width_in_px);
 
 // minimap
 void	put_minimap(t_cub3d *info);
