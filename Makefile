@@ -38,7 +38,7 @@ MINIMAP_SOURCES =  put_player.c put_minimap.c helpers/put_line.c helpers/put_cir
 
 GAME_SOURCES = put_game_screen.c
 
-CORE_SOURCES = move_player_forward.c cast_ray.c is_wall.c
+CORE_SOURCES = move_player.c cast_ray.c is_wall.c
 
 GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
