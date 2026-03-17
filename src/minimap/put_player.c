@@ -53,7 +53,7 @@ static void	put_direction_ray(t_player_draw prms, t_cub3d *info, t_rays *rays)
 			info->minimap,
 			prms.start_px,
 			prms.end_px,
-			get_rgba(0, 215, 0, 200)
+			get_rgba(0, 215, 0, 255)
 		);
 		i++;
 	}
