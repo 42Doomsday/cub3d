@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/18 16:18:06 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/18 16:59:30 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,12 @@ typedef	struct s_rays
 	size_t		count;
 }	t_rays;
 
+typedef struct s_png_textures
+{
+	mlx_texture_t	*north;
+	mlx_texture_t	*south;
+}	t_png_textures;
+
 typedef struct s_cub3d
 {
 	mlx_t		*mlx;
@@ -142,6 +148,7 @@ typedef struct s_cub3d
 	mlx_image_t	*game;
 	int			game_bs;
 	t_rays		rays;
+	t_png_textures	text;
 }	t_cub3d;
 
 // parsers
@@ -177,7 +184,7 @@ float	get_cur_px_on_wall(t_wall_info info, float wall_width_in_px);
 void	put_minimap(t_cub3d *info);
 
 // game
-void	put_game_screen(mlx_image_t *image, t_textures *text, t_rays *rays);
+void	put_game_screen(mlx_image_t *image, t_textures *text, t_png_textures *pngs, t_rays *rays);
 
 // utils
 int		get_block_size(t_map *map, int32_t width, int32_t height);

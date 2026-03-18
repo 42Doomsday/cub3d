@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/17 16:21:40 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/18 16:57:55 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ void	get_all_rays(t_rays *rays, t_map *map, t_player *player)
 	}
 }
 
+
+
+void	init_textures(t_png_textures *pngs, t_textures *textures)
+{
+	pngs->north = mlx_load_png(textures->north);
+}
+
 int32_t	main(int argc, char **argv)
 {
 	static t_cub3d	info;
@@ -63,6 +70,8 @@ int32_t	main(int argc, char **argv)
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
+
+	init_textures(&info.text, &info.textures);
 
 	put_game_image(&info);
 	put_minimap_image(&info);
@@ -111,7 +120,7 @@ static void	put_game_image(t_cub3d *info)
 	printf("1/distance=%f\n", 1 / info->rays.distances[0]);
 	printf("wall_width_in_px=width/distance=%d\n", (int)(width / info->rays.distances[0]));
 	printf("one_pixel_on_texture=wall_width_in_px/text_size=%d\n", (int)(width / info->rays.distances[0]) / 8);
-	put_game_screen(info->game, &info->textures, &info->rays);
+	put_game_screen(info->game, &info->textures, &info->text, &info->rays);
 	mlx_image_to_window(info->mlx, info->game, 0, 0);
 }
 
@@ -154,6 +163,6 @@ static void	ft_hook(void *param)
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
 		move_player(&info->map, &info->player, 190);
 	get_all_rays(&info->rays, &info->map, &info->player);
-	put_game_screen(info->game, &info->textures, &info->rays);
+	put_game_screen(info->game, &info->textures, &info->text, &info->rays);
 	put_minimap(info);
 }
