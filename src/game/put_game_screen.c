@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/18 15:47:52 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/18 15:54:07 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,24 @@ void	put_game_screen(mlx_image_t *image, t_textures *text, t_rays *rays)
 	size_t		x;
 	int			y;
 	float		proj_plane;
+	int			wall_column_height;
+	int			wall_top_px;
+	int			wall_bot_px;
 
 	proj_plane = (image->width / 2.0f) / tan(rays->fov / 2.0f);
 	x = 0;
 	while (x < rays->count)
 	{
-		int col_height = (int)(proj_plane / rays->distances[x]);
-		int top = (image->height / 2) - (col_height / 2);
-		int bot = (image->height / 2) + (col_height / 2);
-		if (top < 0) top = 0;
-		if (bot > (int)image->height)bot = image->height;
 		y = 0;
-		put_ceiling(text, image, x, &y, top);
-		put_textures(rays, image, x, &y, bot);
+		wall_column_height = (int)(proj_plane / rays->distances[x]);
+		wall_top_px = (image->height / 2) - (wall_column_height / 2);
+		wall_bot_px = (image->height / 2) + (wall_column_height / 2);
+		if (wall_top_px < 0)
+			wall_top_px = 0;
+		if (wall_bot_px > (int)image->height)
+			wall_bot_px = image->height;
+		put_ceiling(text, image, x, &y, wall_top_px);
+		put_textures(rays, image, x, &y, wall_bot_px);
 		put_floor(text, image, x, &y, image->height);
 		x++;
 	}
