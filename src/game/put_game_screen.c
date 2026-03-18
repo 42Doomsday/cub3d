@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/18 15:54:07 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/18 16:18:16 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	put_game_screen(mlx_image_t *image, t_textures *text, t_rays *rays)
 	while (x < rays->count)
 	{
 		y = 0;
-		wall_column_height = (int)(proj_plane / rays->distances[x]);
+		wall_column_height = roundf(proj_plane / rays->distances[x]);
 		wall_top_px = (image->height / 2) - (wall_column_height / 2);
 		wall_bot_px = (image->height / 2) + (wall_column_height / 2);
 		if (wall_top_px < 0)
@@ -69,12 +69,12 @@ static void	put_textures(t_rays *rays, mlx_image_t *image, int x, int *y, int en
 	};
 	size_t	text_size = 7;
 
-	int	wall_width_in_px = image->width / rays->distances[x];
-	int	one_pixel_on_texture = wall_width_in_px / text_size;
-	int cur_pos_on_the_wall_in_px = get_cur_px_on_wall(rays->walls[x].coords, wall_width_in_px);
+	float	wall_width_in_px = image->width / rays->distances[x];
+	float	one_pixel_on_texture = wall_width_in_px / text_size;
+	float	cur_pos_on_the_wall_in_px = get_cur_px_on_wall(rays->walls[x], wall_width_in_px);
 	uint32_t	pixel;
 
-	pixel = texture[cur_pos_on_the_wall_in_px / one_pixel_on_texture];
+	pixel = texture[(int)(cur_pos_on_the_wall_in_px / one_pixel_on_texture)];
 	while (*y < end)
 	{
 		mlx_put_pixel(image, x, *y, pixel);

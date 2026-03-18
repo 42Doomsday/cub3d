@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 14:06:28 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/17 17:18:01 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/18 16:17:57 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static int	get_block_coord(bool on_edge, float current, float unit_value);
 
 bool	is_wall(t_coords start, t_vec2 unit_vector, t_map *map)
 {
-	bool	cross_x;
-	bool	cross_y;
+	bool	is_on_x;
+	bool	is_on_y;
 	int		x;
 	int		y;
 
@@ -26,16 +26,16 @@ bool	is_wall(t_coords start, t_vec2 unit_vector, t_map *map)
 	y = floor(start.y);
 	if (x > 0 && y > 0)
 	{
-		is_on_edges(start, &cross_x, &cross_y);
-		if (cross_x && cross_y)
+		is_on_edges(start, &is_on_x, &is_on_y);
+		if (is_on_x && is_on_y)
 		{
 			if (is_wall_or_space_on_coords(map, x - 1, y - 1))
 				return (true);
 		}
-		else if (cross_x || cross_y)
+		else if (is_on_x || is_on_y)
 		{
-			x = get_block_coord(cross_x, start.x, unit_vector.x);
-			y = get_block_coord(cross_y, start.y, unit_vector.y);
+			x = get_block_coord(is_on_x, start.x, unit_vector.x);
+			y = get_block_coord(is_on_y, start.y, unit_vector.y);
 		}
 	}
 	return (is_wall_or_space_on_coords(map, x, y));
@@ -43,20 +43,20 @@ bool	is_wall(t_coords start, t_vec2 unit_vector, t_map *map)
 
 t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector)
 {
-	bool			cross_x;
-	bool			cross_y;
+	bool			is_on_x;
+	bool			is_on_y;
 	t_texture_id	result;
 
-	is_on_edges(wall, &cross_x, &cross_y);
+	is_on_edges(wall, &is_on_x, &is_on_y);
 	result = FLOOR;
-	if (cross_y)
+	if (is_on_y)
 	{
 		if (unit_vector.y < 0)
 			result = NORTH;
 		else
 			result = SOUTH;
 	}
-	else if (cross_x)
+	else if (is_on_x)
 	{
 		if (unit_vector.x < 0)
 			result = WEST;
@@ -66,17 +66,14 @@ t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector)
 	return (result);
 }
 
-int	get_cur_px_on_wall(t_coords wall, int wall_width_in_px)
+float	get_cur_px_on_wall(t_wall_info info, float wall_width_in_px)
 {
-	bool	cross_x;
-	bool	cross_y;
-	int		cur_px;
+	float	cur_px;
 
-	is_on_edges(wall, &cross_x, &cross_y);
-	if (cross_x)
-		cur_px = fabs(wall.y - floorf(wall.y)) * wall_width_in_px;
+	if (info.side == EAST || info.side == WEST)
+		cur_px = fabs(info.coords.y - floorf(info.coords.y)) * wall_width_in_px;
 	else
-		cur_px = fabs(wall.x - floorf(wall.x)) * wall_width_in_px;
+		cur_px = fabs(info.coords.x - floorf(info.coords.x)) * wall_width_in_px;
 	return (cur_px);
 }
 
