@@ -6,22 +6,21 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/18 15:39:44 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/18 15:47:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static void	put_ceiling(t_textures *text, mlx_image_t *image, int x, int *y, int end);
 static void put_textures(t_rays *rays, mlx_image_t *image, int x, int *y, int end);
+static void	put_floor(t_textures *text, mlx_image_t *image, int x, int *y, int end);
 
 void	put_game_screen(mlx_image_t *image, t_textures *text, t_rays *rays)
 {
 	size_t		x;
 	int			y;
 	float		proj_plane;
-	int			pixel;
-
-
 
 	proj_plane = (image->width / 2.0f) / tan(rays->fov / 2.0f);
 	x = 0;
@@ -33,24 +32,26 @@ void	put_game_screen(mlx_image_t *image, t_textures *text, t_rays *rays)
 		if (top < 0) top = 0;
 		if (bot > (int)image->height)bot = image->height;
 		y = 0;
-		while (y < top)
-		{
-			pixel = get_rgba(text->ceiling[0], text->ceiling[1], text->ceiling[2], 255);
-			mlx_put_pixel(image, x, y, pixel);
-			y++;
-		}
+		put_ceiling(text, image, x, &y, top);
 		put_textures(rays, image, x, &y, bot);
-		while (y < (int)image->height)
-		{
-			pixel = get_rgba(text->floor[0], text->floor[1], text->floor[2], 255);
-			mlx_put_pixel(image, x, y, pixel);
-			y++;
-		}
+		put_floor(text, image, x, &y, image->height);
 		x++;
 	}
 }
 
-static void put_textures(t_rays *rays, mlx_image_t *image, int x, int *y, int end)
+static void	put_ceiling(t_textures *text, mlx_image_t *image, int x, int *y, int end)
+{
+	uint32_t	pixel;
+
+	while (*y < end)
+	{
+		pixel = get_rgba(text->ceiling[0], text->ceiling[1], text->ceiling[2], 255);
+		mlx_put_pixel(image, x, *y, pixel);
+		(*y)++;
+	}
+}
+
+static void	put_textures(t_rays *rays, mlx_image_t *image, int x, int *y, int end)
 {
 	uint32_t	texture[] = {
 		get_rgba(255, 0, 0, 255),
@@ -71,6 +72,18 @@ static void put_textures(t_rays *rays, mlx_image_t *image, int x, int *y, int en
 	pixel = texture[cur_pos_on_the_wall_in_px / one_pixel_on_texture];
 	while (*y < end)
 	{
+		mlx_put_pixel(image, x, *y, pixel);
+		(*y)++;
+	}
+}
+
+static void	put_floor(t_textures *text, mlx_image_t *image, int x, int *y, int end)
+{
+	uint32_t	pixel;
+
+	while (*y < end)
+	{
+		pixel = get_rgba(text->floor[0], text->floor[1], text->floor[2], 255);
 		mlx_put_pixel(image, x, *y, pixel);
 		(*y)++;
 	}
