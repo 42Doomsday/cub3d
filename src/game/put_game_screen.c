@@ -6,14 +6,14 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/18 19:25:33 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/19 18:45:29 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static void	put_ceiling(t_textures *text, mlx_image_t *image, int x, int *y, int end);
-static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end);
+static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end, int wall_height_in_px);
 static void	put_floor(t_textures *text, mlx_image_t *image, int x, int *y, int end);
 
 void	put_game_screen(mlx_image_t *image, t_textures *text, t_png_textures *pngs, t_rays *rays)
@@ -38,7 +38,7 @@ void	put_game_screen(mlx_image_t *image, t_textures *text, t_png_textures *pngs,
 		if (wall_bot_px > (int)image->height)
 			wall_bot_px = image->height;
 		put_ceiling(text, image,  x, &y, wall_top_px);
-		put_textures(rays, image, pngs, x, &y, wall_bot_px);
+		put_textures(rays, image, pngs, x, &y, wall_bot_px, wall_column_height);
 		put_floor(text, image, x, &y, image->height);
 		x++;
 	}
@@ -69,30 +69,62 @@ uint32_t get_text_pixel(mlx_texture_t *text, int x, int y)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end)
+static int	get_texture_column(t_wall_info *wall, mlx_texture_t *texture)
 {
-	/* float	wall_height = end - *y; */
-	float	wall_width_in_px = image->width / rays->distances[x];
-	float	one_pixel_on_texture = wall_width_in_px / pngs->north->width;
-	float	cur_pos_on_the_wall_in_px = get_cur_px_on_wall(rays->walls[x], wall_width_in_px);
-	uint32_t	pixel;
-	/* float step = (float)pngs->north->height / wall_height;
-	float text_pos = (*y - image->height / 2 + wall_height) * step; */
-	/* printf("width %d, height: %d\n", pngs->north->width, pngs->north->height);
-	printf("wall_width_in_px = %f   wall_height %f\n", wall_width_in_px, wall_height); */
-/* 	printf("step %f   text pos %f\n", step, text_pos); */
-	/* printf("one_pixel_on_texture = %f\n", one_pixel_on_texture);
-	printf("cur_pos_on_wall = %f\n", cur_pos_on_the_wall_in_px);
-	printf("accessing pixel = %d\n", (int)(cur_pos_on_the_wall_in_px / one_pixel_on_texture)); */
-	int i = 0;
+	int	column_idx;
+
+	if (wall->side == NORTH || wall->side == SOUTH)
+		column_idx = (int)((wall->coords.x - (float)(int)wall->coords.x) * (float)texture->width);
+	else
+		column_idx = (int)((wall->coords.y - (float)(int)wall->coords.y) * (float)texture->width);
+	if (column_idx < 0)
+		column_idx = 0;
+	if (column_idx >= (int)texture->width)
+		column_idx = (int)texture->width - 1;
+	return (column_idx);
+}
+
+static int	get_texture_row(float text_pos, mlx_texture_t *texture)
+{
+	int	row_idx;
+
+	row_idx = (int)text_pos;
+	if (row_idx < 0)
+		row_idx = 0;
+	if (row_idx >= (int)texture->height)
+		row_idx = (int)texture->height - 1;
+	return (row_idx);
+}
+
+static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end, int wall_column_hight)
+{
+	mlx_texture_t	*texture;
+	uint32_t		pixel;
+	int				text_x;
+	int				text_y;
+	int				screen_center;
+	float			step;
+	float			text_pos;
+	int				wall_top_unclipped;
+	t_wall_info		*wall;
+
+	wall = &rays->walls[x];
+	texture = pngs->north;
+
+	text_x = get_texture_column(wall, texture);
+
+	step = (float)texture->height / (float)wall_column_hight;
+	screen_center = image->height / 2;
+	wall_top_unclipped = screen_center - wall_column_hight / 2;
+
+	text_pos = (float)(*y - wall_top_unclipped) * step;
 	while (*y < end)
 	{
-/* 		int text_y = (int)text_pos;
-		text_pos += step; */
-		pixel = get_text_pixel(pngs->north, (int)(cur_pos_on_the_wall_in_px / one_pixel_on_texture), (int) i / one_pixel_on_texture);
+		text_y = get_texture_row(text_pos, texture);
+		text_pos += step;
+		pixel = get_text_pixel(texture, text_x, text_y);
 		mlx_put_pixel(image, x, *y, pixel);
 		(*y)++;
-		i++;
 	}
 }
 
