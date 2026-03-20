@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/19 16:47:58 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/20 18:07:33 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@
 #define MINIMAP_PROCENT_SIZE 0.2f
 #define TITLE "cub3d"
 
-static void	put_minimap_image(t_cub3d *info);
-static void	put_game_image(t_cub3d *info);
+static void	*get_malloc_arena(int width);
+static void	initialize(t_cub3d *info, bool reallocate);
+static void	get_frame(t_cub3d *info);
 static void	on_resize(int32_t width, int32_t height, void *param);
 static void	ft_hook(void *param);
 
-void	get_all_rays(t_rays *rays, t_map *map, t_player *player)
+void	get_all_rays(t_rays *rays, t_map *map, t_player *player, int height)
 {
 	size_t	i;
 	float	proj_plane_dist;
@@ -39,14 +40,16 @@ void	get_all_rays(t_rays *rays, t_map *map, t_player *player)
 	{
 		offset = (rays->count - i) - (rays->count / 2.0f) + 0.5f;
 		cur_angle = player->dir.radians + atan2f(offset, proj_plane_dist);
-		rays->walls[i] = cast_ray_to_wall(player->coords, cur_angle, map);
-		rays->distances[i] = get_dist_to_wall(player->coords, rays->walls[i].coords);
+		rays->coords[i] = cast_ray_to_wall(player->coords, cur_angle, map);
+		rays->sides[i] = get_side_of_wall(rays->coords[i], normilize(cur_angle));
+		rays->distances[i] = get_dist_to_wall(player->coords, rays->coords[i]);
 		rays->distances[i] *= cosf(cur_angle - player->dir.radians);
+		rays->heights[i] =  roundf(proj_plane_dist / rays->distances[i]);
+		rays->top_borders[i] = (height / 2) - (rays->heights[i] / 2);
+		rays->bot_borders[i] = (height / 2) + (rays->heights[i] / 2);
 		i++;
 	}
 }
-
-
 
 void	init_textures(t_png_textures *pngs, t_textures *textures)
 {
@@ -72,9 +75,7 @@ int32_t	main(int argc, char **argv)
 	}
 
 	init_textures(&info.text, &info.textures);
-
-	put_game_image(&info);
-	put_minimap_image(&info);
+	initialize(&info, true);
 
 	mlx_loop_hook(info.mlx, ft_hook, &info);
 	mlx_resize_hook(info.mlx, on_resize, &info);
@@ -84,61 +85,23 @@ int32_t	main(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-static void	put_minimap_image(t_cub3d *info)
-{
-	int32_t	width;
-	int32_t	height;
-	int32_t	margin;
-
-	width = info->mlx->width * MINIMAP_PROCENT_SIZE;
-	height = info->mlx->height * MINIMAP_PROCENT_SIZE;
-	margin = width * MINIMAP_PROCENT_SIZE * MINIMAP_PROCENT_SIZE;
-	info->minimap = mlx_new_image(info->mlx, width, height);
-	info->minimap_bs = get_block_size(&info->map, width, height);
-	put_minimap(info);
-	mlx_image_to_window(info->mlx, info->minimap, margin, margin);
-}
-
-static void	put_game_image(t_cub3d *info)
-{
-	int32_t	width;
-	int32_t	height;
-
-	width = info->mlx->width;
-	height = info->mlx->height;
-	info->rays.count = width;
-	info->rays.fov = 60.0f * M_PI / 180.0f;
-	free(info->rays.walls);
-	info->rays.walls = malloc(width * sizeof(t_wall_info));
-	free(info->rays.distances);
-	info->rays.distances = malloc(width * sizeof(float));
-	get_all_rays(&info->rays, &info->map, &info->player);
-	info->game = mlx_new_image(info->mlx, width, height);
-	info->game_bs = get_block_size(&info->map, width, height);
-	printf("New game_bs is %d\n", info->game_bs);
-	printf("First ray distance %f\n", info->rays.distances[0]);
-	printf("1/distance=%f\n", 1 / info->rays.distances[0]);
-	printf("wall_width_in_px=width/distance=%d\n", (int)(width / info->rays.distances[0]));
-	printf("one_pixel_on_texture=wall_width_in_px/text_size=%d\n", (int)(width / info->rays.distances[0]) / 8);
-	put_game_screen(info->game, &info->textures, &info->text, &info->rays);
-	mlx_image_to_window(info->mlx, info->game, 0, 0);
-}
-
 static void	on_resize(int32_t width, int32_t height, void *param)
 {
 	t_cub3d*	info;
+	bool		reallocate;
 
 	info = param;
+	if (width < DEFAULT_WIDTH)
+		width = DEFAULT_WIDTH;
+	if (height <= DEFAULT_HEIGHT)
+		height = DEFAULT_HEIGHT;
+	reallocate = width >= info->mlx->width;
 	info->mlx->width = width;
 	info->mlx->height = height;
 
 	printf("Window resized: %d x %d\n", width, height);
-
-	mlx_delete_image(info->mlx, info->game);
-	put_game_image(info);
-
-	mlx_delete_image(info->mlx, info->minimap);
-	put_minimap_image(info);
+	initialize(info, reallocate);
+	get_frame(info);
 }
 
 static void	ft_hook(void *param)
@@ -162,7 +125,64 @@ static void	ft_hook(void *param)
 		move_player(&info->map, &info->player, 0);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
 		move_player(&info->map, &info->player, 190);
-	get_all_rays(&info->rays, &info->map, &info->player);
+	get_frame(info);
+}
+
+static void	*get_malloc_arena(int width)
+{
+	size_t	size;
+	char	*allocation;
+
+	size = sizeof(t_coords) + sizeof(t_texture_id) + sizeof(float) + sizeof(int) * 3;
+	printf("memory ammount %lu\n", width * size);
+	allocation = malloc(width * size);
+	return (allocation);
+}
+
+static void	initialize(t_cub3d *info, bool reallocate)
+{
+	t_rays	*rays;
+	void	*memory;
+	int		width;
+	int		height;
+	int		margin;
+
+	width = info->mlx->width;
+	height = info->mlx->height;
+	info->rays.count = width;
+	info->rays.fov = 60.0f * M_PI / 180.0f;
+	if (reallocate)
+	{
+		rays = &info->rays;
+		free(rays->coords);
+		memory = get_malloc_arena(info->mlx->width);
+		rays->coords = memory;
+		rays->sides = memory + info->mlx->width * sizeof(t_coords);
+		rays->distances = (void *)rays->sides + width * sizeof(t_texture_id);
+		rays->top_borders = (void *)rays->distances + width * sizeof(float);
+		rays->bot_borders = (void *)rays->top_borders + width * sizeof(int);
+		rays->heights = (void *)rays->bot_borders + width * sizeof(int);
+	}
+
+	if (info->game)
+		mlx_delete_image(info->mlx, info->game);
+	info->game = mlx_new_image(info->mlx, width, height);
+	info->game_bs = get_block_size(&info->map, width, height);
+	mlx_image_to_window(info->mlx, info->game, 0, 0);
+
+	width *= 0.2f;
+	height *= 0.2f;
+	margin = width * 0.2f;
+	if (info->minimap)
+		mlx_delete_image(info->mlx, info->minimap);
+	info->minimap = mlx_new_image(info->mlx, width, height);
+	info->minimap_bs = get_block_size(&info->map, width, height);
+	mlx_image_to_window(info->mlx, info->minimap, margin, margin);
+}
+
+static void	get_frame(t_cub3d *info)
+{
+	get_all_rays(&info->rays, &info->map, &info->player, info->game->height);
 	put_game_screen(info->game, &info->textures, &info->text, &info->rays);
 	put_minimap(info);
 }

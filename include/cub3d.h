@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/18 16:59:30 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/20 16:34:22 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,18 +117,17 @@ typedef struct s_player
 	t_coords	coords;
 }	t_player;
 
-typedef struct s_wall_info
-{
-	t_coords		coords;
-	t_texture_id	side;
-}	t_wall_info;
 
 typedef	struct s_rays
 {
-	float		fov;
-	t_wall_info	*walls;
-	float		*distances;
-	size_t		count;
+	float			fov;
+	size_t			count;
+	t_coords		*coords;
+	t_texture_id	*sides;
+	float			*distances;
+	int				*top_borders;
+	int				*bot_borders;
+	int				*heights;
 }	t_rays;
 
 typedef struct s_png_textures
@@ -139,16 +138,18 @@ typedef struct s_png_textures
 
 typedef struct s_cub3d
 {
-	mlx_t		*mlx;
-	t_textures	textures;
-	t_map		map;
-	t_player	player;
-	mlx_image_t	*minimap;
-	int			minimap_bs;
-	mlx_image_t	*game;
-	int			game_bs;
-	t_rays		rays;
+	mlx_t			*mlx;
+	t_textures		textures;
+	t_map			map;
+	t_player		player;
+	mlx_image_t		*minimap;
+	int				minimap_bs;
+	mlx_image_t		*game;
+	int				game_bs;
+	t_rays			rays;
 	t_png_textures	text;
+	float			proj_plane;
+
 }	t_cub3d;
 
 // parsers
@@ -171,14 +172,13 @@ void	print_error(char *error_type, char *message);
 bool	msg_on_error(bool result, char *error_type, char *message);
 
 // core
-void	move_player(t_map *map, t_player *player, float step);
-float	get_dist_to_wall(t_coords origin, t_coords wall);
-t_wall_info	cast_ray_to_wall(t_coords origin, float angle, t_map *map);
-void	update_player_degree(t_player *player, float degree);
-bool	is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
-bool	is_wall_or_space_on_coords(t_map *map, int x, int y);
-t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);
-float	get_cur_px_on_wall(t_wall_info info, float wall_width_in_px);
+void			move_player(t_map *map, t_player *player, float step);
+float			get_dist_to_wall(t_coords origin, t_coords wall);
+t_coords		cast_ray_to_wall(t_coords origin, float angle, t_map *map);
+void			update_player_degree(t_player *player, float degree);
+bool			is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
+bool			is_wall_or_space_on_coords(t_map *map, int x, int y);
+t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);;
 
 // minimap
 void	put_minimap(t_cub3d *info);
