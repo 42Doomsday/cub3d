@@ -6,14 +6,14 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/19 18:45:29 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:46:46 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static void	put_ceiling(t_textures *text, mlx_image_t *image, int x, int *y, int end);
-static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end, int wall_height_in_px);
+static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end, int wall_top_px, int wall_column_hight);
 static void	put_floor(t_textures *text, mlx_image_t *image, int x, int *y, int end);
 
 void	put_game_screen(mlx_image_t *image, t_textures *text, t_png_textures *pngs, t_rays *rays)
@@ -33,12 +33,8 @@ void	put_game_screen(mlx_image_t *image, t_textures *text, t_png_textures *pngs,
 		wall_column_height = roundf(proj_plane / rays->distances[x]);
 		wall_top_px = (image->height / 2) - (wall_column_height / 2);
 		wall_bot_px = (image->height / 2) + (wall_column_height / 2);
-		if (wall_top_px < 0)
-			wall_top_px = 0;
-		if (wall_bot_px > (int)image->height)
-			wall_bot_px = image->height;
 		put_ceiling(text, image,  x, &y, wall_top_px);
-		put_textures(rays, image, pngs, x, &y, wall_bot_px, wall_column_height);
+		put_textures(rays, image, pngs, x, &y, wall_bot_px, wall_top_px, wall_column_height);
 		put_floor(text, image, x, &y, image->height);
 		x++;
 	}
@@ -47,7 +43,11 @@ void	put_game_screen(mlx_image_t *image, t_textures *text, t_png_textures *pngs,
 static void	put_ceiling(t_textures *text, mlx_image_t *image, int x, int *y, int end)
 {
 	uint32_t	pixel;
+	int			protected_end;
 
+	protected_end = end;
+	if (end < 0)
+		protected_end = 0;
 	while (*y < end)
 	{
 		pixel = get_rgba(text->ceiling[0], text->ceiling[1], text->ceiling[2], 255);
@@ -84,7 +84,7 @@ static int	get_texture_column(t_wall_info *wall, mlx_texture_t *texture)
 	return (column_idx);
 }
 
-static int	get_texture_row(float text_pos, mlx_texture_t *texture)
+static int	put_to_limits(float text_pos, mlx_texture_t *texture)
 {
 	int	row_idx;
 
@@ -96,31 +96,30 @@ static int	get_texture_row(float text_pos, mlx_texture_t *texture)
 	return (row_idx);
 }
 
-static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end, int wall_column_hight)
+static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end, int wall_top_px, int wall_column_hight)
 {
 	mlx_texture_t	*texture;
 	uint32_t		pixel;
 	int				text_x;
 	int				text_y;
-	int				screen_center;
 	float			step;
 	float			text_pos;
-	int				wall_top_unclipped;
 	t_wall_info		*wall;
+	int				protected_end;
 
+	protected_end = end;
+	if (end > (int)image->height)
+		protected_end = image->height;
 	wall = &rays->walls[x];
 	texture = pngs->north;
 
 	text_x = get_texture_column(wall, texture);
-
 	step = (float)texture->height / (float)wall_column_hight;
-	screen_center = image->height / 2;
-	wall_top_unclipped = screen_center - wall_column_hight / 2;
+	text_pos = (float)(*y - wall_top_px) * step;
 
-	text_pos = (float)(*y - wall_top_unclipped) * step;
-	while (*y < end)
+	while (*y < protected_end)
 	{
-		text_y = get_texture_row(text_pos, texture);
+		text_y = put_to_limits(text_pos, texture);
 		text_pos += step;
 		pixel = get_text_pixel(texture, text_x, text_y);
 		mlx_put_pixel(image, x, *y, pixel);
