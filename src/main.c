@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/25 12:00:47 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/25 19:03:49 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static void	ft_hook(void *param)
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_A))
 		move_player(&info->map, &info->player, 0);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
-		move_player(&info->map, &info->player, 190);
+		move_player(&info->map, &info->player, 180);
 	get_frame(info);
 }
 
