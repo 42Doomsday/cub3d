@@ -1,0 +1,102 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   put_textures.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/23 19:43:59 by dkalgano          #+#    #+#             */
+/*   Updated: 2026/03/25 12:01:47 by dkalgano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+typedef t_texture_id text_id;
+typedef mlx_texture_t text;
+
+static uint32_t	get_text_pixel(mlx_texture_t *text, int x, int y);
+static int		get_text_clmn(text_id side, t_coords crds, text *text);
+static int		put_to_limits(float value, int limit);
+
+static mlx_texture_t	*get_text(t_texture_id side, t_png_textures *pngs)
+{
+	mlx_texture_t	*texture;
+
+	if (side == NORTH)
+		texture = pngs->north;
+	else if (side == EAST)
+		texture = pngs->east;
+	else if (side == WEST)
+		texture = pngs->west;
+	else if (side == SOUTH)
+		texture = pngs->south;
+	return (texture);
+}
+
+void	put_textures(t_cub3d *info, int x, int *y)
+{
+	mlx_texture_t	*texture;
+	t_coords		text;
+	float			step;
+	float			text_pos_y;
+	int				end;
+
+	texture = get_text(info->rays.sides[x], &info->text);
+	text.x = get_text_clmn(info->rays.sides[x], info->rays.coords[x], texture);
+	step = (float)texture->height / (float)info->rays.heights[x];
+	text_pos_y = (float)(*y - info->rays.top_borders[x]) * step;
+	end = put_to_limits(info->rays.bot_borders[x], info->game->height);
+	while (*y < end)
+	{
+		text.y = put_to_limits(text_pos_y, texture->height);
+		text_pos_y += step;
+		mlx_put_pixel(info->game, x, *y,
+			get_text_pixel(texture, text.x, text.y));
+		(*y)++;
+	}
+}
+
+static uint32_t	get_text_pixel(mlx_texture_t *text, int x, int y)
+{
+	uint32_t	result;
+	int			x_in_text_pixels;
+	int			offset_y;
+	int			index;
+
+	x_in_text_pixels = x * 4;
+	offset_y = text->width * 4;
+	index = (offset_y * y) + x_in_text_pixels;
+	result = text->pixels[index + 0] << 24;
+	result |= text->pixels[index + 1] << 16;
+	result |= text->pixels[index + 2] << 8;
+	result |= text->pixels[index + 3];
+	return (result);
+}
+
+static int	get_text_clmn(text_id side, t_coords crds, text *text)
+{
+	int	column_idx;
+
+	if (side == NORTH || side == SOUTH)
+		column_idx = (int)((crds.x - (float)(int)crds.x) * (float)text->width);
+	else
+		column_idx = (int)((crds.y - (float)(int)crds.y) * (float)text->width);
+	if (column_idx < 0)
+		column_idx = 0;
+	if (column_idx >= (int)text->width)
+		column_idx = (int)text->width - 1;
+	return (column_idx);
+}
+
+static int	put_to_limits(float value, int limit)
+{
+	int	row_idx;
+
+	row_idx = (int)value;
+	if (row_idx < 0)
+		row_idx = 0;
+	if (row_idx >= limit)
+		row_idx = limit - 1;
+	return (row_idx);
+}
