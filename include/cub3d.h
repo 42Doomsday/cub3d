@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/23 19:54:49 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:59:09 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ typedef	struct s_rays
 typedef struct s_png_textures
 {
 	mlx_texture_t	*north;
+	mlx_texture_t	*east;
+	mlx_texture_t	*west;
 	mlx_texture_t	*south;
 }	t_png_textures;
 

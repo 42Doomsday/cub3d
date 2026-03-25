@@ -1,8 +1,8 @@
 F 47, 207, 57
-    WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
-NO  wall.png
-    SO   ./path_to_the_south_texture
+    WE wall.png
+EA block.png
+NO  angel.png
+    SO wall.png
 
   C     107, 234, 255
 

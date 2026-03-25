@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/23 19:32:02 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/25 12:00:47 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ void	get_all_rays(t_rays *rays, t_map *map, t_player *player, int height)
 void	init_textures(t_png_textures *pngs, t_textures *textures)
 {
 	pngs->north = mlx_load_png(textures->north);
+	pngs->east = mlx_load_png(textures->east);
+	pngs->west = mlx_load_png(textures->west);
+	pngs->south = mlx_load_png(textures->south);
 }
 
 int32_t	main(int argc, char **argv)
