@@ -36,7 +36,7 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 
 MINIMAP_SOURCES =  put_player.c put_minimap.c helpers/put_line.c helpers/put_circle.c
 
-GAME_SOURCES = put_game_screen.c
+GAME_SOURCES = put_game_screen.c put_textures.c
 
 CORE_SOURCES = move_player.c cast_ray.c is_wall.c
 
@@ -70,7 +70,7 @@ $(MLX):
 	@cmake --build $(MLX_BUILD) -j4
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@$(CC) $(CFLAGS) $(GUI_FLAGS) $(OBJ) $(LIBFT) $(MLX) $(MATH_FLAG) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX) $(GUI_FLAGS) $(MATH_FLAG) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)

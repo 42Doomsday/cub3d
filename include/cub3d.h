@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/20 16:34:22 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/23 19:54:49 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,8 @@ t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);;
 void	put_minimap(t_cub3d *info);
 
 // game
-void	put_game_screen(mlx_image_t *image, t_textures *text, t_png_textures *pngs, t_rays *rays);
+void	put_game_screen(t_cub3d *info);
+void	put_textures(t_cub3d *info, int x, int *y);
 
 // utils
 int		get_block_size(t_map *map, int32_t width, int32_t height);

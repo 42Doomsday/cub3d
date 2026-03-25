@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/20 18:07:33 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/23 19:32:02 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,6 @@ static void	initialize(t_cub3d *info, bool reallocate)
 static void	get_frame(t_cub3d *info)
 {
 	get_all_rays(&info->rays, &info->map, &info->player, info->game->height);
-	put_game_screen(info->game, &info->textures, &info->text, &info->rays);
+	put_game_screen(info);
 	put_minimap(info);
 }
