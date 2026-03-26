@@ -63,12 +63,12 @@ static t_coords	get_displaced_coords(t_map *map, t_player *player, float degree)
 	return (new);
 }
 
-static float	min(float f, float s)
+/* static float	min(float f, float s)
 {
 	if (f < s)
 		return (f);
 	return (s);
-}
+} */
 
 void	move_player(t_map *map, t_player *player, float degree)
 {
@@ -82,16 +82,16 @@ void	move_player(t_map *map, t_player *player, float degree)
 	points[1] = player->coords;
 	points[2] = get_displaced_coords(map, player, 90);
 
-	if ((points[0].x < EPS || points[0].y < EPS) && (degree == 0 || degree == 90))
+	/* if ((points[0].x < EPS || points[0].y < EPS) && (degree == 0 || degree == 90))
 		return ;
 
 	if (points[1].x < EPS || points[1].y < EPS)
 		return ;
 
 	if ((points[2].x < EPS || points[2].y < EPS) && (degree == 180 || degree == 90))
-		return ;
+		return ; */
 
-	radians = convert_degree_to_radians(degree) + player->dir.radians;
+	radians = convert_degree_to_radians(degree + player->dir.degree);
 	walls[0] = cast_ray_to_wall(points[0], radians, map);
 	walls[1] = cast_ray_to_wall(points[1], radians, map);
 	walls[2] = cast_ray_to_wall(points[2], radians, map);
@@ -99,14 +99,55 @@ void	move_player(t_map *map, t_player *player, float degree)
 	dists[0] = get_dist_to_wall(points[0], walls[0]);
 	dists[1] = get_dist_to_wall(points[1], walls[1]);
 	dists[2] = get_dist_to_wall(points[2], walls[2]);
-	nearest = min(min(dists[0], dists[1]), dists[2]);
 
-	t_vec2	normilized;
+	t_texture_id	side;
+	t_vec2			normilized;
+	t_coords		wall;
 
 	normilized = normilize(radians);
+	if (dists[0] < dists[1] && dists[0] < dists[2])
+	{
+		nearest = dists[0];
+		wall = walls[0];
+		side = get_side_of_wall(walls[0], normilized);
+	}
+	else if (dists[1] < dists[0] && dists[1] < dists[2])
+	{
+		nearest = dists[1];
+		wall = walls[1];
+		side = get_side_of_wall(walls[1], normilized);
+	}
+	else
+	{
+		nearest = dists[2];
+		wall = walls[2];
+		side = get_side_of_wall(walls[2], normilized);
+	}
+
+	printf("neares: %f\n", nearest);
+
 	if (nearest > PLAYER_HITBOX_R)
 	{
-		player->coords.x += normilized.x * PLAYER_STEP;
-		player->coords.y += normilized.y * PLAYER_STEP;
+		player->coords.x += (normilized.x * PLAYER_STEP);
+		player->coords.y += (normilized.y * PLAYER_STEP);
+	}
+	else
+	{
+		if (side == NORTH || side == SOUTH)
+		{
+			if (player->dir.unit.y < 0)
+				player->coords.y = (float)((int)wall.y) + PLAYER_HITBOX_R;
+			else
+				player->coords.y = (float)(int)wall.y - PLAYER_HITBOX_R;
+			player->coords.x += (normilized.x * PLAYER_STEP);
+		}
+		else
+		{
+			if (player->dir.unit.x > 0)
+				player->coords.x = (float)(int)wall.x - PLAYER_HITBOX_R;
+			else
+				player->coords.x = (float)((int)wall.x) + PLAYER_HITBOX_R;
+			player->coords.y += (normilized.y * PLAYER_STEP);
+		}
 	}
 }
