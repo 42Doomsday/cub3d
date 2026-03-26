@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/25 18:49:58 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/26 16:20:38 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 # define PLAYER_STEP     0.142857f   /* 1.0f / 7.0f */
 # define PLAYER_R        0.25f
-# define PLAYER_HITBOX_R   0.55555f
+# define PLAYER_HITBOX_R   0.3333f
 # define PLAYER_ROT_STEP 5.0f
 # define EPS             0.0001f
 
@@ -181,7 +181,7 @@ t_coords		cast_ray_to_wall(t_coords origin, float angle, t_map *map);
 void			update_player_degree(t_player *player, float degree);
 bool			is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
 bool			is_wall_or_space_on_coords(t_map *map, int x, int y);
-t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);;
+t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);
 
 // minimap
 void	put_minimap(t_cub3d *info);

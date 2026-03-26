@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/25 19:03:49 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/26 16:39:36 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,17 +117,17 @@ static void	ft_hook(void *param)
 	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(info->mlx);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_LEFT))
-		update_player_degree(player, player->dir.degree - PLAYER_ROT_STEP);
-	else if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
 		update_player_degree(player, player->dir.degree + PLAYER_ROT_STEP);
+	else if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
+		update_player_degree(player, player->dir.degree - PLAYER_ROT_STEP);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_W))
-		move_player(&info->map, &info->player, 90);
-	else if (mlx_is_key_down(info->mlx, MLX_KEY_S))
-		move_player(&info->map, &info->player, 270);
-	else if (mlx_is_key_down(info->mlx, MLX_KEY_A))
 		move_player(&info->map, &info->player, 0);
-	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
+	else if (mlx_is_key_down(info->mlx, MLX_KEY_S))
 		move_player(&info->map, &info->player, 180);
+	else if (mlx_is_key_down(info->mlx, MLX_KEY_A))
+		move_player(&info->map, &info->player, 90);
+	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
+		move_player(&info->map, &info->player, 270);
 	get_frame(info);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 14:11:45 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 17:45:57 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/26 16:35:29 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	update_player_degree(t_player *player, float degree)
 
 float	convert_degree_to_radians(float degree)
 {
-	return ((90.0f - degree) * M_PI / 180.0f);
+	return (degree * M_PI / 180.0f);
 }
 
 t_vec2	normilize(float radians)
