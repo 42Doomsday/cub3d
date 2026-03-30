@@ -15,6 +15,30 @@
 static t_coords	cast_ray_to_border(t_coords origin, float angle);
 static float	find_dist(t_coords origin, t_vec2 unit_vector, bool coord);
 
+void	get_all_rays(t_rays *rays, t_map *map, t_player *player, int height)
+{
+	size_t	i;
+	float	proj_plane_dist;
+	float	offset;
+	float	cur_angle;
+
+	proj_plane_dist = (rays->count / 2.0f) / tan(rays->fov / 2.0f);
+	i = 0;
+	while (i < rays->count)
+	{
+		offset = (rays->count - i) - (rays->count / 2.0f) + 0.5f;
+		cur_angle = player->dir.radians + atan2f(offset, proj_plane_dist);
+		rays->coords[i] = cast_ray_to_wall(player->coords, cur_angle, map);
+		rays->sides[i] = get_side_of_wall(rays->coords[i], normilize(cur_angle));
+		rays->distances[i] = get_dist_to_wall(player->coords, rays->coords[i]);
+		rays->distances[i] *= cosf(cur_angle - player->dir.radians);
+		rays->heights[i] =  roundf(proj_plane_dist / rays->distances[i]);
+		rays->top_borders[i] = (height / 2) - (rays->heights[i] / 2);
+		rays->bot_borders[i] = (height / 2) + (rays->heights[i] / 2);
+		i++;
+	}
+}
+
 float	get_dist_to_wall(t_coords origin, t_coords wall)
 {
 	float	dist_x;

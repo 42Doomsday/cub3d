@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 19:43:59 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/25 12:01:47 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:23:18 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static mlx_texture_t	*get_text(t_texture_id side, t_png_textures *pngs)
 {
 	mlx_texture_t	*texture;
 
+	texture = NULL;
 	if (side == NORTH)
 		texture = pngs->north;
 	else if (side == EAST)

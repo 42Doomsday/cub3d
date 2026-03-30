@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 14:03:39 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:27:48 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/30 17:06:45 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	parse(char *filename, t_cub3d *info)
 
 	fd = open(filename, O_RDONLY);
 	result = false;
-	if (fd)
+	if (fd != -1)
 	{
 		if (parse_textures(fd, &info->textures))
 		{
@@ -40,6 +40,8 @@ bool	parse(char *filename, t_cub3d *info)
 		}
 		close(fd);
 	}
+	if (result == false)
+		ft_putstr_fd("cub3d: can't open the configuration file\n", STDERR_FILENO);
 	return (result);
 }
 

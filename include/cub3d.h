@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/25 12:33:51 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:50:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 
 # include "libft.h"
 # include "MLX42.h"
+
+#define DEFAULT_WIDTH 512
+#define DEFAULT_HEIGHT 512
+#define MINIMAP_PROCENT_SIZE 0.2f
+#define TITLE "cub3d"
 
 # define PARSERR "parsing"
 # define INV_CHARS "map contains unallowed characters"
@@ -151,7 +156,6 @@ typedef struct s_cub3d
 	t_rays			rays;
 	t_png_textures	text;
 	float			proj_plane;
-
 }	t_cub3d;
 
 // parsers
@@ -180,7 +184,8 @@ t_coords		cast_ray_to_wall(t_coords origin, float angle, t_map *map);
 void			update_player_degree(t_player *player, float degree);
 bool			is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
 bool			is_wall_or_space_on_coords(t_map *map, int x, int y);
-t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);;
+t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);
+void			get_all_rays(t_rays *rays, t_map *map, t_player *player, int height);
 
 // minimap
 void	put_minimap(t_cub3d *info);
@@ -194,5 +199,8 @@ int		get_block_size(t_map *map, int32_t width, int32_t height);
 int		get_rgba(int r, int g, int b, int a);
 float	convert_degree_to_radians(float degree);
 t_vec2	normilize(float radians);
+
+bool	init_info(t_cub3d *info, char *filename);
+void	update_info(t_cub3d *info, bool realloc);
 
 #endif
