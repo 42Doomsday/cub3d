@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/30 16:50:40 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/30 19:00:10 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void	print_error(char *error_type, char *message);
 bool	msg_on_error(bool result, char *error_type, char *message);
 
 // core
-void			move_player(t_map *map, t_player *player, float step);
+void			move_player(t_map *map, t_player *player, float degree, float dist);
 float			get_dist_to_wall(t_coords origin, t_coords wall);
 t_coords		cast_ray_to_wall(t_coords origin, float angle, t_map *map);
 void			update_player_degree(t_player *player, float degree);

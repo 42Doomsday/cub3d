@@ -6,19 +6,23 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/30 16:53:39 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/30 19:22:47 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <sys/time.h>
 
 #include "cub3d.h"
 
-static void	get_frame(t_cub3d *info);
+static void	get_frame(void *param);
 static void	on_resize(int32_t width, int32_t height, void *param);
 static void	ft_hook(void *param);
+
+bool	show_frame = true;
+float	secs_between_frames = 0;
 
 int32_t	main(int argc, char **argv)
 {
@@ -32,7 +36,9 @@ int32_t	main(int argc, char **argv)
 
 	mlx_loop_hook(info.mlx, ft_hook, &info);
 	mlx_resize_hook(info.mlx, on_resize, &info);
+	mlx_loop_hook(info.mlx, get_frame, &info);
 	mlx_loop(info.mlx);
+
 	mlx_terminate(info.mlx);
 
 	return (EXIT_SUCCESS);
@@ -52,7 +58,7 @@ static void	on_resize(int32_t width, int32_t height, void *param)
 	info->mlx->width = width;
 	info->mlx->height = height;
 	update_info(info, reallocate);
-	get_frame(info);
+	show_frame = true;
 }
 
 static void	ft_hook(void *param)
@@ -62,26 +68,47 @@ static void	ft_hook(void *param)
 
 	info = param;
 	player = &info->player;
+	float dist = 5 * secs_between_frames;
+	if (dist > 1)
+		return ;
 	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(info->mlx);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_LEFT))
-		update_player_degree(player, player->dir.degree - PLAYER_ROT_STEP);
+		update_player_degree(player, player->dir.degree - 50 * secs_between_frames);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
-		update_player_degree(player, player->dir.degree + PLAYER_ROT_STEP);
+		update_player_degree(player, player->dir.degree + 50 * secs_between_frames);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_W))
-		move_player(&info->map, &info->player, 90);
+		move_player(&info->map, &info->player, 90, dist);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_S))
-		move_player(&info->map, &info->player, 270);
+		move_player(&info->map, &info->player, 270, dist);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_A))
-		move_player(&info->map, &info->player, 0);
+		move_player(&info->map, &info->player, 0, dist);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
-		move_player(&info->map, &info->player, 190);
-	get_frame(info);
+		move_player(&info->map, &info->player, 190, dist);
+	show_frame = true;
 }
 
-static void	get_frame(t_cub3d *info)
+unsigned int	get_micros(void)
 {
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_usec);
+}
+
+static void	get_frame(void *param)
+{
+	t_cub3d				*info;
+	unsigned int		cur_time;
+	static unsigned int	prev_time;
+
+	info = param;
+	cur_time = get_micros();
+	secs_between_frames = (cur_time - prev_time + 1) / ((float)1000000);
+	printf("fps: %d\n", 1000000 / (cur_time - prev_time + 1));
+	prev_time = cur_time;
 	get_all_rays(&info->rays, &info->map, &info->player, info->game->height);
 	put_game_screen(info);
 	put_minimap(info);
+	show_frame = false;
 }

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 13:13:33 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:30:17 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/30 18:14:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,29 @@ static void	put_block_outline(mlx_image_t *minimap, int x, int y, int size, uint
 static void	put_grid(t_cub3d *info);
 static void	put_map(t_cub3d *info);
 
+static void	fill_with_color(mlx_image_t *game)
+{
+	uint32_t	x;
+	uint32_t	y;
+	int			pixel;
+
+	y = 0;
+	pixel = get_rgba(255, 255, 255, 0);
+	while (y < game->height)
+	{
+		x = 0;
+		while (x < game->width)
+		{
+			mlx_put_pixel(game, x, y, pixel);
+			x++;
+		}
+		y++;
+	}
+}
+
 void	put_minimap(t_cub3d *info)
 {
+	fill_with_color(info->minimap);
 	put_map(info);
 	put_grid(info);
 	put_player(info);

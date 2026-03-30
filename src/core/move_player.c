@@ -15,7 +15,7 @@
 static float	resolve_x(t_map *map, float dx, float new_x, float cur_y);
 static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
 
-void	move_player(t_map *map, t_player *player, float degree)
+void	move_player(t_map *map, t_player *player, float degree, float dist)
 {
 	t_coords	displacement;
 	t_vec2		normilized;
@@ -23,8 +23,8 @@ void	move_player(t_map *map, t_player *player, float degree)
 
 	radians = convert_degree_to_radians(degree);
 	normilized = normilize(player->dir.radians + radians);
-	displacement.x = normilized.x * PLAYER_STEP;
-	displacement.y = normilized.y * PLAYER_STEP;
+	displacement.x = normilized.x * dist;
+	displacement.y = normilized.y * dist;
 	player->coords.y = resolve_y(
 			map,
 			displacement.y,
@@ -37,7 +37,6 @@ void	move_player(t_map *map, t_player *player, float degree)
 			player->coords.x + displacement.x,
 			player->coords.y
 			);
-	printf("New player pos: %f %f\n", player->coords.x, player->coords.y);
 }
 
 static float	resolve_x(t_map *map, float dx, float new_x, float cur_y)
@@ -50,7 +49,6 @@ static float	resolve_x(t_map *map, float dx, float new_x, float cur_y)
 	else
 		tile_x = (int)floorf(new_x - PLAYER_HITBOX_R);
 	tile_y = (int)cur_y;
-	printf("x: tile_x %d; tile_y: %d\n", tile_x, tile_y);
 	if (is_wall_or_space_on_coords(map, tile_x, tile_y))
 	{
 		if (dx > 0)
@@ -70,7 +68,6 @@ static float	resolve_y(t_map *map, float dy, float cur_x, float new_y)
 	else
 		tile_y = (int)floorf(new_y - PLAYER_HITBOX_R);
 	tile_x = (int)cur_x;
-	printf("x: tile_x %d; tile_y: %d\n", tile_x, tile_y);
 	if (is_wall_or_space_on_coords(map, tile_x, tile_y))
 	{
 		if (dy > 0)

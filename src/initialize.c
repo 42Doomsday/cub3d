@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/30 16:59:18 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/30 19:26:36 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,33 +47,45 @@ bool	init_info(t_cub3d *info, char *filename)
 	return (false);
 }
 
+/* static void	fill_with_color(mlx_image_t *game)
+{
+	uint32_t	x;
+	uint32_t	y;
+	int			pixel;
+
+	y = 0;
+	pixel = get_rgba(255, 255, 255, 255);
+	while (y < game->height)
+	{
+		x = 0;
+		while (x < game->width)
+		{
+			mlx_put_pixel(game, x, y, pixel);
+			x++;
+		}
+		y++;
+	}
+} */
+
 void	update_info(t_cub3d *info, bool realloc)
 {
-	int		width;
-	int		height;
-	int		margin;
+	int	width;
+	int	height;
 
 	width = info->mlx->width;
 	height = info->mlx->height;
 	info->rays.count = width;
+	mlx_resize_image(info->game, width, height);
 	if (realloc)
 	{
 		free(info->rays.coords);
 		allocate(&info->rays, width);
 	}
-	if (info->game)
-		mlx_delete_image(info->mlx, info->game);
-	info->game = mlx_new_image(info->mlx, width, height);
 	info->game_bs = get_block_size(&info->map, width, height);
-	mlx_image_to_window(info->mlx, info->game, 0, 0);
 	width *= 0.2f;
 	height *= 0.2f;
-	margin = width * 0.2f;
-	if (info->minimap)
-		mlx_delete_image(info->mlx, info->minimap);
-	info->minimap = mlx_new_image(info->mlx, width, height);
+	mlx_resize_image(info->minimap, width, height);
 	info->minimap_bs = get_block_size(&info->map, width, height);
-	mlx_image_to_window(info->mlx, info->minimap, margin, margin);
 }
 
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
