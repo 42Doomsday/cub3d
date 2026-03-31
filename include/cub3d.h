@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/30 19:00:10 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/31 15:24:43 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,9 +153,11 @@ typedef struct s_cub3d
 	int				minimap_bs;
 	mlx_image_t		*game;
 	int				game_bs;
+	mlx_image_t		*game_rescaled;
 	t_rays			rays;
 	t_png_textures	text;
 	float			proj_plane;
+	bool			rescale;
 }	t_cub3d;
 
 // parsers
@@ -201,6 +203,7 @@ float	convert_degree_to_radians(float degree);
 t_vec2	normilize(float radians);
 
 bool	init_info(t_cub3d *info, char *filename);
-void	update_info(t_cub3d *info, bool realloc);
+void	update_info(t_cub3d *info, int org_width, int org_height, bool realloc);
+bool	mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);
 
 #endif

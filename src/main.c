@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/30 19:22:47 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:07:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <sys/time.h>
 
 #include "cub3d.h"
+
+#define MAX_WIDTH 720
 
 static void	get_frame(void *param);
 static void	on_resize(int32_t width, int32_t height, void *param);
@@ -47,17 +49,32 @@ int32_t	main(int argc, char **argv)
 static void	on_resize(int32_t width, int32_t height, void *param)
 {
 	t_cub3d		*info;
+	int			org_height;
+	int			org_width;
 	bool		reallocate;
 
 	info = param;
+	org_width = 0;
+	org_height = 0;
 	if (width < DEFAULT_WIDTH)
 		width = DEFAULT_WIDTH;
 	if (height <= DEFAULT_HEIGHT)
 		height = DEFAULT_HEIGHT;
+	else
+	{
+		if (info->mlx->width > MAX_WIDTH)
+		{
+			org_width = MAX_WIDTH;
+			org_height = (float)(org_width) / ((float)width / (float)height);
+			info->rescale = true;
+		}
+		else
+			info->rescale = false;
+	}
 	reallocate = width >= info->mlx->width;
 	info->mlx->width = width;
 	info->mlx->height = height;
-	update_info(info, reallocate);
+	update_info(info, org_width, org_height, reallocate);
 	show_frame = true;
 }
 
@@ -105,10 +122,12 @@ static void	get_frame(void *param)
 	info = param;
 	cur_time = get_micros();
 	secs_between_frames = (cur_time - prev_time + 1) / ((float)1000000);
-	printf("fps: %d\n", 1000000 / (cur_time - prev_time + 1));
+		printf("fps: %d\n", 1000000 / (cur_time - prev_time + 1));
 	prev_time = cur_time;
 	get_all_rays(&info->rays, &info->map, &info->player, info->game->height);
 	put_game_screen(info);
 	put_minimap(info);
+	if (info->rescale)
+		mlx_scale_image_into(info->game, info->game_rescaled);
 	show_frame = false;
 }

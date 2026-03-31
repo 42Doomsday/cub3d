@@ -16,7 +16,7 @@ CC = cc
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_BUILD)/libmlx42.a
 
-CFLAGS = -Wall -Wextra -Werror -Iinclude -g
+CFLAGS = -Wall -Wextra -Werror -Iinclude -g -o3
 GUI_FLAGS = -lglfw -pthread -ldl
 MATH_FLAG = -lm
 
@@ -26,7 +26,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SOURCES  = main.c utils.c initialize.c
+SOURCES  = main.c utils.c initialize.c mlx_rescale_into.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
