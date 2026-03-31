@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 15:24:43 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/31 18:06:58 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ typedef	struct s_rays
 	int				*top_borders;
 	int				*bot_borders;
 	int				*heights;
+	float			*angles;
+	t_vec2			*norm_angles;
 }	t_rays;
 
 typedef struct s_png_textures
@@ -182,7 +184,7 @@ bool	msg_on_error(bool result, char *error_type, char *message);
 // core
 void			move_player(t_map *map, t_player *player, float degree, float dist);
 float			get_dist_to_wall(t_coords origin, t_coords wall);
-t_coords		cast_ray_to_wall(t_coords origin, float angle, t_map *map);
+t_coords		cast_ray_to_wall(t_coords origin, t_vec2 unit_vector, t_map *map);
 void			update_player_degree(t_player *player, float degree);
 bool			is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
 bool			is_wall_or_space_on_coords(t_map *map, int x, int y);
@@ -204,6 +206,7 @@ t_vec2	normilize(float radians);
 
 bool	init_info(t_cub3d *info, char *filename);
 void	update_info(t_cub3d *info, int org_width, int org_height, bool realloc);
+void	precalculate_angles(t_rays *rays, t_player *player);
 bool	mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);
 
 #endif

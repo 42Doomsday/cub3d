@@ -16,7 +16,7 @@ CC = cc
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_BUILD)/libmlx42.a
 
-CFLAGS = -Wall -Wextra -Werror -Iinclude -g -o3
+CFLAGS = -Wall -Wextra -Werror -Iinclude -g
 GUI_FLAGS = -lglfw -pthread -ldl
 MATH_FLAG = -lm
 

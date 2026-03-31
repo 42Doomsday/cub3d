@@ -12,26 +12,22 @@
 
 #include "cub3d.h"
 
-static t_coords	cast_ray_to_border(t_coords origin, float angle);
+static t_coords	cast_ray_to_border(t_coords origin, t_vec2 unit_vector);
 static float	find_dist(t_coords origin, t_vec2 unit_vector, bool coord);
 
 void	get_all_rays(t_rays *rays, t_map *map, t_player *player, int height)
 {
 	size_t	i;
 	float	proj_plane_dist;
-	float	offset;
-	float	cur_angle;
 
 	proj_plane_dist = (rays->count / 2.0f) / tan(rays->fov / 2.0f);
 	i = 0;
 	while (i < rays->count)
 	{
-		offset = (rays->count - i) - (rays->count / 2.0f) + 0.5f;
-		cur_angle = player->dir.radians + atan2f(offset, proj_plane_dist);
-		rays->coords[i] = cast_ray_to_wall(player->coords, cur_angle, map);
-		rays->sides[i] = get_side_of_wall(rays->coords[i], normilize(cur_angle));
+		rays->coords[i] = cast_ray_to_wall(player->coords, rays->norm_angles[i], map);
+		rays->sides[i] = get_side_of_wall(rays->coords[i], rays->norm_angles[i]);
 		rays->distances[i] = get_dist_to_wall(player->coords, rays->coords[i]);
-		rays->distances[i] *= cosf(cur_angle - player->dir.radians);
+		rays->distances[i] *= cosf(rays->angles[i] - player->dir.radians);
 		rays->heights[i] =  roundf(proj_plane_dist / rays->distances[i]);
 		rays->top_borders[i] = (height / 2) - (rays->heights[i] / 2);
 		rays->bot_borders[i] = (height / 2) + (rays->heights[i] / 2);
@@ -51,29 +47,25 @@ float	get_dist_to_wall(t_coords origin, t_coords wall)
 	return (dist);
 }
 
-t_coords	cast_ray_to_wall(t_coords origin, float angle, t_map *map)
+t_coords	cast_ray_to_wall(t_coords origin, t_vec2 unit_vector, t_map *map)
 {
 	t_coords	ray_coords;
-	t_vec2		unit_vector;
 
 	ray_coords = origin;
-	unit_vector = normilize(angle);
 	while (42)
 	{
-		ray_coords = cast_ray_to_border(ray_coords, angle);
+		ray_coords = cast_ray_to_border(ray_coords, unit_vector);
 		if (is_wall(ray_coords, unit_vector, map))
 			return (ray_coords);
 	}
 }
 
-static t_coords	cast_ray_to_border(t_coords origin, float angle)
+static t_coords	cast_ray_to_border(t_coords origin, t_vec2 unit_vector)
 {
 	t_coords	point;
-	t_vec2		unit_vector;
 	float		dist;
 	float		dist_second;
 
-	unit_vector = normilize(angle);
 	dist = find_dist(origin, unit_vector, 0);
 	dist_second = find_dist(origin, unit_vector, 1);
 	if (dist_second < dist)
@@ -85,29 +77,26 @@ static t_coords	cast_ray_to_border(t_coords origin, float angle)
 
 static float	find_dist(t_coords origin, t_vec2 unit_vector, bool coord)
 {
-	float	origin_value;
-	float	unit_value;
-	float	destination;
+	float	orig_val;
+	float	unit_val;
+	int		int_val;
 
 	if (coord == 0)
 	{
-		origin_value = origin.x;
-		unit_value = unit_vector.x;
+		orig_val = origin.x;
+		unit_val = unit_vector.x;
 	}
 	else
 	{
-		origin_value = origin.y;
-		unit_value = unit_vector.y;
+		orig_val = origin.y;
+		unit_val = unit_vector.y;
 	}
-	if (unit_value == 0)
-		return (1e30);
-	if (unit_value > 0)
-		destination = floor(origin_value) + 1.0f;
-	else
-	{
-		destination = floor(origin_value);
-		if (destination == origin_value)
-			destination -= 1.0f;
-	}
-	return ((destination - origin_value) / unit_value);
+	if (unit_val == 0.0f)
+		return (1e30f);
+	int_val = (int)orig_val;
+	if (unit_val > 0.0f)
+		return (((float)int_val + 1.0f - orig_val) / unit_val);
+	if ((float)int_val == orig_val)
+		return (-1.0f / unit_val);
+	return (((float)int_val - orig_val) / unit_val);
 }

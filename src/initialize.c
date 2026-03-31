@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 16:20:28 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:58:17 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	update_info(t_cub3d *info, int org_width, int org_height, bool realloc)
 		height = org_width * 0.2f;
 		mlx_resize_image(info->minimap, width, height);
 		info->minimap_bs = get_block_size(&info->map, width, height);
+		precalculate_angles(&info->rays, &info->player);
 	}
 	else
 	{
@@ -108,6 +109,7 @@ void	update_info(t_cub3d *info, int org_width, int org_height, bool realloc)
 		height *= 0.2f;
 		mlx_resize_image(info->minimap, width, height);
 		info->minimap_bs = get_block_size(&info->map, width, height);
+		precalculate_angles(&info->rays, &info->player);
 	}
 }
 
@@ -147,6 +149,23 @@ static bool	init_mlx(t_cub3d *info)
 	return (true);
 }
 
+void	precalculate_angles(t_rays *rays, t_player *player)
+{
+	float	proj_plane_dist;
+	float	offset;
+	size_t	i;
+
+	proj_plane_dist = (rays->count / 2.0f) / tan(rays->fov / 2.0f);
+	i = 0;
+	while (i < rays->count)
+	{
+		offset = (rays->count - i) - (rays->count / 2.0f) + 0.5f;
+		rays->angles[i] = player->dir.radians + atan2f(offset, proj_plane_dist);
+		rays->norm_angles[i] = normilize(rays->angles[i]);
+		i++;
+	}
+}
+
 static bool	init_game(t_cub3d *info)
 {
 	int	width;
@@ -159,6 +178,7 @@ static bool	init_game(t_cub3d *info)
 	info->rays.fov = 60.0f * M_PI / 180.0f;
 	if (allocate(&info->rays, width))
 	{
+		precalculate_angles(&info->rays, &info->player);
 		info->game = mlx_new_image(info->mlx, width, height);
 		if (info->game)
 		{
@@ -188,6 +208,8 @@ static void	*allocate(t_rays *rays, int width)
 		rays->top_borders = (void *)rays->distances + width * sizeof(float);
 		rays->bot_borders = (void *)rays->top_borders + width * sizeof(int);
 		rays->heights = (void *)rays->bot_borders + width * sizeof(int);
+		rays->angles = (void *)rays->heights + width * sizeof(int);
+		rays->norm_angles = (void *)rays->angles + width * sizeof(float);
 	}
 	return (memory);
 }
@@ -197,9 +219,8 @@ static void	*get_malloc_arena(int width)
 	size_t	size;
 	char	*allocation;
 
-	size = sizeof(t_coords) + sizeof(t_texture_id);
-	size += sizeof(float) + sizeof(int);
-	size *= 3;
+	size = sizeof(t_coords) + sizeof(t_texture_id) + sizeof(t_vec2);
+	size += sizeof(float) * 2 + sizeof(int) * 3;
 	allocation = malloc(width * size);
 	return (allocation);
 }
