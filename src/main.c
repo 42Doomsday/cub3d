@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 17:48:57 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:44:01 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,11 @@
 
 #include "cub3d.h"
 
-#define MAX_WIDTH 1280
+#define MAX_WIDTH 1024
 
 static void	get_frame(void *param);
 static void	on_resize(int32_t width, int32_t height, void *param);
 static void	ft_hook(void *param);
-
-float	secs_between_frames = 0;
 
 int32_t	main(int argc, char **argv)
 {
@@ -52,6 +50,7 @@ static void	on_resize(int32_t width, int32_t height, void *param)
 	int			org_width;
 	bool		reallocate;
 
+	printf("on resize\n");
 	info = param;
 	org_width = 0;
 	org_height = 0;
@@ -83,19 +82,19 @@ static void	ft_hook(void *param)
 
 	info = param;
 	player = &info->player;
-	float dist = 5 * secs_between_frames;
+	float dist = 5 * info->mlx->delta_time;
 	if (dist > 1)
 		return ;
 	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(info->mlx);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_LEFT))
 	{
-		update_player_degree(player, player->dir.degree - 50 * secs_between_frames);
+		update_player_degree(player, player->dir.degree - 100 * info->mlx->delta_time);
 		precalculate_angles(&info->rays, player);
 	}
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
 	{
-		update_player_degree(player, player->dir.degree + 50 * secs_between_frames);
+		update_player_degree(player, player->dir.degree + 100 * info->mlx->delta_time);
 		precalculate_angles(&info->rays, player);
 	}
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_W))
@@ -108,25 +107,12 @@ static void	ft_hook(void *param)
 		move_player(&info->map, &info->player, 190, dist);
 }
 
-unsigned int	get_micros(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000000 + tv.tv_usec);
-}
-
 static void	get_frame(void *param)
 {
-	t_cub3d				*info;
-	unsigned int		cur_time;
-	static unsigned int	prev_time;
+	t_cub3d	*info;
 
 	info = param;
-	cur_time = get_micros();
-	secs_between_frames = (cur_time - prev_time + 1) / ((float)1000000);
-	printf("fps: %d\n", 1000000 / (cur_time - prev_time));
-	prev_time = cur_time;
+	printf("fps: %f\n", 1 / (info->mlx->delta_time));
 	get_all_rays(&info->rays, &info->map, &info->player, info->game->height);
 	put_game_screen(info);
 	put_minimap(info);

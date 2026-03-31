@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 16:58:17 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:16:04 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	update_info(t_cub3d *info, int org_width, int org_height, bool realloc)
 	int	width;
 	int	height;
 
+	printf("update info\n");
 	width = info->mlx->width;
 	height = info->mlx->height;
 	if (info->rescale)
@@ -188,6 +189,7 @@ static bool	init_game(t_cub3d *info)
 			margin = width * 0.2f;
 			info->minimap = mlx_new_image(info->mlx, width, height);
 			info->minimap_bs = get_block_size(&info->map, width, height);
+			mlx_image_to_window(info->mlx, info->game, 0, 0);
 			return (true);
 		}
 		free(info->rays.coords);

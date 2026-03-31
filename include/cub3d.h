@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 18:06:58 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/03/31 18:20:26 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include "libft.h"
 # include "MLX42.h"
 
-#define DEFAULT_WIDTH 512
-#define DEFAULT_HEIGHT 512
+#define DEFAULT_WIDTH 32
+#define DEFAULT_HEIGHT 32
 #define MINIMAP_PROCENT_SIZE 0.2f
 #define TITLE "cub3d"
 
