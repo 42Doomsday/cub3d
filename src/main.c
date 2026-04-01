@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 14:19:52 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 16:30:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,15 @@ static void	on_resize(int32_t width, int32_t height, void *param)
 	update_buffers(info, reallocate);
 }
 
+static void	update_degree(t_cub3d *info, int change)
+{
+	int	new_degree;
+
+	new_degree = info->player.dir.degree + (change * info->mlx->delta_time);
+	update_player_degree(&info->player, new_degree);
+	calculate_angles(&info->rays, &info->player);
+}
+
 static void	ft_hook(void *param)
 {
 	t_cub3d		*info;
@@ -51,29 +60,20 @@ static void	ft_hook(void *param)
 
 	info = param;
 	player = &info->player;
-	float dist = 5 * info->mlx->delta_time;
-	if (dist > 1)
-		return ;
 	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(info->mlx);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_LEFT))
-	{
-		update_player_degree(player, player->dir.degree - 100 * info->mlx->delta_time);
-		calculate_angles(&info->rays, player);
-	}
+		update_degree(info, -PLAYER_ROT_STEP);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
-	{
-		update_player_degree(player, player->dir.degree + 100 * info->mlx->delta_time);
-		calculate_angles(&info->rays, player);
-	}
+		update_degree(info, PLAYER_ROT_STEP);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_W))
-		move_player(&info->map, &info->player, 90, dist);
+		move_player(info, 90);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_S))
-		move_player(&info->map, &info->player, 270, dist);
+		move_player(info, 270);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_A))
-		move_player(&info->map, &info->player, 0, dist);
+		move_player(info, 0);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
-		move_player(&info->map, &info->player, 190, dist);
+		move_player(info, 190);
 }
 
 static void	get_frame(void *param)

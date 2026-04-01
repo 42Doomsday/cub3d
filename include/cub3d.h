@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 14:19:35 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 16:31:16 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@
 # define ISNT_CLOSED "map is not closed with walls"
 # define ISNT_CONTIGUOUS "map isn't contiguous"
 
-# define PLAYER_STEP     0.142857f   /* 1.0f / 7.0f */
+# define PLAYER_STEP     5   /* 1.0f / 7.0f */
 # define PLAYER_R        0.25f
 # define PLAYER_HITBOX_R   0.3f
-# define PLAYER_ROT_STEP 5.0f
+# define PLAYER_ROT_STEP 100
 # define EPS             0.0001f
 
 # define M_PI 3.14159265358979323846
@@ -190,7 +190,7 @@ void	print_error(char *error_type, char *message);
 bool	msg_on_error(bool result, char *error_type, char *message);
 
 // core
-void			move_player(t_map *map, t_player *player, float degree, float dist);
+void			move_player(t_cub3d *info, float degree);
 float			get_dist_to_wall(t_coords origin, t_coords wall);
 t_coords		cast_ray_to_wall(t_coords origin, t_vec2 unit_vector, t_map *map);
 void			update_player_degree(t_player *player, float degree);
