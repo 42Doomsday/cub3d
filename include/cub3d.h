@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 16:31:16 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 17:48:51 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include "libft.h"
 # include "MLX42.h"
 
-#define MAX_WIDTH 1024
+#define MAX_WIDTH 2000
 #define DEFAULT_WIDTH 32
 #define DEFAULT_HEIGHT 32
 #define MINIMAP_PROCENT_SIZE 0.2f
@@ -220,5 +220,6 @@ t_vec2	normilize(float radians);
 
 // initialize
 bool	init_info(t_cub3d *info, char *filename);
+void	init_info2(t_cub3d *info);
 
 #endif

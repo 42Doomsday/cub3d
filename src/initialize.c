@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 14:05:16 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 17:37:44 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,17 @@ bool	init_info(t_cub3d *info, char *filename)
 	return (false);
 }
 
+void	init_info2(t_cub3d *info)
+{
+	if (init_mlx(info))
+	{
+		if (init_game(info))
+			return ;
+		mlx_terminate(info->mlx);
+	}
+	destroy_textures(&info->text);
+}
+
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
 {
 	pngs->north = mlx_load_png(textures->north);
@@ -64,13 +75,21 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures)
 
 static bool	init_mlx(t_cub3d *info)
 {
-	mlx_set_setting(MLX_MAXIMIZED, true);
-	info->mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
+	static int	counter;
+	if (counter > 0)
+		mlx_set_setting(MLX_FULLSCREEN, true);
+	else
+		mlx_set_setting(MLX_MAXIMIZED, true);
+	if (counter > 0)
+		info->mlx = mlx_init(1920, 1080, TITLE, false);
+	else
+		info->mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
 	if (info->mlx == NULL)
 	{
 		ft_putstr_fd((char *)mlx_strerror(mlx_errno), STDERR_FILENO);
 		return (false);
 	}
+	counter++;
 	return (true);
 }
 
@@ -78,6 +97,7 @@ static bool	init_game(t_cub3d *info)
 {
 	int	width;
 	int	height;
+	static int	counter;
 
 	width = info->mlx->width;
 	height = info->mlx->height;
@@ -94,7 +114,11 @@ static bool	init_game(t_cub3d *info)
 			height *= 0.2f;
 			info->layout.minimap_bs = get_block_size(&info->map, width, height);
 			info->window = mlx_new_image(info->mlx, width, height);
-			mlx_image_to_window(info->mlx, info->window, 0, 0);
+			if (counter > 0)
+				mlx_image_to_window(info->mlx, info->game, 0, 0);
+			else
+				mlx_image_to_window(info->mlx, info->window, 0, 0);
+			counter++;
 			return (true);
 		}
 		free(info->rays.coords);

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 16:30:52 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 17:23:00 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ int32_t	main(int argc, char **argv)
 	mlx_loop_hook(info.mlx, get_frame, &info);
 	mlx_loop(info.mlx);
 	mlx_terminate(info.mlx);
+
+	init_info2(&info);
+	mlx_loop_hook(info.mlx, ft_hook, &info);
+	mlx_resize_hook(info.mlx, on_resize, &info);
+	mlx_loop_hook(info.mlx, get_frame, &info);
+	mlx_loop(info.mlx);
+	mlx_terminate(info.mlx);
+
 	return (EXIT_SUCCESS);
 }
 
@@ -85,5 +93,6 @@ static void	get_frame(void *param)
 	get_all_rays(&info->rays, &info->map, &info->player, info->game->height);
 	put_game_screen(info);
 	put_minimap(info);
-	mlx_scale_image_into(info->game, info->window);
+	if (info->layout.rescale)
+		mlx_scale_image_into(info->game, info->window);
 }
