@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 14:03:43 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:19:35 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
 # include <stdio.h>
 # include <stdarg.h>
 # include <math.h>
-
+# include <stdlib.h>
 # include "libft.h"
 # include "MLX42.h"
 
+#define MAX_WIDTH 1024
 #define DEFAULT_WIDTH 32
 #define DEFAULT_HEIGHT 32
 #define MINIMAP_PROCENT_SIZE 0.2f
@@ -199,6 +200,10 @@ t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);
 void			get_all_rays(t_rays *rays, t_map *map, t_player *player, int height);
 void			*allocate_rays(t_rays *rays, int width);
 void			calculate_angles(t_rays *rays, t_player *player);
+bool			mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);
+void			update_window_info(mlx_t *mlx, int width, int height);
+void			update_render_layour(t_cub3d *info, int width, int height);
+void			update_buffers(t_cub3d *info, bool realloc);
 
 // minimap
 void	put_minimap(t_cub3d *info);
@@ -213,7 +218,7 @@ int		get_rgba(int r, int g, int b, int a);
 float	convert_degree_to_radians(float degree);
 t_vec2	normilize(float radians);
 
+// initialize
 bool	init_info(t_cub3d *info, char *filename);
-bool	mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);
 
 #endif
