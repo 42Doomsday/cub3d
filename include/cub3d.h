@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 18:20:26 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:51:24 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,21 +145,28 @@ typedef struct s_png_textures
 	mlx_texture_t	*south;
 }	t_png_textures;
 
+typedef struct s_render_layout
+{
+	int		game_bs;
+	int		game_width;
+	int		game_height;
+	int		minimap_bs;
+	int		minimap_width;
+	int		minimap_height;
+	bool	rescale;
+}	t_render_layout;
+
 typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	t_textures		textures;
 	t_map			map;
 	t_player		player;
-	mlx_image_t		*minimap;
-	int				minimap_bs;
 	mlx_image_t		*game;
-	int				game_bs;
-	mlx_image_t		*game_rescaled;
+	mlx_image_t		*window;
+	t_render_layout	layout;
 	t_rays			rays;
 	t_png_textures	text;
-	float			proj_plane;
-	bool			rescale;
 }	t_cub3d;
 
 // parsers
@@ -205,7 +212,7 @@ float	convert_degree_to_radians(float degree);
 t_vec2	normilize(float radians);
 
 bool	init_info(t_cub3d *info, char *filename);
-void	update_info(t_cub3d *info, int org_width, int org_height, bool realloc);
+void	update_buffers(t_cub3d *info, bool realloc);
 void	precalculate_angles(t_rays *rays, t_player *player);
 bool	mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);
 

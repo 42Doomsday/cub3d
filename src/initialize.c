@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 19:16:04 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:53:20 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,71 +47,21 @@ bool	init_info(t_cub3d *info, char *filename)
 	return (false);
 }
 
-/* static void	fill_with_color(mlx_image_t *game)
+void	update_buffers(t_cub3d *info, bool realloc)
 {
-	uint32_t	x;
-	uint32_t	y;
-	int			pixel;
+	t_render_layout	layout;
 
-	y = 0;
-	pixel = get_rgba(255, 255, 255, 255);
-	while (y < game->height)
+	layout = info->layout;
+	info->rays.count = info->layout.game_width;
+	mlx_resize_image(info->game, layout.game_width, layout.game_height);
+	if (realloc)
 	{
-		x = 0;
-		while (x < game->width)
-		{
-			mlx_put_pixel(game, x, y, pixel);
-			x++;
-		}
-		y++;
+		free(info->rays.coords);
+		allocate(&info->rays, info->layout.game_width);
 	}
-} */
-
-void	update_info(t_cub3d *info, int org_width, int org_height, bool realloc)
-{
-	int	width;
-	int	height;
-
-	printf("update info\n");
-	width = info->mlx->width;
-	height = info->mlx->height;
-	if (info->rescale)
-	{
-		info->rays.count = org_width;
-		mlx_resize_image(info->game, org_width, org_height);
-		if (realloc)
-		{
-			free(info->rays.coords);
-			allocate(&info->rays, org_width);
-		}
-		info->game_bs = get_block_size(&info->map, org_width, org_height);
-		if (info->game_rescaled)
-			mlx_resize_image(info->game_rescaled, width, height);
-		else
-			info->game_rescaled = mlx_new_image(info->mlx, width, height);
-		mlx_image_to_window(info->mlx, info->game_rescaled, 0, 0);
-		width = org_width * 0.2f;
-		height = org_width * 0.2f;
-		mlx_resize_image(info->minimap, width, height);
-		info->minimap_bs = get_block_size(&info->map, width, height);
-		precalculate_angles(&info->rays, &info->player);
-	}
-	else
-	{
-		info->rays.count = width;
-		mlx_resize_image(info->game, width, height);
-		if (realloc)
-		{
-			free(info->rays.coords);
-			allocate(&info->rays, width);
-		}
-		info->game_bs = get_block_size(&info->map, width, height);
-		width *= 0.2f;
-		height *= 0.2f;
-		mlx_resize_image(info->minimap, width, height);
-		info->minimap_bs = get_block_size(&info->map, width, height);
-		precalculate_angles(&info->rays, &info->player);
-	}
+	if (info->layout.rescale)
+		mlx_resize_image(info->window, info->mlx->width, info->mlx->height);
+	precalculate_angles(&info->rays, &info->player);
 }
 
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
@@ -171,7 +121,6 @@ static bool	init_game(t_cub3d *info)
 {
 	int	width;
 	int	height;
-	int	margin;
 
 	width = info->mlx->width;
 	height = info->mlx->height;
@@ -183,13 +132,12 @@ static bool	init_game(t_cub3d *info)
 		info->game = mlx_new_image(info->mlx, width, height);
 		if (info->game)
 		{
-			info->game_bs = get_block_size(&info->map, width, height);
+			info->layout.game_bs = get_block_size(&info->map, width, height);
 			width *= 0.2f;
 			height *= 0.2f;
-			margin = width * 0.2f;
-			info->minimap = mlx_new_image(info->mlx, width, height);
-			info->minimap_bs = get_block_size(&info->map, width, height);
-			mlx_image_to_window(info->mlx, info->game, 0, 0);
+			info->layout.minimap_bs = get_block_size(&info->map, width, height);
+			info->window = mlx_new_image(info->mlx, width, height);
+			mlx_image_to_window(info->mlx, info->window, 0, 0);
 			return (true);
 		}
 		free(info->rays.coords);

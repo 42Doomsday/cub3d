@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 19:44:01 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:51:31 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,36 +43,47 @@ int32_t	main(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-static void	on_resize(int32_t width, int32_t height, void *param)
+static void	update_window_info(mlx_t *mlx, int width, int height)
 {
-	t_cub3d		*info;
-	int			org_height;
-	int			org_width;
-	bool		reallocate;
-
-	printf("on resize\n");
-	info = param;
-	org_width = 0;
-	org_height = 0;
 	if (width < DEFAULT_WIDTH)
 		width = DEFAULT_WIDTH;
 	if (height <= DEFAULT_HEIGHT)
 		height = DEFAULT_HEIGHT;
+	mlx->width = width;
+	mlx->height = height;
+}
+
+static void	update_render_layour(t_render_layout *layout, t_map *map, int width, int height)
+{
+	if (width > MAX_WIDTH)
+	{
+		layout->game_width = MAX_WIDTH;
+		layout->game_height = MAX_WIDTH / ((float)width / (float)height);
+		layout->game_bs = get_block_size(map, layout->game_width, layout->game_height);
+		layout->rescale = true;
+	}
 	else
 	{
-		if (info->mlx->width > MAX_WIDTH)
-		{
-			org_width = MAX_WIDTH;
-			org_height = (float)(org_width) / ((float)width / (float)height);
-			info->rescale = true;
-		}
-		else
-			info->rescale = false;
+		layout->game_width = width;
+		layout->game_height = height;
+		layout->game_bs = get_block_size(map, width, height);
+		layout->rescale = false;
 	}
+	layout->minimap_width = layout->game_width * 0.2f;
+	layout->minimap_height = layout->game_height * 0.2f;
+	layout->minimap_bs = get_block_size(map, layout->minimap_width, layout->minimap_height);
+}
+
+static void	on_resize(int32_t width, int32_t height, void *param)
+{
+	t_cub3d		*info;
+	bool		reallocate;
+
+	info = param;
 	reallocate = width >= info->mlx->width;
-	info->mlx->width = width;
-	info->mlx->height = height;
-	update_info(info, org_width, org_height, reallocate);
+	update_window_info(info->mlx, width, height);
+	update_render_layour(&info->layout, &info->map, width, height);
+	update_buffers(info, reallocate);
 }
 
 static void	ft_hook(void *param)
@@ -116,6 +127,5 @@ static void	get_frame(void *param)
 	get_all_rays(&info->rays, &info->map, &info->player, info->game->height);
 	put_game_screen(info);
 	put_minimap(info);
-	if (info->rescale)
-		mlx_scale_image_into(info->game, info->game_rescaled);
+	mlx_scale_image_into(info->game, info->window);
 }

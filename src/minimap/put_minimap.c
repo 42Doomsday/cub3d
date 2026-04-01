@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 13:13:33 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 15:58:46 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:47:51 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	put_map(t_cub3d *info)
 	int32_t	pixel;
 
 	map = info->map.data;
-	block = info->minimap_bs;
+	block = info->layout.minimap_bs;
 	y = 0;
 	while (map && map[y])
 	{
@@ -81,7 +81,7 @@ static void	put_grid(t_cub3d *info)
 	int		x;
 	int		y;
 
-	block = info->minimap_bs;
+	block = info->layout.minimap_bs;
 	map = info->map.data;
 	y = 0;
 	while (map && map[y])
