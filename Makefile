@@ -26,7 +26,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SOURCES  = main.c utils.c initialize.c mlx_rescale_into.c
+SOURCES  = main.c utils.c initialize.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
@@ -38,7 +38,7 @@ MINIMAP_SOURCES =  put_player.c put_minimap.c helpers/put_line.c helpers/put_cir
 
 GAME_SOURCES = put_game_screen.c put_textures.c
 
-CORE_SOURCES = move_player.c cast_ray.c is_wall.c ray_utils.c
+CORE_SOURCES = move_player.c cast_ray.c is_wall.c ray_utils.c mlx_scale_image_into.c
 
 GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
