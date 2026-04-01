@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 13:53:20 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:05:16 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,7 @@
 static bool	init_mlx(t_cub3d *info);
 static bool	init_textures(t_png_textures *pngs, t_textures *textures);
 static bool	init_game(t_cub3d *info);
-static void	*allocate(t_rays *rays, int width);
-static void	*get_malloc_arena(int width);
-
-static void	destroy_textures(t_png_textures *pngs)
-{
-	mlx_delete_texture(pngs->north);
-	mlx_delete_texture(pngs->east);
-	mlx_delete_texture(pngs->south);
-	mlx_delete_texture(pngs->west);
-}
+static void	destroy_textures(t_png_textures *pngs);
 
 bool	init_info(t_cub3d *info, char *filename)
 {
@@ -45,23 +36,6 @@ bool	init_info(t_cub3d *info, char *filename)
 		free_textures(&info->textures);
 	}
 	return (false);
-}
-
-void	update_buffers(t_cub3d *info, bool realloc)
-{
-	t_render_layout	layout;
-
-	layout = info->layout;
-	info->rays.count = info->layout.game_width;
-	mlx_resize_image(info->game, layout.game_width, layout.game_height);
-	if (realloc)
-	{
-		free(info->rays.coords);
-		allocate(&info->rays, info->layout.game_width);
-	}
-	if (info->layout.rescale)
-		mlx_resize_image(info->window, info->mlx->width, info->mlx->height);
-	precalculate_angles(&info->rays, &info->player);
 }
 
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
@@ -100,23 +74,6 @@ static bool	init_mlx(t_cub3d *info)
 	return (true);
 }
 
-void	precalculate_angles(t_rays *rays, t_player *player)
-{
-	float	proj_plane_dist;
-	float	offset;
-	size_t	i;
-
-	proj_plane_dist = (rays->count / 2.0f) / tan(rays->fov / 2.0f);
-	i = 0;
-	while (i < rays->count)
-	{
-		offset = (rays->count - i) - (rays->count / 2.0f) + 0.5f;
-		rays->angles[i] = player->dir.radians + atan2f(offset, proj_plane_dist);
-		rays->norm_angles[i] = normilize(rays->angles[i]);
-		i++;
-	}
-}
-
 static bool	init_game(t_cub3d *info)
 {
 	int	width;
@@ -126,9 +83,9 @@ static bool	init_game(t_cub3d *info)
 	height = info->mlx->height;
 	info->rays.count = width;
 	info->rays.fov = 60.0f * M_PI / 180.0f;
-	if (allocate(&info->rays, width))
+	if (allocate_rays(&info->rays, width))
 	{
-		precalculate_angles(&info->rays, &info->player);
+		calculate_angles(&info->rays, &info->player);
 		info->game = mlx_new_image(info->mlx, width, height);
 		if (info->game)
 		{
@@ -145,32 +102,10 @@ static bool	init_game(t_cub3d *info)
 	return (false);
 }
 
-static void	*allocate(t_rays *rays, int width)
+static void	destroy_textures(t_png_textures *pngs)
 {
-	void	*memory;
-
-	memory = get_malloc_arena(width);
-	if (memory)
-	{
-		rays->coords = memory;
-		rays->sides = memory + width * sizeof(t_coords);
-		rays->distances = (void *)rays->sides + width * sizeof(t_texture_id);
-		rays->top_borders = (void *)rays->distances + width * sizeof(float);
-		rays->bot_borders = (void *)rays->top_borders + width * sizeof(int);
-		rays->heights = (void *)rays->bot_borders + width * sizeof(int);
-		rays->angles = (void *)rays->heights + width * sizeof(int);
-		rays->norm_angles = (void *)rays->angles + width * sizeof(float);
-	}
-	return (memory);
-}
-
-static void	*get_malloc_arena(int width)
-{
-	size_t	size;
-	char	*allocation;
-
-	size = sizeof(t_coords) + sizeof(t_texture_id) + sizeof(t_vec2);
-	size += sizeof(float) * 2 + sizeof(int) * 3;
-	allocation = malloc(width * size);
-	return (allocation);
+	mlx_delete_texture(pngs->north);
+	mlx_delete_texture(pngs->east);
+	mlx_delete_texture(pngs->south);
+	mlx_delete_texture(pngs->west);
 }

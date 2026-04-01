@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 13:51:31 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:05:06 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,23 @@ static void	update_render_layour(t_render_layout *layout, t_map *map, int width,
 	layout->minimap_bs = get_block_size(map, layout->minimap_width, layout->minimap_height);
 }
 
+static void	update_buffers(t_cub3d *info, bool realloc)
+{
+	t_render_layout	layout;
+
+	layout = info->layout;
+	info->rays.count = info->layout.game_width;
+	mlx_resize_image(info->game, layout.game_width, layout.game_height);
+	if (realloc)
+	{
+		free(info->rays.coords);
+		allocate_rays(&info->rays, info->layout.game_width);
+	}
+	if (info->layout.rescale)
+		mlx_resize_image(info->window, info->mlx->width, info->mlx->height);
+	calculate_angles(&info->rays, &info->player);
+}
+
 static void	on_resize(int32_t width, int32_t height, void *param)
 {
 	t_cub3d		*info;
@@ -101,12 +118,12 @@ static void	ft_hook(void *param)
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_LEFT))
 	{
 		update_player_degree(player, player->dir.degree - 100 * info->mlx->delta_time);
-		precalculate_angles(&info->rays, player);
+		calculate_angles(&info->rays, player);
 	}
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
 	{
 		update_player_degree(player, player->dir.degree + 100 * info->mlx->delta_time);
-		precalculate_angles(&info->rays, player);
+		calculate_angles(&info->rays, player);
 	}
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_W))
 		move_player(&info->map, &info->player, 90, dist);

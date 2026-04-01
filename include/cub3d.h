@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 13:51:24 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:03:43 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,8 @@ bool			is_wall(t_coords start, t_vec2 unit_vector, t_map *map);
 bool			is_wall_or_space_on_coords(t_map *map, int x, int y);
 t_texture_id	get_side_of_wall(t_coords wall, t_vec2 unit_vector);
 void			get_all_rays(t_rays *rays, t_map *map, t_player *player, int height);
+void			*allocate_rays(t_rays *rays, int width);
+void			calculate_angles(t_rays *rays, t_player *player);
 
 // minimap
 void	put_minimap(t_cub3d *info);
@@ -212,8 +214,6 @@ float	convert_degree_to_radians(float degree);
 t_vec2	normilize(float radians);
 
 bool	init_info(t_cub3d *info, char *filename);
-void	update_buffers(t_cub3d *info, bool realloc);
-void	precalculate_angles(t_rays *rays, t_player *player);
 bool	mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);
 
 #endif
