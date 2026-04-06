@@ -82,7 +82,9 @@ As you see, the normal positive x and y values live in Quadrant I, the top left 
 That part is fine....however, in pixel world of libX, `y` decreases as you move towards the top of the screen and increases as you move toward the bottom....so we have an inversion of the normal y-axis. That means on our map, a unit vector of (0,1) points our player not to the North but to the South. Nice! 
 
 $$
-x = \cos(\theta) \\
+x = \cos(\theta)
+$$
+$$
 y = -\sin(\theta)
 $$
 
@@ -139,14 +141,6 @@ This is the magic that creates the illusion of a 3-dimentional perspective.
 
 We have laid the groundwork by casting rays now for each ray me must measure distance from player coords to the x and y axis that borders the walls. The distance is used to determine the number of pixels along the y-axis for every column of pixels along the x-axis.
 ![wall perspective](assets/images/fullscreen.png)
-
-$$
-\text{wall\_height} = \frac{\text{wall\_real\_height} \cdot \text{proj\_plane}}{\text{perp\_distance}}
-$$
-
-$$
-\mathrm{wall\_height} = \frac{\mathrm{wall\_real\_height} \cdot \mathrm{proj\_plane}}{\mathrm{perp\_distance}}
-$$
 
 $$
 wall height = \frac{real wall height \cdot proj plane}{perp distance}
