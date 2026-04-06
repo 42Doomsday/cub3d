@@ -149,7 +149,7 @@ $$
 $$
 
 $$
-wall\_height = \frac{wall\_real\_height \cdot proj\_plane}{perp\_distance}
+wall height = \frac{real wall height \cdot proj plane}{perp distance}
 $$
 
 This requires another variable called perpendicular distance. 
