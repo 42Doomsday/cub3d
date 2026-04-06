@@ -14,8 +14,12 @@ This requires the use of **parsing**, **basic algorithms**, **information resear
 The utility of these functions are the ways that you can derive on of the missing side lengths using these functions.
 
 $$
-\sin(\theta) = Opp/Hyp \\
-Opp = \sin(\theta) * Hyp \\
+\sin(\theta) = Opp/Hyp
+$$
+$$
+Opp = \sin(\theta) * Hyp
+$$
+$$
 Hyp = Opp / \sin(\theta)
 $$
 
@@ -129,9 +133,20 @@ We have no technology that can respond to the player's physical position, so we 
 One of the important calculations here is the projected plane.
 
 $$
-projected\_plane = \frac{\text{screen\_width} / 2}{\tan\left(\frac{\text{FOV}}{2}\right)}
+projectedplane = \frac{\text{screenwidth} / 2}{\tan\left(\frac{\text{FOV}}{2}\right)}
 $$
 
+$$
+projectedplane = \frac{screenwidth / 2}{\tan\left(\frac{FOV}{2}\right)}
+$$
+
+$$
+\mathrm{projectedplane} = \frac{\mathrm{screenwidth} / 2}{\tan\left(\frac{\mathrm{FOV}}{2}\right)}
+$$
+
+$$
+projected\_plane = \frac{screen\_width / 2}{\tan\left(\frac{FOV}{2}\right)}
+$$
 
 
 Which is the measurement of distance from the player to the screen.
