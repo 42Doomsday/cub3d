@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:09:05 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/06 17:16:37 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures);
 static bool	init_game(t_cub3d *info);
 static void	destroy_textures(t_png_textures *pngs);
 
-static void	initialize(t_cub3d	*info)
+bool	init_info(t_cub3d *info, char *filename)
 {
 	ft_bzero(info, sizeof(t_cub3d));
 	info->textures = &info->data.textures;
@@ -26,11 +26,6 @@ static void	initialize(t_cub3d	*info)
 	info->layout = &info->data.layout;
 	info->rays = &info->data.rays;
 	info->text = &info->data.text;
-}
-
-bool	init_info(t_cub3d *info, char *filename)
-{
-	initialize(info);
 	if (is_valid_path(filename) && parse(filename, info))
 	{
 		if (init_textures(info->text, info->textures))

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 15:56:48 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 18:19:18 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/06 17:42:21 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static t_icoords	get_step_xy(t_coords start, t_coords end);
 
-void put_line(mlx_image_t *img, t_coords start, t_coords end, uint32_t color)
+void	put_line(mlx_image_t *img, t_coords start, t_coords end, uint32_t color)
 {
 	t_icoords	xy;
 	t_icoords	dxy;
 	t_icoords	sxy;
-	int		err;
-	int		e2;
+	int			err;
+	int			e2;
 
 	dxy.x = abs((int)end.x - (int)start.x);
 	dxy.y = abs((int)end.y - (int)start.y);
