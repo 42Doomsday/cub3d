@@ -133,14 +133,6 @@ We have no technology that can respond to the player's physical position, so we 
 One of the important calculations here is the projected plane.
 
 $$
-projectedplane = \frac{\text{screenwidth} / 2}{\tan\left(\frac{\text{FOV}}{2}\right)}
-$$
-
-$$
-projectedplane = \frac{screenwidth / 2}{\tan\left(\frac{FOV}{2}\right)}
-$$
-
-$$
 \mathrm{projectedplane} = \frac{\mathrm{screenwidth} / 2}{\tan\left(\frac{\mathrm{FOV}}{2}\right)}
 $$
 
@@ -159,6 +151,10 @@ We have laid the groundwork by casting rays now for each ray me must measure dis
 
 $$
 wall height = \frac{real wall height \cdot proj plane}{perp distance}
+$$
+
+$$
+\mathrm{wall\ height} = \frac{\mathrm{real\ wall\ height} \cdot \mathrm{proj\ plane}}{\mathrm{perp\ distance}}
 $$
 
 This requires another variable called perpendicular distance. 
