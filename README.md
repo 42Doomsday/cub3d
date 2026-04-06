@@ -130,6 +130,8 @@ $$
 projected\_plane = \frac{\text{screen\_width} / 2}{\tan\left(\frac{\text{FOV}}{2}\right)}
 $$
 
+
+
 Which is the measurement of distance from the player to the screen.
 
 ### Wall Height
@@ -140,6 +142,14 @@ We have laid the groundwork by casting rays now for each ray me must measure dis
 
 $$
 \text{wall\_height} = \frac{\text{wall\_real\_height} \cdot \text{proj\_plane}}{\text{perp\_distance}}
+$$
+
+$$
+\mathrm{wall\_height} = \frac{\mathrm{wall\_real\_height} \cdot \mathrm{proj\_plane}}{\mathrm{perp\_distance}}
+$$
+
+$$
+wall\_height = \frac{wall\_real\_height \cdot proj\_plane}{perp\_distance}
 $$
 
 This requires another variable called perpendicular distance. 
