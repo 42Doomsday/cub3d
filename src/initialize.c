@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 14:05:16 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/06 17:09:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,23 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures);
 static bool	init_game(t_cub3d *info);
 static void	destroy_textures(t_png_textures *pngs);
 
-bool	init_info(t_cub3d *info, char *filename)
+static void	initialize(t_cub3d	*info)
 {
 	ft_bzero(info, sizeof(t_cub3d));
+	info->textures = &info->data.textures;
+	info->map = &info->data.map;
+	info->player = &info->data.player;
+	info->layout = &info->data.layout;
+	info->rays = &info->data.rays;
+	info->text = &info->data.text;
+}
+
+bool	init_info(t_cub3d *info, char *filename)
+{
+	initialize(info);
 	if (is_valid_path(filename) && parse(filename, info))
 	{
-		if (init_textures(&info->text, &info->textures))
+		if (init_textures(info->text, info->textures))
 		{
 			if (init_mlx(info))
 			{
@@ -30,10 +41,10 @@ bool	init_info(t_cub3d *info, char *filename)
 					return (true);
 				mlx_terminate(info->mlx);
 			}
-			destroy_textures(&info->text);
+			destroy_textures(info->text);
 		}
-		free_map(&info->map);
-		free_textures(&info->textures);
+		free_map(info->map);
+		free_textures(info->textures);
 	}
 	return (false);
 }
@@ -81,23 +92,23 @@ static bool	init_game(t_cub3d *info)
 
 	width = info->mlx->width;
 	height = info->mlx->height;
-	info->rays.count = width;
-	info->rays.fov = 60.0f * M_PI / 180.0f;
-	if (allocate_rays(&info->rays, width))
+	info->rays->count = width;
+	info->rays->fov = 60.0f * M_PI / 180.0f;
+	if (allocate_rays(info->rays, width))
 	{
-		calculate_angles(&info->rays, &info->player);
+		calculate_angles(info->rays, info->player);
 		info->game = mlx_new_image(info->mlx, width, height);
 		if (info->game)
 		{
-			info->layout.game_bs = get_block_size(&info->map, width, height);
+			info->layout->game_bs = get_block_size(info->map, width, height);
 			width *= 0.2f;
 			height *= 0.2f;
-			info->layout.minimap_bs = get_block_size(&info->map, width, height);
+			info->layout->minimap_bs = get_block_size(info->map, width, height);
 			info->window = mlx_new_image(info->mlx, width, height);
 			mlx_image_to_window(info->mlx, info->window, 0, 0);
 			return (true);
 		}
-		free(info->rays.coords);
+		free(info->rays->coords);
 	}
 	return (false);
 }

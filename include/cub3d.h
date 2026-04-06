@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 16:31:16 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/06 17:02:03 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,17 +157,35 @@ typedef struct s_render_layout
 	bool	rescale;
 }	t_render_layout;
 
-typedef struct s_cub3d
+typedef struct s_cub3d_ptrs
 {
-	mlx_t			*mlx;
+	t_map		*map;
+	t_player	*player;
+	t_textures	*textures;
+}	t_cub3d_ptrs;
+
+typedef struct s_cub3d_data
+{
 	t_textures		textures;
 	t_map			map;
 	t_player		player;
-	mlx_image_t		*game;
-	mlx_image_t		*window;
 	t_render_layout	layout;
 	t_rays			rays;
 	t_png_textures	text;
+}	t_cub3d_data;
+
+typedef struct s_cub3d
+{
+	mlx_t			*mlx;
+	t_textures		*textures;
+	t_map			*map;
+	t_player		*player;
+	mlx_image_t		*game;
+	mlx_image_t		*window;
+	t_render_layout	*layout;
+	t_rays			*rays;
+	t_png_textures	*text;
+	t_cub3d_data	data;
 }	t_cub3d;
 
 // parsers

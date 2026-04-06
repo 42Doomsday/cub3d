@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 19:43:59 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/31 18:01:18 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/06 17:13:12 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ void	put_textures(t_cub3d *info, int x, int *y)
 	float			text_pos_y;
 	int				end;
 
-	texture = get_text(info->rays.sides[x], &info->text);
-	text.x = get_text_clmn(info->rays.sides[x], info->rays.coords[x], texture);
-	step = (float)texture->height / (float)info->rays.heights[x];
-	text_pos_y = (float)(*y - info->rays.top_borders[x]) * step;
-	end = put_to_limits(info->rays.bot_borders[x], info->game->height);
+	texture = get_text(info->rays->sides[x], info->text);
+	text.x = get_text_clmn(info->rays->sides[x], info->rays->coords[x], texture);
+	step = (float)texture->height / (float)info->rays->heights[x];
+	text_pos_y = (float)(*y - info->rays->top_borders[x]) * step;
+	end = put_to_limits(info->rays->bot_borders[x], info->game->height);
 	while (*y < end)
 	{
 		text.y = put_to_limits(text_pos_y, texture->height);

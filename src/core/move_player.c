@@ -22,20 +22,20 @@ void	move_player(t_cub3d *info, float degree)
 	float		radians;
 
 	radians = convert_degree_to_radians(degree);
-	normilized = normilize(info->player.dir.radians + radians);
+	normilized = normilize(info->player->dir.radians + radians);
 	displacement.x = normilized.x * (PLAYER_STEP * info->mlx->delta_time);
 	displacement.y = normilized.y * (PLAYER_STEP * info->mlx->delta_time);
-	info->player.coords.y = resolve_y(
-			&info->map,
+	info->player->coords.y = resolve_y(
+			info->map,
 			displacement.y,
-			info->player.coords.x,
-			info->player.coords.y + displacement.y
+			info->player->coords.x,
+			info->player->coords.y + displacement.y
 			);
-	info->player.coords.x = resolve_x(
-			&info->map,
+	info->player->coords.x = resolve_x(
+			info->map,
 			displacement.x,
-			info->player.coords.x + displacement.x,
-			info->player.coords.y
+			info->player->coords.x + displacement.x,
+			info->player->coords.y
 			);
 }
 
