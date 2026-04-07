@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 19:43:59 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 14:50:06 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:31:50 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int				get_text_clmn(t_texture_id side, t_coords crds,
 							mlx_texture_t *text);
 static int				put_to_limits(float value, int limit);
 
-void	put_textures(t_cub3d *info, int x, int *y)
+int	put_textures(mlx_image_t *img, t_rays *rays, t_png_textures *texts,
+		t_icoords coords)
 {
 	mlx_texture_t	*texture;
 	t_coords		text;
@@ -26,20 +27,21 @@ void	put_textures(t_cub3d *info, int x, int *y)
 	float			text_pos_y;
 	int				end;
 
-	texture = get_text(info->rays->sides[x], info->text);
-	text.x = get_text_clmn(info->rays->sides[x],
-			info->rays->coords[x], texture);
-	step = (float)texture->height / (float)info->rays->heights[x];
-	text_pos_y = (float)(*y - info->rays->top_borders[x]) * step;
-	end = put_to_limits(info->rays->bot_borders[x], info->game->height);
-	while (*y < end)
+	texture = get_text(rays->sides[coords.x], texts);
+	text.x = get_text_clmn(rays->sides[coords.x],
+			rays->coords[coords.x], texture);
+	step = (float)texture->height / (float)rays->heights[coords.x];
+	text_pos_y = (float)(coords.y - rays->top_borders[coords.x]) * step;
+	end = put_to_limits(rays->bot_borders[coords.x], img->height);
+	while (coords.y < end)
 	{
 		text.y = put_to_limits(text_pos_y, texture->height);
 		text_pos_y += step;
-		mlx_put_pixel(info->game, x, *y,
+		mlx_put_pixel(img, coords.x, coords.y,
 			get_text_pixel(texture, text.x, text.y));
-		(*y)++;
+		(coords.y)++;
 	}
+	return (coords.y);
 }
 
 static mlx_texture_t	*get_text(t_texture_id side, t_png_textures *pngs)

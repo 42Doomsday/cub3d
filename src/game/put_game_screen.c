@@ -6,64 +6,68 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 14:49:37 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:35:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	put_ceiling(t_cub3d *info, int x, int *y);
-void		put_textures(t_cub3d *info, int x, int *y);
-static void	put_floor(t_cub3d *info, int x, int *y);
+static int	put_ceiling(mlx_image_t *img, t_textures *texts, t_icoords coords,
+				int top_wall_border);
+int			put_textures(mlx_image_t *img, t_rays *rays, t_png_textures *texts,
+				t_icoords coords);
+static void	put_floor(mlx_image_t *img, t_textures *texts, t_icoords coords);
 
-void	put_game_screen(t_cub3d *info)
+void	put_game_screen(mlx_image_t *img, t_rays *rays, t_textures *texts,
+			t_png_textures *pngs)
 {
-	size_t	x;
-	int		y;
+	t_icoords	coords;
+	int			top_wall_border;
 
-	x = 0;
-	while (x < info->rays->count)
+	coords.x = 0;
+	while (coords.x < (int)rays->count)
 	{
-		y = 0;
-		put_ceiling(info, x, &y);
-		put_textures(info, x, &y);
-		put_floor(info, x, &y);
-		x++;
+		coords.y = 0;
+		top_wall_border = rays->top_borders[coords.x];
+		coords.y = put_ceiling(img, texts, coords, top_wall_border);
+		coords.y = put_textures(img, rays, pngs, coords);
+		put_floor(img, texts, coords);
+		coords.x++;
 	}
 }
 
-static void	put_ceiling(t_cub3d *info, int x, int *y)
+static int	put_ceiling(mlx_image_t *img, t_textures *texts, t_icoords coords,
+				int top_wall_border)
 {
 	uint32_t	pixel;
-	int			end;
 
-	end = info->rays->top_borders[x];
-	if (end < 0)
-		end = 0;
-	while (*y < end)
+	if (top_wall_border < 0)
+		top_wall_border = 0;
+	while (coords.y < top_wall_border)
 	{
 		pixel = get_rgba(
-				info->textures->ceiling[0],
-				info->textures->ceiling[1],
-				info->textures->ceiling[2],
+				texts->ceiling[0],
+				texts->ceiling[1],
+				texts->ceiling[2],
 				255);
-		mlx_put_pixel(info->game, x, *y, pixel);
-		(*y)++;
+		mlx_put_pixel(img, coords.x, coords.y, pixel);
+		(coords.y)++;
 	}
+	return (coords.y);
 }
 
-static void	put_floor(t_cub3d *info, int x, int *y)
+static void	put_floor(mlx_image_t *img, t_textures *texts, t_icoords coords)
 {
 	uint32_t	pixel;
 
-	while (*y < (int)info->game->height)
+	while (coords.y < (int)img->height)
 	{
 		pixel = get_rgba(
-				info->textures->floor[0],
-				info->textures->floor[1],
-				info->textures->floor[2],
+				texts->floor[0],
+				texts->floor[1],
+				texts->floor[2],
 				255);
-		mlx_put_pixel(info->game, x, *y, pixel);
-		(*y)++;
+		mlx_put_pixel(img, coords.x, coords.y, pixel);
+		(coords.y)++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:09:17 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:35:36 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ bool	is_valid_path(char *path);
 
 // rendering
 void	put_minimap(mlx_image_t *img, t_world *world, t_rays *rays, int bs);
-void	put_game_screen(t_cub3d *info);
+void	put_game_screen(mlx_image_t *img, t_rays *rays, t_textures *texts,
+			t_png_textures *pngs);
 
 // utils
 int		get_block_size(t_map *map, int32_t width, int32_t height);
