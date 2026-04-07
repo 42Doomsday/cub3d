@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 14:10:38 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 14:11:55 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:43:06 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	free_recourses(t_cub3d *info)
 {
 	free_map(info->map);
 	free_textures(info->textures);
-	mlx_delete_texture(info->text->north);
-	mlx_delete_texture(info->text->south);
-	mlx_delete_texture(info->text->east);
-	mlx_delete_texture(info->text->west);
+	mlx_delete_texture(info->pngs->north);
+	mlx_delete_texture(info->pngs->south);
+	mlx_delete_texture(info->pngs->east);
+	mlx_delete_texture(info->pngs->west);
 	free(info->rays->coords);
 }
 

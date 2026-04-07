@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:35:36 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:42:20 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_cub3d
 	mlx_image_t		*window;
 	t_render_layout	*layout;
 	t_rays			*rays;
-	t_png_textures	*text;
+	t_png_textures	*pngs;
 	t_world			*world;
 	t_cub3d_data	data;
 }	t_cub3d;
@@ -81,7 +81,7 @@ void	free_recourses(t_cub3d *info);
 void	terminate_mlx(t_cub3d *info);
 
 // parsing
-bool	parse(char *filename, t_cub3d *info);
+bool	parse(char *filename, t_textures *texts, t_map *map, t_player *player);
 bool	is_valid_path(char *path);
 
 // rendering

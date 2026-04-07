@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 15:52:46 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:42:31 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,27 @@ bool	init_info(t_cub3d *info, char *filename)
 	info->player = &info->data.player;
 	info->layout = &info->data.layout;
 	info->rays = &info->data.rays;
-	info->text = &info->data.text;
+	info->pngs = &info->data.text;
 	info->world = &info->data.world;
 	info->world->map = info->map;
 	info->world->player = info->player;
-	if (is_valid_path(filename) && parse(filename, info))
+	if (is_valid_path(filename))
 	{
-		if (init_textures(info->text, info->textures))
+		if (parse(filename, info->textures, info->map, info->player))
 		{
-			if (init_mlx(info))
+			if (init_textures(info->pngs, info->textures))
 			{
-				if (init_game(info))
-					return (true);
-				mlx_terminate(info->mlx);
+				if (init_mlx(info))
+				{
+					if (init_game(info))
+						return (true);
+					mlx_terminate(info->mlx);
+				}
+				destroy_textures(info->pngs);
 			}
-			destroy_textures(info->text);
+			free_map(info->map);
+			free_textures(info->textures);
 		}
-		free_map(info->map);
-		free_textures(info->textures);
 	}
 	return (false);
 }

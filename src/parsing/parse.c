@@ -6,16 +6,17 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 14:03:39 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:10:36 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:40:26 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
 static void	flush(int fd);
-static bool	protected_parsing(int fd, t_cub3d *info);
+static bool	process_parsing(int fd, t_textures *texts,
+				t_map *map, t_player *player);
 
-bool	parse(char *filename, t_cub3d *info)
+bool	parse(char *filename, t_textures *texts, t_map *map, t_player *player)
 {
 	bool	result;
 	int		fd;
@@ -23,7 +24,7 @@ bool	parse(char *filename, t_cub3d *info)
 	fd = open(filename, O_RDONLY);
 	if (fd > -1)
 	{
-		result = protected_parsing(fd, info);
+		result = process_parsing(fd, texts, map, player);
 		close(fd);
 		return (result);
 	}
@@ -31,22 +32,23 @@ bool	parse(char *filename, t_cub3d *info)
 	return (false);
 }
 
-static bool	protected_parsing(int fd, t_cub3d *info)
+static bool	process_parsing(int fd, t_textures *texts,
+				t_map *map, t_player *player)
 {
-	if (parse_textures(fd, info->textures))
+	if (parse_textures(fd, texts))
 	{
-		if (parse_map(fd, info->map, info->player))
+		if (parse_map(fd, map, player))
 			return (true);
 		else
 		{
-			free_textures(info->textures);
-			free_map(info->map);
+			free_textures(texts);
+			free_map(map);
 		}
 	}
 	else
 	{
 		flush(fd);
-		free_textures(info->textures);
+		free_textures(texts);
 	}
 	return (false);
 }
