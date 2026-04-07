@@ -1,21 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   core.h                                             :+:      :+:    :+:   */
+/*   rays.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 14:28:39 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 14:52:44 by dkalgano         ###   ########.fr       */
+/*   Created: 2026/04/07 15:00:51 by dkalgano          #+#    #+#             */
+/*   Updated: 2026/04/07 15:02:20 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CORE_H
-# define CORE_H
+#ifndef RAYS_H
 
-# include "state.h"
+# include <stdlib.h>
+# include "coords.h"
+# include "texture.h"
 
-// rays
+typedef struct s_rays
+{
+	float			fov;
+	size_t			count;
+	t_coords		*coords;
+	t_texture_id	*sides;
+	float			*distances;
+	int				*top_borders;
+	int				*bot_borders;
+	int				*heights;
+	float			*angles;
+	t_vec2			*norm_angles;
+}	t_rays;
+
 float			get_dist_to_wall(t_coords origin, t_coords wall);
 t_coords		cast_ray_to_wall(t_coords origin, t_vec2 unit_vector,
 					t_map *map);
@@ -26,17 +40,5 @@ void			get_all_rays(t_rays *rays, t_map *map, t_player *player,
 					int height);
 void			*allocate_rays(t_rays *rays, int width);
 void			calculate_angles(t_rays *rays, t_player *player);
-
-// player
-void			move_player(t_cub3d *info, float degree);
-void			update_player_degree(t_player *player, float degree);
-
-// updates
-void			update_window_info(mlx_t *mlx, int width, int height);
-void			update_render_layour(t_cub3d *info, int width, int height);
-void			update_buffers(t_cub3d *info, bool realloc);
-
-// scaler
-bool			mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);
 
 #endif

@@ -8,6 +8,7 @@ PARSING_DIR = parsing
 MINIMAP_DIR = minimap
 GAME_DIR = game
 CORE_DIR = core
+RAYS_DIR = rays
 
 NAME = game
 
@@ -39,14 +40,18 @@ MINIMAP_SOURCES =  put_player.c put_minimap.c put_line.c \
 
 GAME_SOURCES = put_game_screen.c put_textures.c
 
-CORE_SOURCES = move_player.c cast_ray.c is_wall.c ray_utils.c mlx_scale_image_into.c updaters.c
+RAYS_SOURCES = cast_ray.c is_wall.c ray_utils.c
+
+CORE_SOURCES = move_player.c mlx_scale_image_into.c updaters.c
 
 GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
 CORE_SRC = $(addprefix $(CORE_DIR)/, $(CORE_SOURCES))
+RAYS_SRC = $(addprefix $(RAYS_DIR)/, $(RAYS_SOURCES))
 
-SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) $(CORE_SRC)
+SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) \
+		$(CORE_SRC) $(RAYS_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
