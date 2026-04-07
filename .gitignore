@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux,c,visualstudiocode,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,c,visualstudiocode,windows
 
+# Out game
+cub3d
+minilibx-linux
+
 ### C ###
 # Prerequisites
 *.d

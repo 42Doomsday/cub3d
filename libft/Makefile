@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: clouden <clouden@student.42madrid.com>     +#+  +:+       +#+         #
+#    By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 18:43:41 by clouden           #+#    #+#              #
-#    Updated: 2026/02/19 18:12:58 by clouden          ###   ########.fr        #
+#    Updated: 2026/03/31 19:24:01 by dkalgano         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 BLUE    =	\033[0;34m
-RESET   =	\033[0m 
+RESET   =	\033[0m
 GREEN   =	\033[0;32m
 
 # Compiler and flags
@@ -24,7 +24,7 @@ NAME    = libft.a
 
 # Source and object files
 
-# Define input/output 
+# Define input/output
 IO_DIR	=	io/
 IO_SRCS	=	$(IO_DIR)ft_putendl_fd.c\
 			$(IO_DIR)ft_putchar_fd.c\
@@ -33,7 +33,7 @@ IO_SRCS	=	$(IO_DIR)ft_putendl_fd.c\
 			$(IO_DIR)ft_putunbr_fd.c\
 			$(IO_DIR)ft_puthex_fd.c\
 
-# Define math	
+# Define math
 MATH_DIR	=	math/
 MATH_SRCS	=	$(MATH_DIR)ft_power.c\
 
@@ -132,11 +132,11 @@ $(NAME): $(OBJS)
 # Rule to compile test
 test: $(TEST_OBJ) $(NAME)
 	@echo "$(GREEN)[LIBFT]$(RESET) Ready For Testing..."
-	@$(CC) $(CFLAGS) $^ -o $(TEST_BIN) 
+	@$(CC) $(CFLAGS) $^ -o $(TEST_BIN)
 
 # Clean object files
 clean:
-	@echo "Cleaning object libft files..."	
+	@echo "Cleaning object libft files..."
 	@rm -f $(OBJS) $(TEST_OBJ)
 
 # Clean object files and library
@@ -147,4 +147,4 @@ fclean: clean
 # Rebuild everything
 re: fclean all
 
-.PHONY: all clean fclean re test 
+.PHONY: all clean fclean re test

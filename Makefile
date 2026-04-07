@@ -7,16 +7,18 @@ MLX_BUILD = $(MLX_DIR)/build
 PARSING_DIR = parsing
 MINIMAP_DIR = minimap
 GAME_DIR = game
-CORE_DIR = core
+UTILS_DIR = utils
+RAYS_DIR = rays
 
-NAME = game
+NAME = cub3d
 
 CC = cc
 
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_BUILD)/libmlx42.a
 
-CFLAGS = -Wall -Wextra -Werror -Iinclude -g
+CFLAGS = -Wall -Wextra -Werror -Iinclude -g -O3
+TEST_FLAGS = -Wall -Wextra -Werror -Iinclude -g
 GUI_FLAGS = -lglfw -pthread -ldl
 MATH_FLAG = -lm
 
@@ -26,7 +28,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SOURCES  = main.c utils.c
+SOURCES  = main.c initialize.c cleanup.c updaters.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
@@ -34,22 +36,27 @@ PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		helpers/trim_map.c helpers/trim_spaces.c helpers/is_contiguous.c \
 		helpers/flood_fill.c helpers/is_closed.c parse.c
 
-MINIMAP_SOURCES =  put_player.c put_minimap.c helpers/put_line.c helpers/put_circle.c
+MINIMAP_SOURCES =  put_player.c put_minimap.c put_line.c \
+		put_circle.c put_square.c
 
-GAME_SOURCES = put_screen.c
+GAME_SOURCES = put_game_screen.c put_textures.c move_player.c
 
-CORE_SOURCES = move_player_forward.c cast_ray.c is_wall.c
+RAYS_SOURCES = cast_ray.c is_wall.c ray_utils.c
+
+UTILS_SOURCES = mlx_scale_image_into.c common.c
 
 GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
-CORE_SRC = $(addprefix $(CORE_DIR)/, $(CORE_SOURCES))
+UTILS_SRC = $(addprefix $(UTILS_DIR)/, $(UTILS_SOURCES))
+RAYS_SRC = $(addprefix $(RAYS_DIR)/, $(RAYS_SOURCES))
 
-SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) $(CORE_SRC)
+SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) \
+		$(RAYS_SRC) $(UTILS_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-TEST_SRC  = $(PARSING_SRC) utils.c
+TEST_SRC  = $(PARSING_SRC) $(UTILS_SRC)
 TEST_OBJ  = $(TEST_SRC:%.c=$(OBJ_DIR)/%.o)
 
 TEST_NAMES = test_parse_map test_expand_tabs \
@@ -70,14 +77,14 @@ $(MLX):
 	@cmake --build $(MLX_BUILD) -j4
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@$(CC) $(CFLAGS) $(GUI_FLAGS) $(OBJ) $(LIBFT) $(MLX) $(MATH_FLAG) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX) $(GUI_FLAGS) $(MATH_FLAG) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT)
-	@$(CC) $(CFLAGS) $< $(TEST_OBJ) $(LIBFT) $(MATH_FLAG) -o $@
+	@$(CC) $(TEST_FLAGS) $< $(TEST_OBJ) $(LIBFT) $(MATH_FLAG) -o $@
 
 re: fclean $(NAME)
 
