@@ -55,7 +55,7 @@ SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) \
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-TEST_SRC  = $(PARSING_SRC) utils.c
+TEST_SRC  = $(PARSING_SRC) $(UTILS_SRC)
 TEST_OBJ  = $(TEST_SRC:%.c=$(OBJ_DIR)/%.o)
 
 TEST_NAMES = test_parse_map test_expand_tabs \
