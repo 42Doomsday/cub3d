@@ -6,32 +6,17 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 19:43:59 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 13:07:30 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 14:50:06 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static uint32_t	get_text_pixel(mlx_texture_t *text, int x, int y);
-static int		get_text_clmn(t_texture_id side, t_coords crds,
-					mlx_texture_t *text);
-static int		put_to_limits(float value, int limit);
-
-static mlx_texture_t	*get_text(t_texture_id side, t_png_textures *pngs)
-{
-	mlx_texture_t	*texture;
-
-	texture = NULL;
-	if (side == NORTH)
-		texture = pngs->north;
-	else if (side == EAST)
-		texture = pngs->east;
-	else if (side == WEST)
-		texture = pngs->west;
-	else if (side == SOUTH)
-		texture = pngs->south;
-	return (texture);
-}
+static mlx_texture_t	*get_text(t_texture_id side, t_png_textures *pngs);
+static uint32_t			get_text_pixel(mlx_texture_t *text, int x, int y);
+static int				get_text_clmn(t_texture_id side, t_coords crds,
+							mlx_texture_t *text);
+static int				put_to_limits(float value, int limit);
 
 void	put_textures(t_cub3d *info, int x, int *y)
 {
@@ -55,6 +40,22 @@ void	put_textures(t_cub3d *info, int x, int *y)
 			get_text_pixel(texture, text.x, text.y));
 		(*y)++;
 	}
+}
+
+static mlx_texture_t	*get_text(t_texture_id side, t_png_textures *pngs)
+{
+	mlx_texture_t	*texture;
+
+	texture = NULL;
+	if (side == NORTH)
+		texture = pngs->north;
+	else if (side == EAST)
+		texture = pngs->east;
+	else if (side == WEST)
+		texture = pngs->west;
+	else if (side == SOUTH)
+		texture = pngs->south;
+	return (texture);
 }
 
 static uint32_t	get_text_pixel(mlx_texture_t *text, int x, int y)

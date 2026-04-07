@@ -6,13 +6,14 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:12:45 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 14:49:37 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static void	put_ceiling(t_cub3d *info, int x, int *y);
+void		put_textures(t_cub3d *info, int x, int *y);
 static void	put_floor(t_cub3d *info, int x, int *y);
 
 void	put_game_screen(t_cub3d *info)
