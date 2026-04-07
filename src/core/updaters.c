@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 14:15:12 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 13:08:34 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:49:36 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,12 @@ void	update_buffers(t_cub3d *info, bool realloc)
 	if (realloc)
 	{
 		free(info->rays->coords);
-		allocate_rays(info->rays, info->layout->game_width);
+		if (allocate_rays(info->rays, info->layout->game_width) == NULL)
+			mlx_close_window(info->mlx);
 	}
 	if (info->layout->rescale)
-		mlx_resize_image(info->window, info->mlx->width, info->mlx->height);
+		if (mlx_resize_image(info->window, info->mlx->width,
+				info->mlx->height) == false)
+			mlx_close_window(info->mlx);
 	calculate_angles(info->rays, info->player);
 }
