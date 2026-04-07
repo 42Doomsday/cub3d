@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:10:16 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 14:12:56 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int32_t	main(int argc, char **argv)
 	mlx_resize_hook(info.mlx, on_resize, &info);
 	mlx_loop_hook(info.mlx, get_frame, &info);
 	mlx_loop(info.mlx);
-	mlx_terminate(info.mlx);
+	terminate_mlx(&info);
+	free_recourses(&info);
 	return (EXIT_SUCCESS);
 }
 

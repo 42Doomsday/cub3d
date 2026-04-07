@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 13:11:42 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 14:12:37 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,5 +240,9 @@ t_vec2			normilize(float radians);
 
 // initialize
 bool			init_info(t_cub3d *info, char *filename);
+
+// cleanup
+void			free_recourses(t_cub3d *info);
+void			terminate_mlx(t_cub3d *info);
 
 #endif
