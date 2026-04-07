@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:16:37 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 15:52:46 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ bool	init_info(t_cub3d *info, char *filename)
 	info->layout = &info->data.layout;
 	info->rays = &info->data.rays;
 	info->text = &info->data.text;
+	info->world = &info->data.world;
+	info->world->map = info->map;
+	info->world->player = info->player;
 	if (is_valid_path(filename) && parse(filename, info))
 	{
 		if (init_textures(info->text, info->textures))

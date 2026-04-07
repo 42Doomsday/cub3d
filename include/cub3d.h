@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 15:18:04 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 15:48:26 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_cub3d_data
 	t_render_layout	layout;
 	t_rays			rays;
 	t_png_textures	text;
+	t_world			world;
 }	t_cub3d_data;
 
 typedef struct s_cub3d
@@ -70,6 +71,7 @@ typedef struct s_cub3d
 	t_render_layout	*layout;
 	t_rays			*rays;
 	t_png_textures	*text;
+	t_world			*world;
 	t_cub3d_data	data;
 }	t_cub3d;
 
@@ -93,7 +95,6 @@ float	convert_degree_to_radians(float degree);
 t_vec2	normilize(float radians);
 
 // updaters
-void	move_player(t_cub3d *info, float degree);
 void	update_window_info(mlx_t *mlx, int width, int height);
 void	update_render_layour(t_cub3d *info, int width, int height);
 void	update_buffers(t_cub3d *info, bool realloc);

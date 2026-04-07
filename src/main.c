@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 14:12:56 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 15:53:02 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ static void	ft_hook(void *param)
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
 		update_degree(info, PLAYER_ROT_STEP);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_W))
-		move_player(info, 90);
+		move_player(info->world, 90, info->mlx->delta_time);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_S))
-		move_player(info, 270);
+		move_player(info->world, 270, info->mlx->delta_time);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_A))
-		move_player(info, 0);
+		move_player(info->world, 0, info->mlx->delta_time);
 	else if (mlx_is_key_down(info->mlx, MLX_KEY_D))
-		move_player(info, 190);
+		move_player(info->world, 190, info->mlx->delta_time);
 }
 
 static void	get_frame(void *param)

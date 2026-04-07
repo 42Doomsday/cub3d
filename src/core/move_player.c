@@ -15,27 +15,27 @@
 static float	resolve_x(t_map *map, float dx, float new_x, float cur_y);
 static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
 
-void	move_player(t_cub3d *info, float degree)
+void	move_player(t_world *world, float degree, double delta)
 {
 	t_coords	displacement;
 	t_vec2		normilized;
 	float		radians;
 
 	radians = convert_degree_to_radians(degree);
-	normilized = normilize(info->player->dir.radians + radians);
-	displacement.x = normilized.x * (PLAYER_STEP * info->mlx->delta_time);
-	displacement.y = normilized.y * (PLAYER_STEP * info->mlx->delta_time);
-	info->player->coords.y = resolve_y(
-			info->map,
+	normilized = normilize(world->player->dir.radians + radians);
+	displacement.x = normilized.x * (PLAYER_STEP * delta);
+	displacement.y = normilized.y * (PLAYER_STEP * delta);
+	world->player->coords.y = resolve_y(
+			world->map,
 			displacement.y,
-			info->player->coords.x,
-			info->player->coords.y + displacement.y
+			world->player->coords.x,
+			world->player->coords.y + displacement.y
 			);
-	info->player->coords.x = resolve_x(
-			info->map,
+	world->player->coords.x = resolve_x(
+			world->map,
 			displacement.x,
-			info->player->coords.x + displacement.x,
-			info->player->coords.y
+			world->player->coords.x + displacement.x,
+			world->player->coords.y
 			);
 }
 
