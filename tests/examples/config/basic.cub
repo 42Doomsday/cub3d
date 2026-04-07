@@ -1,8 +1,8 @@
 F 47, 207, 57
-    WE wall.png
-EA block.png
-NO  angel.png
-    SO wall.png
+    WE textures/wall.png
+EA textures/block.png
+NO  textures/angel.png
+    SO textures/wall.png
 
   C     107, 234, 255
 
