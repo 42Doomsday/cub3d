@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:03:45 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 15:12:13 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 15:17:59 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_player
 	t_coords	coords;
 }	t_player;
 
-void	move_player(t_cub3d *info, float degree);
 void	update_player_degree(t_player *player, float degree);
 void	free_map_data(char **data);
 void	free_map(t_map *map);
