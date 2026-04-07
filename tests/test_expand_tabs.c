@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 16:54:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 17:17:37 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 17:21:31 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static bool	test_case(char *input, char *exp_result)
 
 static void	puterror(char *filename)
 {
-	dprintf(STDERR_FILENO, "\nThe test: %s - was failed:\n", filename);
+	dprintf(STDERR_FILENO, "\nThe test: %s - was failed:\n", filename ? filename : "(unnamed)");
 }
 
 static void unexpected_result(char *exp, char *res)
