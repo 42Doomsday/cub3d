@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 17:28:23 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:40:54 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 13:12:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ typedef struct s_render_obj
 }	t_render_obj;
 
 void	put_player(t_cub3d *info);
-void	put_line(mlx_image_t *img, t_coords start, t_coords end, uint32_t color);
+void	put_line(mlx_image_t *img, t_coords start, t_coords end,
+			uint32_t color);
 void	put_circle(mlx_image_t *img, t_icoords center, int radius);
 void	put_square(mlx_image_t *minimap, t_render_obj square);
 

@@ -24,11 +24,13 @@ void	get_all_rays(t_rays *rays, t_map *map, t_player *player, int height)
 	i = 0;
 	while (i < rays->count)
 	{
-		rays->coords[i] = cast_ray_to_wall(player->coords, rays->norm_angles[i], map);
-		rays->sides[i] = get_side_of_wall(rays->coords[i], rays->norm_angles[i]);
+		rays->coords[i] = cast_ray_to_wall(player->coords,
+				rays->norm_angles[i], map);
+		rays->sides[i] = get_side_of_wall(rays->coords[i],
+				rays->norm_angles[i]);
 		rays->distances[i] = get_dist_to_wall(player->coords, rays->coords[i]);
 		rays->distances[i] *= cosf(rays->angles[i] - player->dir.radians);
-		rays->heights[i] =  roundf(proj_plane_dist / rays->distances[i]);
+		rays->heights[i] = roundf(proj_plane_dist / rays->distances[i]);
 		rays->top_borders[i] = (height / 2) - (rays->heights[i] / 2);
 		rays->bot_borders[i] = (height / 2) + (rays->heights[i] / 2);
 		i++;

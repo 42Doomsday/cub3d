@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:19 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/16 16:40:52 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 13:12:22 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 # include "cub3d.h"
 
-#define TAB_SIZE 4
-#define VALID_CHARS_MAP "\t\n\v\f\r 01NEWS"
-#define VALID_PLAYER_SIDES "NEWS"
-#define MAP_CHARACTERS "NEWS01"
-#define EXTENSION ".cub"
+# define TAB_SIZE 4
+# define VALID_CHARS_MAP "\t\n\v\f\r 01NEWS"
+# define VALID_PLAYER_SIDES "NEWS"
+# define MAP_CHARACTERS "NEWS01"
+# define EXTENSION ".cub"
 
-#define FILL '2'
-#define SPACE ' '
-#define WALL '0'
+# define FILL '2'
+# define SPACE ' '
+# define WALL '0'
 
 // map
 char	**read_lines(int fd);

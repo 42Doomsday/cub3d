@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 14:15:12 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:14:44 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 13:08:34 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	update_render_layour(t_cub3d *info, int width, int height)
 	{
 		layout->game_width = MAX_WIDTH;
 		layout->game_height = MAX_WIDTH / ((float)width / (float)height);
-		layout->game_bs = get_block_size(map, layout->game_width, layout->game_height);
+		layout->game_bs = get_block_size(map, layout->game_width,
+				layout->game_height);
 		layout->rescale = true;
 	}
 	else
@@ -45,7 +46,8 @@ void	update_render_layour(t_cub3d *info, int width, int height)
 	}
 	layout->minimap_width = layout->game_width * 0.2f;
 	layout->minimap_height = layout->game_height * 0.2f;
-	layout->minimap_bs = get_block_size(map, layout->minimap_width, layout->minimap_height);
+	layout->minimap_bs = get_block_size(map, layout->minimap_width,
+			layout->minimap_height);
 }
 
 void	update_buffers(t_cub3d *info, bool realloc)

@@ -6,13 +6,15 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 15:56:48 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:42:21 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 13:01:02 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minimap.h"
 
 static t_icoords	get_step_xy(t_coords start, t_coords end);
+static void			calculate_error(t_icoords *c, t_icoords d, t_icoords s,
+						int *error);
 
 void	put_line(mlx_image_t *img, t_coords start, t_coords end, uint32_t color)
 {
@@ -20,7 +22,6 @@ void	put_line(mlx_image_t *img, t_coords start, t_coords end, uint32_t color)
 	t_icoords	dxy;
 	t_icoords	sxy;
 	int			err;
-	int			e2;
 
 	dxy.x = abs((int)end.x - (int)start.x);
 	dxy.y = abs((int)end.y - (int)start.y);
@@ -33,17 +34,24 @@ void	put_line(mlx_image_t *img, t_coords start, t_coords end, uint32_t color)
 		mlx_put_pixel(img, xy.x, xy.y, color);
 		if (xy.x == (int)end.x && xy.y == (int)end.y)
 			break ;
-		e2 = 2 * err;
-		if (e2 > -dxy.y)
-		{
-			err -= dxy.y;
-			xy.x += sxy.x;
-		}
-		if (e2 < dxy.x)
-		{
-			err += dxy.x;
-			xy.y += sxy.y;
-		}
+		calculate_error(&xy, dxy, sxy, &err);
+	}
+}
+
+static void	calculate_error(t_icoords *c, t_icoords d, t_icoords s, int *error)
+{
+	int	total;
+
+	total = 2 * *error;
+	if (total > -d.y)
+	{
+		*error -= d.y;
+		c->x += s.x;
+	}
+	if (total < d.x)
+	{
+		*error += d.x;
+		c->y += s.y;
 	}
 }
 

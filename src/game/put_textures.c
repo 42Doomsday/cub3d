@@ -6,17 +6,15 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 19:43:59 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/06 17:13:12 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 13:07:30 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-typedef t_texture_id text_id;
-typedef mlx_texture_t text;
-
 static uint32_t	get_text_pixel(mlx_texture_t *text, int x, int y);
-static int		get_text_clmn(text_id side, t_coords crds, text *text);
+static int		get_text_clmn(t_texture_id side, t_coords crds,
+					mlx_texture_t *text);
 static int		put_to_limits(float value, int limit);
 
 static mlx_texture_t	*get_text(t_texture_id side, t_png_textures *pngs)
@@ -44,7 +42,8 @@ void	put_textures(t_cub3d *info, int x, int *y)
 	int				end;
 
 	texture = get_text(info->rays->sides[x], info->text);
-	text.x = get_text_clmn(info->rays->sides[x], info->rays->coords[x], texture);
+	text.x = get_text_clmn(info->rays->sides[x],
+			info->rays->coords[x], texture);
 	step = (float)texture->height / (float)info->rays->heights[x];
 	text_pos_y = (float)(*y - info->rays->top_borders[x]) * step;
 	end = put_to_limits(info->rays->bot_borders[x], info->game->height);
@@ -75,7 +74,7 @@ static uint32_t	get_text_pixel(mlx_texture_t *text, int x, int y)
 	return (result);
 }
 
-static int	get_text_clmn(text_id side, t_coords crds, text *text)
+static int	get_text_clmn(t_texture_id side, t_coords crds, mlx_texture_t *text)
 {
 	int	column_idx;
 
