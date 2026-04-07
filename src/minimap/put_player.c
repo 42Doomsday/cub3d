@@ -12,43 +12,43 @@
 
 #include "minimap.h"
 
-static t_player_draw	make_draw_params(t_cub3d *info);
-static void				put_direction_ray(t_player_draw prms, t_cub3d *info);
+static t_player_draw	make_draw_params(t_player *player, int bs);
+static void				put_direction_ray(mlx_image_t *img, t_player_draw prms,
+							t_rays *rays, int bs);
 
-void	put_player(t_cub3d *info)
+void	put_player(mlx_image_t *img, t_player *player, t_rays *rays, int bs)
 {
 	t_player_draw	params;
 
-	params = make_draw_params(info);
-	put_direction_ray(params, info);
-	put_circle(info->game, params.center, params.radius);
+	params = make_draw_params(player, bs);
+	put_direction_ray(img, params, rays, bs);
+	put_circle(img, params.center, params.radius);
 }
 
-static t_player_draw	make_draw_params(t_cub3d *info)
+static t_player_draw	make_draw_params(t_player *player, int bs)
 {
 	t_player_draw	params;
-	int				block_size;
 
-	block_size = info->layout->minimap_bs;
-	params.center.x = (int)(info->player->coords.x * block_size);
-	params.center.y = (int)(info->player->coords.y * block_size);
-	params.radius = block_size / 4;
-	params.start_px.x = info->player->coords.x * block_size;
-	params.start_px.y = info->player->coords.y * block_size;
+	params.center.x = (int)(player->coords.x * bs);
+	params.center.y = (int)(player->coords.y * bs);
+	params.radius = bs / 4;
+	params.start_px.x = player->coords.x * bs;
+	params.start_px.y = player->coords.y * bs;
 	return (params);
 }
 
-static void	put_direction_ray(t_player_draw prms, t_cub3d *info)
+static void	put_direction_ray(mlx_image_t *img, t_player_draw prms,
+				t_rays *rays, int bs)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < info->rays->count)
+	while (i < rays->count)
 	{
-		prms.end_px.x = info->rays->coords[i].x * info->layout->minimap_bs;
-		prms.end_px.y = info->rays->coords[i].y * info->layout->minimap_bs;
+		prms.end_px.x = rays->coords[i].x * bs;
+		prms.end_px.y = rays->coords[i].y * bs;
 		put_line(
-			info->game,
+			img,
 			prms.start_px,
 			prms.end_px,
 			get_rgba(0, 215, 0, 255)
