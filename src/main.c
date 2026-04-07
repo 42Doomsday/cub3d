@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:42:51 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 17:11:02 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	get_frame(void *param)
 	t_cub3d	*info;
 
 	info = param;
-	printf("fps: %f\n", 1 / (info->mlx->delta_time));
+	//printf("fps: %f\n", 1 / (info->mlx->delta_time));
 	get_all_rays(info->rays, info->map, info->player, info->game->height);
 	put_game_screen(info->game, info->rays, info->textures, info->pngs);
 	put_minimap(info->game, info->world, info->rays, info->layout->minimap_bs);

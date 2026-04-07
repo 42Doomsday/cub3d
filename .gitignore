@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,c,visualstudiocode,windows
 
 # Out game
-game
+cub3d
 minilibx-linux
 
 ### C ###
