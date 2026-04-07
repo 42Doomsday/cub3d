@@ -18,6 +18,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_BUILD)/libmlx42.a
 
 CFLAGS = -Wall -Wextra -Werror -Iinclude -g -O3
+TEST_FLAGS = -Wall -Wextra -Werror -Iinclude -g
 GUI_FLAGS = -lglfw -pthread -ldl
 MATH_FLAG = -lm
 
@@ -83,7 +84,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/test_%: $(TEST_DIR)/test_%.c $(TEST_OBJ) $(LIBFT)
-	@$(CC) $(CFLAGS) $< $(TEST_OBJ) $(LIBFT) $(MATH_FLAG) -o $@
+	@$(CC) $(TEST_FLAGS) $< $(TEST_OBJ) $(LIBFT) $(MATH_FLAG) -o $@
 
 re: fclean $(NAME)
 
