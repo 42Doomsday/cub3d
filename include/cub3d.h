@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/08 14:09:23 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:27:55 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int		get_rgba(int r, int g, int b, int a);
 float	convert_degree_to_radians(float degree);
 t_vec2	normilize(float radians);
 void	print_error(char *error_type, char *message);
+void	destroy_textures(t_png_textures *pngs);
 
 // updaters
 void	update_window_info(mlx_t *mlx, int width, int height);

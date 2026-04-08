@@ -6,11 +6,21 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 14:10:38 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:43:06 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:27:35 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	print_error(char *error_type, char *message)
+{
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	ft_putstr_fd("Cub3D: ", STDERR_FILENO);
+	ft_putstr_fd(error_type, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(message, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
 
 void	free_recourses(t_cub3d *info)
 {
@@ -28,4 +38,12 @@ void	terminate_mlx(t_cub3d *info)
 	mlx_delete_image(info->mlx, info->game);
 	mlx_delete_image(info->mlx, info->window);
 	mlx_terminate(info->mlx);
+}
+
+void	destroy_textures(t_png_textures *pngs)
+{
+	mlx_delete_texture(pngs->north);
+	mlx_delete_texture(pngs->east);
+	mlx_delete_texture(pngs->south);
+	mlx_delete_texture(pngs->west);
 }

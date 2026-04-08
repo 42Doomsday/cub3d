@@ -6,29 +6,21 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/08 14:18:52 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:28:45 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static void	info_ptrs_setup(t_cub3d *info);
 static bool	init_mlx(t_cub3d *info);
 static bool	init_textures(t_png_textures *pngs, t_textures *textures);
 static bool	init_game(t_cub3d *info);
-static void	destroy_textures(t_png_textures *pngs);
 
 bool	init_info(t_cub3d *info, char *filename)
 {
 	ft_bzero(info, sizeof(t_cub3d));
-	info->textures = &info->data.textures;
-	info->map = &info->data.map;
-	info->player = &info->data.player;
-	info->layout = &info->data.layout;
-	info->rays = &info->data.rays;
-	info->pngs = &info->data.text;
-	info->world = &info->data.world;
-	info->world->map = info->map;
-	info->world->player = info->player;
+	info_ptrs_setup(info);
 	if (is_valid_path(filename))
 	{
 		if (parse(filename, info->textures, info->map, info->player))
@@ -48,6 +40,19 @@ bool	init_info(t_cub3d *info, char *filename)
 		}
 	}
 	return (false);
+}
+
+static void	info_ptrs_setup(t_cub3d *info)
+{
+	info->textures = &info->data.textures;
+	info->map = &info->data.map;
+	info->player = &info->data.player;
+	info->layout = &info->data.layout;
+	info->rays = &info->data.rays;
+	info->pngs = &info->data.text;
+	info->world = &info->data.world;
+	info->world->map = info->map;
+	info->world->player = info->player;
 }
 
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
@@ -80,7 +85,7 @@ static bool	init_mlx(t_cub3d *info)
 	info->mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
 	if (info->mlx == NULL)
 	{
-		print_error("mlx", mlx_strerror(mlx_errno));
+		print_error("mlx", (char *)mlx_strerror(mlx_errno));
 		return (false);
 	}
 	return (true);
@@ -112,12 +117,4 @@ static bool	init_game(t_cub3d *info)
 		free(info->rays->coords);
 	}
 	return (false);
-}
-
-static void	destroy_textures(t_png_textures *pngs)
-{
-	mlx_delete_texture(pngs->north);
-	mlx_delete_texture(pngs->east);
-	mlx_delete_texture(pngs->south);
-	mlx_delete_texture(pngs->west);
 }
