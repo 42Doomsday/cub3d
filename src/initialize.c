@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:42:31 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:18:52 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures)
 		}
 		mlx_delete_texture(pngs->north);
 	}
-	ft_putstr_fd("cub3d: can't open the texture\n", STDERR_FILENO);
+	print_error("config file", "can't open the texture");
 	return (false);
 }
 
@@ -80,7 +80,7 @@ static bool	init_mlx(t_cub3d *info)
 	info->mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
 	if (info->mlx == NULL)
 	{
-		ft_putstr_fd((char *)mlx_strerror(mlx_errno), STDERR_FILENO);
+		print_error("mlx", mlx_strerror(mlx_errno));
 		return (false);
 	}
 	return (true);

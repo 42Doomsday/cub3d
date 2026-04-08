@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 17:11:02 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:10:59 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int32_t	main(int argc, char **argv)
 	t_cub3d	info;
 
 	if (argc != 2)
+	{
+		print_error("filename", "missing");
 		return (EXIT_FAILURE);
+	}
 	if (init_info(&info, argv[1]) == false)
 		return (EXIT_FAILURE);
 	mlx_loop_hook(info.mlx, ft_hook, &info);

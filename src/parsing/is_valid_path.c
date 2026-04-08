@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:28:10 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/30 17:00:51 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:11:47 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ bool	is_valid_path(char *path)
 				return (true);
 		}
 	}
-	ft_putstr_fd("cub3d: filename should have .cub extention\n", STDERR_FILENO);
+	print_error("filename", "should have .cub extention");
 	return (false);
 }
