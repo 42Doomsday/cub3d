@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 13:13:33 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:08:50 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/09 16:53:10 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 static void	put_block_outline(mlx_image_t *minimap, t_render_obj outline);
 static void	put_grid(mlx_image_t *img, char **map_data, int bs);
-static void	put_map(mlx_image_t *img, char **map_data, int bs);
+static void	put_walls(mlx_image_t *img, char **map_data, int bs);
+static void	put_floor_and_space(mlx_image_t *img, char **map_data, int bs);
 
 void	put_minimap(mlx_image_t *img, t_world *world, t_rays *rays, int bs)
 {
-	put_map(img, world->map->data, bs);
+	put_floor_and_space(img, world->map->data, bs);
 	put_grid(img, world->map->data, bs);
 	put_player(img, world->player, rays, bs);
+	put_walls(img, world->map->data, bs);
 }
 
 static t_render_obj	get_square(int x, int y, int size, int32_t pixel)
@@ -34,7 +36,7 @@ static t_render_obj	get_square(int x, int y, int size, int32_t pixel)
 	return (square);
 }
 
-static void	put_map(mlx_image_t *img, char **map_data, int bs)
+static void	put_walls(mlx_image_t *img, char **map_data, int bs)
 {
 	int				x;
 	int				y;
@@ -42,18 +44,50 @@ static void	put_map(mlx_image_t *img, char **map_data, int bs)
 	t_render_obj	square;
 
 	y = 0;
+	pixel = get_rgba(100, 100, 100, 255);
 	while (map_data && map_data[y])
 	{
 		x = 0;
 		while (map_data[y][x])
 		{
-			pixel = get_rgba(50, 50, 50, 255);
 			if (map_data[y][x] == '1')
-				pixel = get_rgba(100, 100, 100, 255);
-			else if (map_data[y][x] == '0')
+			{
+				square = get_square(x * bs, y * bs, bs, pixel);
+				put_square(img, square);
+
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+static void	put_floor_and_space(mlx_image_t *img, char **map_data, int bs)
+{
+	int				x;
+	int				y;
+	int32_t			pixel;
+	t_render_obj	square;
+
+	y = 0;
+
+	while (map_data && map_data[y])
+	{
+		x = 0;
+		while (map_data[y][x])
+		{
+			if (map_data[y][x] == '0')
+			{
 				pixel = get_rgba(255, 255, 255, 255);
-			square = get_square(x * bs, y * bs, bs, pixel);
-			put_square(img, square);
+				square = get_square(x * bs, y * bs, bs, pixel);
+				put_square(img, square);
+			}
+			else if (map_data[y][x] == '1')
+			{
+				pixel = get_rgba(50, 50, 50, 255);
+				square = get_square(x * bs, y * bs, bs, pixel);
+				put_square(img, square);
+			}
 			x++;
 		}
 		y++;
