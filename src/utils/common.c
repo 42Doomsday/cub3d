@@ -52,3 +52,13 @@ t_vec2	normilize(float radians)
 	unit_vector.y = -sin(radians);
 	return (unit_vector);
 }
+
+void	print_error(char *error_type, char *message)
+{
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	ft_putstr_fd("Cub3D: ", STDERR_FILENO);
+	ft_putstr_fd(error_type, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(message, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}

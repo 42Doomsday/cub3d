@@ -12,16 +12,6 @@
 
 #include "cub3d.h"
 
-void	print_error(char *error_type, char *message)
-{
-	ft_putstr_fd("Error\n", STDERR_FILENO);
-	ft_putstr_fd("Cub3D: ", STDERR_FILENO);
-	ft_putstr_fd(error_type, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(message, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-}
-
 void	free_recourses(t_cub3d *info)
 {
 	free_map(info->map);

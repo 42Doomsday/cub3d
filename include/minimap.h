@@ -31,7 +31,9 @@ typedef struct s_render_obj
 	int32_t	colour;
 }	t_render_obj;
 
-void	put_player(mlx_image_t *img, t_player *player, t_rays *rays, int bs);
+void			put_player(mlx_image_t *img, t_player *player,
+					t_rays *rays, int bs);
+t_player_draw	make_draw_params(t_player *player, int bs);
 void	put_line(mlx_image_t *img, t_coords start, t_coords end,
 			uint32_t color);
 void	put_circle(mlx_image_t *img, t_icoords center, int radius);
