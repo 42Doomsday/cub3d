@@ -27,11 +27,17 @@ void	move_player(t_world *world, float degree, double delta)
 
 	radians = convert_degree_to_radians(degree);
 	normilized = normilize(world->player->dir.radians + radians);
+
 	wall = cast_ray_to_wall(world->player->coords, normilized, world->map);
 	dist_to_wall = get_dist_to_wall(world->player->coords, wall);
 	dist_to_new_coords = PLAYER_STEP * delta;
 	if (dist_to_new_coords > dist_to_wall)
+	{
 		dist_to_new_coords = dist_to_wall;
+		if (dist_to_new_coords < PLAYER_HITBOX_R * 2)
+			return ;
+	}
+
 	displacement.x = normilized.x * (dist_to_new_coords);
 	displacement.y = normilized.y * (dist_to_new_coords);
 	new_coords.x = world->player->coords.x + displacement.x;
