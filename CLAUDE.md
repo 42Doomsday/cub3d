@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## RULES
 
-**Never modify any file inside `src/` without explicit permission from the user.** Analysis, suggestions, and test writing are allowed; touching source files is not unless the user directly asks for it.
+**Never modify any file inside `src/` without first asking the user for permission.** This means: after analysis or when a fix is ready, always ask "Do you want me to apply this?" before touching any file under `src/`. Do not assume permission even when a fix seems obvious or implied. Analysis, suggestions, and test writing are always allowed without asking.
 
 ## Project
 
@@ -69,6 +69,32 @@ Parses `.cub` config files. Format: texture paths (`NO`, `SO`, `WE`, `EA`), floo
 ### Raycasting (`src/rays/`)
 
 DDA (Digital Differential Analysis) algorithm. `get_all_rays()` in `cast_ray.c` iterates over each screen column. `cast_ray_to_border()` steps the ray to the nearest grid boundary on either axis, calling `is_wall()` to check if a wall was hit. Wall side (NORTH/SOUTH/EAST/WEST) is determined by `get_side_of_wall()`. Fish-eye correction: distance is multiplied by `cosf(ray_angle - player_angle)`. Results stored in parallel arrays inside `t_rays`.
+
+### `is_wall` logic (`src/rays/is_wall.c`)
+
+A ray position can land in three states:
+
+- **Mid-cell** — neither coordinate is an integer: `floor(x)` and `floor(y)` directly give the tile.
+- **Single-axis edge** — exactly one coordinate is an integer (on a grid line): `get_block_coord` picks the correct adjacent tile based on the sign of the ray's unit vector on that axis.
+- **Exact corner** — both coordinates are integers (the ray lands on a grid-point where 4 tiles meet): **both axes** must use `get_block_coord` to select the single tile the ray is entering.
+
+  ```
+     (x-1,y-1) | (x, y-1)
+     -----------+-----------
+     (x-1, y)  | (x,  y)
+                ^ corner point
+  ```
+
+  Correct cell by direction:
+
+  | Ray direction | Cell entered |
+  |---------------|-------------|
+  | NW `(ux<0, uy<0)` | `(x-1, y-1)` |
+  | NE `(ux>0, uy<0)` | `(x,   y-1)` |
+  | SW `(ux<0, uy>0)` | `(x-1, y  )` |
+  | SE `(ux>0, uy>0)` | `(x,   y  )` |
+
+  The `x > 0 && y > 0` guard is required before the corner/edge checks because `get_block_coord` can produce `x-1 = -1` which would be an invalid map coordinate.
 
 ### Rendering (`src/game/`, `src/minimap/`)
 

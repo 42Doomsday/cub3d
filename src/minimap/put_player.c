@@ -44,8 +44,8 @@ static void	put_direction_ray(mlx_image_t *img, t_player_draw prms,
 	i = 0;
 	while (i < rays->count)
 	{
-		prms.end_px.x = rays->coords[i].x * bs;
-		prms.end_px.y = rays->coords[i].y * bs;
+		prms.end_px.x = roundf(rays->coords[i].x * bs);
+		prms.end_px.y = roundf(rays->coords[i].y * bs);
 		put_line(
 			img,
 			prms.start_px,
