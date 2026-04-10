@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 
-static t_coords	cast_ray_to_border(t_coords origin, t_vec2 unit_vector);
 static float	find_dist(t_coords origin, t_vec2 unit_vector, bool coord);
 
 void	get_all_rays(t_rays *rays, t_map *map, t_player *player, int height)
@@ -62,7 +61,7 @@ t_coords	cast_ray_to_wall(t_coords origin, t_vec2 unit_vector, t_map *map)
 	}
 }
 
-static t_coords	cast_ray_to_border(t_coords origin, t_vec2 unit_vector)
+t_coords	cast_ray_to_border(t_coords origin, t_vec2 unit_vector)
 {
 	t_coords	point;
 	float		dist;

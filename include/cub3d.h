@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/08 14:27:55 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/10 17:06:18 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define MINIMAP_PROCENT_SIZE  0.2f
 # define TITLE                 "cub3d"
 
-# define PLAYER_STEP      5
+# define PLAYER_STEP      10
 # define PLAYER_R         0.25f
 # define PLAYER_HITBOX_R  0.3f
 # define PLAYER_ROT_STEP  100
