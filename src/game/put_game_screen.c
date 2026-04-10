@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/10 17:50:06 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/10 17:50:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	put_floor(mlx_image_t *img, t_textures *texts, t_icoords coords)
 {
 	uint32_t	pixel;
 
-	while (coords.y < ((int)img->height - 1)
+	while (coords.y < ((int)img->height - 1))
 	{
 		pixel = get_rgba(
 				texts->floor[0],
