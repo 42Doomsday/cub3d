@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:44:25 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:11:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 # include "world.h"
 # include "rays.h"
 
-# define MAX_WIDTH             1024
-# define DEFAULT_WIDTH         32
-# define DEFAULT_HEIGHT        32
+# define MAX_WIDTH             1500
+# define DEFAULT_WIDTH         1920
+# define DEFAULT_HEIGHT        1080
 # define MINIMAP_PROCENT_SIZE  0.2f
 # define TITLE                 "cub3d"
 
@@ -73,6 +73,7 @@ typedef struct s_cub3d
 	t_png_textures	*pngs;
 	t_world			*world;
 	bool			fullscreen;
+	bool			exit_flag;
 	t_cub3d_data	data;
 }	t_cub3d;
 

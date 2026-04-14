@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:46:30 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:27:53 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@ static void	info_ptrs_setup(t_cub3d *info);
 static bool	init_mlx(t_cub3d *info);
 static bool	init_textures(t_png_textures *pngs, t_textures *textures);
 static bool	init_game(t_cub3d *info);
+
+bool	init_mlx_2(t_cub3d *info)
+{
+	if (init_mlx(info))
+	{
+		if (init_game(info))
+			return (true);
+		mlx_terminate(info->mlx);
+	}
+	return (false);
+}
 
 bool	init_info(t_cub3d *info, char *filename)
 {
@@ -82,9 +93,15 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures)
 static bool	init_mlx(t_cub3d *info)
 {
 	if (info->fullscreen)
+	{
+		mlx_set_setting(MLX_MAXIMIZED, false);
 		mlx_set_setting(MLX_FULLSCREEN, true);
+	}
 	else
+	{
+		mlx_set_setting(MLX_FULLSCREEN, false);
 		mlx_set_setting(MLX_MAXIMIZED, true);
+	}
 	info->mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
 	if (info->mlx == NULL)
 	{

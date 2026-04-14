@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 14:15:12 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:49:36 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:07:26 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	update_window_info(mlx_t *mlx, int width, int height)
 {
-	if (width < DEFAULT_WIDTH)
+	/* if (width < DEFAULT_WIDTH)
 		width = DEFAULT_WIDTH;
 	if (height <= DEFAULT_HEIGHT)
-		height = DEFAULT_HEIGHT;
+		height = DEFAULT_HEIGHT; */
 	mlx->width = width;
 	mlx->height = height;
 }
@@ -29,7 +29,7 @@ void	update_render_layour(t_cub3d *info, int width, int height)
 
 	layout = info->layout;
 	map = info->map;
-	if (width > MAX_WIDTH)
+	if (info->fullscreen == false && width > MAX_WIDTH)
 	{
 		layout->game_width = MAX_WIDTH;
 		layout->game_height = MAX_WIDTH / ((float)width / (float)height);
@@ -63,7 +63,7 @@ void	update_buffers(t_cub3d *info, bool realloc)
 		if (allocate_rays(info->rays, info->layout->game_width) == NULL)
 			mlx_close_window(info->mlx);
 	}
-	if (info->layout->rescale)
+	if (info->fullscreen == false && info->layout->rescale)
 		if (mlx_resize_image(info->window, info->mlx->width,
 				info->mlx->height) == false)
 			mlx_close_window(info->mlx);

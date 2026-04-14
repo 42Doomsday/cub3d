@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:47:14 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:26:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	get_frame(void *param);
 static void	on_resize(int32_t width, int32_t height, void *param);
 static void	ft_hook(void *param);
+bool	init_mlx_2(t_cub3d *info);
 
 int32_t	main(int argc, char **argv)
 {
@@ -25,7 +26,6 @@ int32_t	main(int argc, char **argv)
 		print_error("filename", "missing");
 		return (EXIT_FAILURE);
 	}
-	info.fullscreen = true;
 	if (init_info(&info, argv[1]) == false)
 		return (EXIT_FAILURE);
 	mlx_loop_hook(info.mlx, ft_hook, &info);
@@ -33,6 +33,17 @@ int32_t	main(int argc, char **argv)
 	mlx_loop_hook(info.mlx, get_frame, &info);
 	mlx_loop(info.mlx);
 	terminate_mlx(&info);
+
+	while (info.exit_flag == false)
+	{
+		init_mlx_2(&info);
+		mlx_loop_hook(info.mlx, ft_hook, &info);
+		mlx_resize_hook(info.mlx, on_resize, &info);
+		mlx_loop_hook(info.mlx, get_frame, &info);
+		mlx_loop(info.mlx);
+		terminate_mlx(&info);
+	}
+
 	free_recourses(&info);
 	return (EXIT_SUCCESS);
 }
@@ -64,7 +75,10 @@ static void	ft_hook(void *param)
 
 	info = param;
 	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
+	{
 		mlx_close_window(info->mlx);
+		info->exit_flag = true;
+	}
 	if (mlx_is_key_down(info->mlx, MLX_KEY_LEFT))
 		update_degree(info, -PLAYER_ROT_STEP);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
@@ -77,6 +91,11 @@ static void	ft_hook(void *param)
 		move_player(info->world, 0, info->mlx->delta_time);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_D))
 		move_player(info->world, 190, info->mlx->delta_time);
+	if (mlx_is_key_down(info->mlx, MLX_KEY_F))
+	{
+		info->fullscreen = (bool)!(info->fullscreen);
+		mlx_close_window(info->mlx);
+	}
 }
 
 static void	get_frame(void *param)
