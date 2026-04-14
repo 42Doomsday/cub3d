@@ -6,27 +6,15 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:27:53 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:21:57 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static void	info_ptrs_setup(t_cub3d *info);
-static bool	init_mlx(t_cub3d *info);
 static bool	init_textures(t_png_textures *pngs, t_textures *textures);
-static bool	init_game(t_cub3d *info);
-
-bool	init_mlx_2(t_cub3d *info)
-{
-	if (init_mlx(info))
-	{
-		if (init_game(info))
-			return (true);
-		mlx_terminate(info->mlx);
-	}
-	return (false);
-}
+static bool	init_rendering_layout(t_cub3d *info);
 
 bool	init_info(t_cub3d *info, char *filename)
 {
@@ -37,15 +25,8 @@ bool	init_info(t_cub3d *info, char *filename)
 		if (parse(filename, info->textures, info->map, info->player))
 		{
 			if (init_textures(info->pngs, info->textures))
-			{
-				if (init_mlx(info))
-				{
-					if (init_game(info))
-						return (true);
-					mlx_terminate(info->mlx);
-				}
-				destroy_textures(info->pngs);
-			}
+				if (init_rendering_layout(info))
+					return (true);
 			free_map(info->map);
 			free_textures(info->textures);
 		}
@@ -90,8 +71,10 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures)
 	return (false);
 }
 
-static bool	init_mlx(t_cub3d *info)
+bool	init_mlx(t_cub3d *info)
 {
+	mlx_t	*mlx;
+
 	if (info->fullscreen)
 	{
 		mlx_set_setting(MLX_MAXIMIZED, false);
@@ -102,44 +85,43 @@ static bool	init_mlx(t_cub3d *info)
 		mlx_set_setting(MLX_FULLSCREEN, false);
 		mlx_set_setting(MLX_MAXIMIZED, true);
 	}
-	info->mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
-	if (info->mlx == NULL)
+	mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
+	if (mlx == NULL)
 	{
 		print_error("mlx", (char *)mlx_strerror(mlx_errno));
 		return (false);
 	}
+	info->mlx = mlx;
+	info->game = mlx_new_image(mlx, mlx->width, mlx->height);
+	if (info->fullscreen)
+	{
+		mlx_set_cursor_mode(mlx, MLX_MOUSE_HIDDEN);
+		mlx_image_to_window(mlx, info->game, 0, 0);
+	}
+	else
+	{
+		info->window = mlx_new_image(mlx, mlx->width, mlx->height);
+		mlx_image_to_window(mlx, info->window, 0, 0);
+	}
 	return (true);
 }
 
-static bool	init_game(t_cub3d *info)
+static bool	init_rendering_layout(t_cub3d *info)
 {
 	int	width;
 	int	height;
 
-	width = info->mlx->width;
-	height = info->mlx->height;
-	info->rays->count = width;
+	width = DEFAULT_WIDTH;
+	height = DEFAULT_HEIGHT;
 	info->rays->fov = 60.0f * M_PI / 180.0f;
 	if (allocate_rays(info->rays, width))
 	{
 		calculate_angles(info->rays, info->player);
-		info->game = mlx_new_image(info->mlx, width, height);
-		if (info->game)
-		{
-			info->layout->game_bs = get_block_size(info->map, width, height);
-			width *= 0.2f;
-			height *= 0.2f;
-			info->layout->minimap_bs = get_block_size(info->map, width, height);
-			if (info->fullscreen)
-				mlx_image_to_window(info->mlx, info->game, 0, 0);
-			else
-			{
-				info->window = mlx_new_image(info->mlx, width, height);
-				mlx_image_to_window(info->mlx, info->window, 0, 0);
-			}
-			return (true);
-		}
-		free(info->rays->coords);
+		info->layout->game_bs = get_block_size(info->map, width, height);
+		width *= 0.2f;
+		height *= 0.2f;
+		info->layout->minimap_bs = get_block_size(info->map, width, height);
+		return (true);
 	}
 	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:26:40 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:22:55 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	get_frame(void *param);
 static void	on_resize(int32_t width, int32_t height, void *param);
 static void	ft_hook(void *param);
-bool	init_mlx_2(t_cub3d *info);
+bool		init_mlx(t_cub3d *info);
 
 int32_t	main(int argc, char **argv)
 {
@@ -27,23 +27,22 @@ int32_t	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	if (init_info(&info, argv[1]) == false)
+	{
+		print_error("init_info", "failed to start");
 		return (EXIT_FAILURE);
-	mlx_loop_hook(info.mlx, ft_hook, &info);
-	mlx_resize_hook(info.mlx, on_resize, &info);
-	mlx_loop_hook(info.mlx, get_frame, &info);
-	mlx_loop(info.mlx);
-	terminate_mlx(&info);
-
+	}
 	while (info.exit_flag == false)
 	{
-		init_mlx_2(&info);
+		init_mlx(&info);
+		/* update_window_info(info->mlx, width, height);
+		update_render_layour(info, width, height);
+		update_buffers(info, reallocate); */
 		mlx_loop_hook(info.mlx, ft_hook, &info);
 		mlx_resize_hook(info.mlx, on_resize, &info);
 		mlx_loop_hook(info.mlx, get_frame, &info);
 		mlx_loop(info.mlx);
 		terminate_mlx(&info);
 	}
-
 	free_recourses(&info);
 	return (EXIT_SUCCESS);
 }
@@ -71,7 +70,7 @@ static void	update_degree(t_cub3d *info, int change)
 
 static void	ft_hook(void *param)
 {
-	t_cub3d		*info;
+	t_cub3d	*info;
 
 	info = param;
 	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
@@ -91,7 +90,7 @@ static void	ft_hook(void *param)
 		move_player(info->world, 0, info->mlx->delta_time);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_D))
 		move_player(info->world, 190, info->mlx->delta_time);
-	if (mlx_is_key_down(info->mlx, MLX_KEY_F))
+	if (mlx_is_key_down(info->mlx, MLX_KEY_F12))
 	{
 		info->fullscreen = (bool)!(info->fullscreen);
 		mlx_close_window(info->mlx);
