@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/08 14:28:45 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:46:30 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,10 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures)
 
 static bool	init_mlx(t_cub3d *info)
 {
-	mlx_set_setting(MLX_MAXIMIZED, true);
+	if (info->fullscreen)
+		mlx_set_setting(MLX_FULLSCREEN, true);
+	else
+		mlx_set_setting(MLX_MAXIMIZED, true);
 	info->mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
 	if (info->mlx == NULL)
 	{
@@ -110,8 +113,13 @@ static bool	init_game(t_cub3d *info)
 			width *= 0.2f;
 			height *= 0.2f;
 			info->layout->minimap_bs = get_block_size(info->map, width, height);
-			info->window = mlx_new_image(info->mlx, width, height);
-			mlx_image_to_window(info->mlx, info->window, 0, 0);
+			if (info->fullscreen)
+				mlx_image_to_window(info->mlx, info->game, 0, 0);
+			else
+			{
+				info->window = mlx_new_image(info->mlx, width, height);
+				mlx_image_to_window(info->mlx, info->window, 0, 0);
+			}
 			return (true);
 		}
 		free(info->rays->coords);

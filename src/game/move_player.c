@@ -19,7 +19,6 @@ void	move_player(t_world *world, float degree, double delta)
 {
 	t_coords	displacement;
 	t_vec2		normilized;
-	t_coords	new_coords;
 	t_coords	wall;
 	float		radians;
 	float		dist_to_wall;
@@ -40,8 +39,6 @@ void	move_player(t_world *world, float degree, double delta)
 
 	displacement.x = normilized.x * (dist_to_new_coords);
 	displacement.y = normilized.y * (dist_to_new_coords);
-	new_coords.x = world->player->coords.x + displacement.x;
-	new_coords.y = world->player->coords.y + displacement.y;
 	world->player->coords.y = resolve_y(
 			world->map,
 			displacement.y,
