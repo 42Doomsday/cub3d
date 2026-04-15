@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:26:40 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:51:01 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,47 @@ static void	update_degree(t_cub3d *info, int change)
 	calculate_angles(info->rays, info->player);
 }
 
+ void handle_mouse(t_cub3d *info)
+ {
+ 	int x;
+ 	int y;
+ 	int center_x;
+ 	int center_y;
+ 	int dx;
+
+ 	center_x = info->mlx->width / 2;
+ 	center_y = info->mlx->height / 2;
+ 	mlx_get_mouse_pos(info->mlx, &x, &y);
+	if (x > center_x)
+		dx = x - center_x;
+	else
+		dx = x - center_x;
+	printf("x : %d  x_cent : %d  dx : %d\n", x, center_x, dx);
+ 	update_degree(info, dx);
+ 	mlx_set_mouse_pos(info->mlx, center_x, center_y);
+ }
+
+//void handle_mouse(t_cub3d *info)
+//{
+//	static int prev_x = -1;
+//	int x,y;
+//	int dx;
+//
+//	mlx_get_mouse_pos(info->mlx, &x, &y);
+//
+//	if (prev_x == -1)
+//		prev_x = x;
+//	dx = x - prev_x;
+//	update_degree(info, dx * 0.05);
+//	prev_x = x;
+//}
+
 static void	ft_hook(void *param)
 {
 	t_cub3d		*info;
 
 	info = param;
+	handle_mouse(info);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
 	{
 		mlx_close_window(info->mlx);
