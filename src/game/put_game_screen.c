@@ -6,136 +6,68 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 12:30:05 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/19 18:45:29 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:35:05 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	put_ceiling(t_textures *text, mlx_image_t *image, int x, int *y, int end);
-static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end, int wall_height_in_px);
-static void	put_floor(t_textures *text, mlx_image_t *image, int x, int *y, int end);
+static int	put_ceiling(mlx_image_t *img, t_textures *texts, t_icoords coords,
+				int top_wall_border);
+int			put_textures(mlx_image_t *img, t_rays *rays, t_png_textures *texts,
+				t_icoords coords);
+static void	put_floor(mlx_image_t *img, t_textures *texts, t_icoords coords);
 
-void	put_game_screen(mlx_image_t *image, t_textures *text, t_png_textures *pngs, t_rays *rays)
+void	put_game_screen(mlx_image_t *img, t_rays *rays, t_textures *texts,
+			t_png_textures *pngs)
 {
-	size_t		x;
-	int			y;
-	float		proj_plane;
-	int			wall_column_height;
-	int			wall_top_px;
-	int			wall_bot_px;
+	t_icoords	coords;
+	int			top_wall_border;
 
-	proj_plane = (image->width / 2.0f) / tan(rays->fov / 2.0f);
-	x = 0;
-	while (x < rays->count)
+	coords.x = 0;
+	while (coords.x < (int)rays->count)
 	{
-		y = 0;
-		wall_column_height = roundf(proj_plane / rays->distances[x]);
-		wall_top_px = (image->height / 2) - (wall_column_height / 2);
-		wall_bot_px = (image->height / 2) + (wall_column_height / 2);
-		if (wall_top_px < 0)
-			wall_top_px = 0;
-		if (wall_bot_px > (int)image->height)
-			wall_bot_px = image->height;
-		put_ceiling(text, image,  x, &y, wall_top_px);
-		put_textures(rays, image, pngs, x, &y, wall_bot_px, wall_column_height);
-		put_floor(text, image, x, &y, image->height);
-		x++;
+		coords.y = 0;
+		top_wall_border = rays->top_borders[coords.x];
+		coords.y = put_ceiling(img, texts, coords, top_wall_border);
+		coords.y = put_textures(img, rays, pngs, coords);
+		put_floor(img, texts, coords);
+		coords.x++;
 	}
 }
 
-static void	put_ceiling(t_textures *text, mlx_image_t *image, int x, int *y, int end)
+static int	put_ceiling(mlx_image_t *img, t_textures *texts, t_icoords coords,
+				int top_wall_border)
 {
 	uint32_t	pixel;
 
-	while (*y < end)
+	if (top_wall_border < 0)
+		top_wall_border = 0;
+	while (coords.y < top_wall_border)
 	{
-		pixel = get_rgba(text->ceiling[0], text->ceiling[1], text->ceiling[2], 255);
-		mlx_put_pixel(image, x, *y, pixel);
-		(*y)++;
+		pixel = get_rgba(
+				texts->ceiling[0],
+				texts->ceiling[1],
+				texts->ceiling[2],
+				255);
+		mlx_put_pixel(img, coords.x, coords.y, pixel);
+		(coords.y)++;
 	}
+	return (coords.y);
 }
 
-uint32_t get_text_pixel(mlx_texture_t *text, int x, int y)
-{
-	int	x_in_text_pixels = x * 4;
-	int	offset_y = text->width * 4;
-	int index = (offset_y * y) + x_in_text_pixels;
-
-	uint8_t r = text->pixels[index + 0];
-	uint8_t g = text->pixels[index + 1];
-	uint8_t b = text->pixels[index + 2];
-	uint8_t a = text->pixels[index + 3];
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-static int	get_texture_column(t_wall_info *wall, mlx_texture_t *texture)
-{
-	int	column_idx;
-
-	if (wall->side == NORTH || wall->side == SOUTH)
-		column_idx = (int)((wall->coords.x - (float)(int)wall->coords.x) * (float)texture->width);
-	else
-		column_idx = (int)((wall->coords.y - (float)(int)wall->coords.y) * (float)texture->width);
-	if (column_idx < 0)
-		column_idx = 0;
-	if (column_idx >= (int)texture->width)
-		column_idx = (int)texture->width - 1;
-	return (column_idx);
-}
-
-static int	get_texture_row(float text_pos, mlx_texture_t *texture)
-{
-	int	row_idx;
-
-	row_idx = (int)text_pos;
-	if (row_idx < 0)
-		row_idx = 0;
-	if (row_idx >= (int)texture->height)
-		row_idx = (int)texture->height - 1;
-	return (row_idx);
-}
-
-static void	put_textures(t_rays *rays, mlx_image_t *image, t_png_textures *pngs, int x, int *y, int end, int wall_column_hight)
-{
-	mlx_texture_t	*texture;
-	uint32_t		pixel;
-	int				text_x;
-	int				text_y;
-	int				screen_center;
-	float			step;
-	float			text_pos;
-	int				wall_top_unclipped;
-	t_wall_info		*wall;
-
-	wall = &rays->walls[x];
-	texture = pngs->north;
-
-	text_x = get_texture_column(wall, texture);
-
-	step = (float)texture->height / (float)wall_column_hight;
-	screen_center = image->height / 2;
-	wall_top_unclipped = screen_center - wall_column_hight / 2;
-
-	text_pos = (float)(*y - wall_top_unclipped) * step;
-	while (*y < end)
-	{
-		text_y = get_texture_row(text_pos, texture);
-		text_pos += step;
-		pixel = get_text_pixel(texture, text_x, text_y);
-		mlx_put_pixel(image, x, *y, pixel);
-		(*y)++;
-	}
-}
-
-static void	put_floor(t_textures *text, mlx_image_t *image, int x, int *y, int end)
+static void	put_floor(mlx_image_t *img, t_textures *texts, t_icoords coords)
 {
 	uint32_t	pixel;
 
-	while (*y < end)
+	while (coords.y < (int)img->height)
 	{
-		pixel = get_rgba(text->floor[0], text->floor[1], text->floor[2], 255);
-		mlx_put_pixel(image, x, *y, pixel);
-		(*y)++;
+		pixel = get_rgba(
+				texts->floor[0],
+				texts->floor[1],
+				texts->floor[2],
+				255);
+		mlx_put_pixel(img, coords.x, coords.y, pixel);
+		(coords.y)++;
 	}
 }

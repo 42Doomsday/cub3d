@@ -6,41 +6,51 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 14:03:39 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/11 17:27:48 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:40:26 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
 static void	flush(int fd);
+static bool	process_parsing(int fd, t_textures *texts,
+				t_map *map, t_player *player);
 
-bool	parse(char *filename, t_cub3d *info)
+bool	parse(char *filename, t_textures *texts, t_map *map, t_player *player)
 {
-	int		fd;
 	bool	result;
+	int		fd;
 
 	fd = open(filename, O_RDONLY);
-	result = false;
-	if (fd)
+	if (fd > -1)
 	{
-		if (parse_textures(fd, &info->textures))
-		{
-			if (parse_map(fd, &info->map, &info->player))
-				result = true;
-			else
-			{
-				free_textures(&info->textures);
-				free_map(&info->map);
-			}
-		}
+		result = process_parsing(fd, texts, map, player);
+		close(fd);
+		return (result);
+	}
+	ft_putstr_fd("cub3d: can't open the configuration file\n", STDERR_FILENO);
+	return (false);
+}
+
+static bool	process_parsing(int fd, t_textures *texts,
+				t_map *map, t_player *player)
+{
+	if (parse_textures(fd, texts))
+	{
+		if (parse_map(fd, map, player))
+			return (true);
 		else
 		{
-			flush(fd);
-			free_textures(&info->textures);
+			free_textures(texts);
+			free_map(map);
 		}
-		close(fd);
 	}
-	return (result);
+	else
+	{
+		flush(fd);
+		free_textures(texts);
+	}
+	return (false);
 }
 
 static void	flush(int fd)
