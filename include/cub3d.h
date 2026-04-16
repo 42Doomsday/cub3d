@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:53:05 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/16 14:59:13 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@
 # include "world.h"
 # include "rays.h"
 
+# define FULLSCREEN_WIDTH      1980
+# define FULLSCREEN_HEIGHT     1080
 # define MAX_WIDTH             1200
-# define DEFAULT_WIDTH         1920
-# define DEFAULT_HEIGHT        1080
+# define MIN_WIDTH             480
+# define MIN_HEIGHT            240
 # define MINIMAP_PROCENT_SIZE  0.2f
 # define TITLE                 "cub3d"
 

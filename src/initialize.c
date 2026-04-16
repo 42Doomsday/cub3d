@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 17:21:57 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/16 14:53:17 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,10 @@ bool	init_mlx(t_cub3d *info)
 		mlx_set_setting(MLX_FULLSCREEN, false);
 		mlx_set_setting(MLX_MAXIMIZED, true);
 	}
-	mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
+	if (info->fullscreen)
+		mlx = mlx_init(FULLSCREEN_WIDTH, FULLSCREEN_HEIGHT, TITLE, true);
+	else
+		mlx = mlx_init(MIN_WIDTH, MIN_HEIGHT, TITLE, true);
 	if (mlx == NULL)
 	{
 		print_error("mlx", (char *)mlx_strerror(mlx_errno));
@@ -93,11 +96,9 @@ bool	init_mlx(t_cub3d *info)
 	}
 	info->mlx = mlx;
 	info->game = mlx_new_image(mlx, mlx->width, mlx->height);
+	mlx_set_cursor_mode(mlx, MLX_MOUSE_HIDDEN);
 	if (info->fullscreen)
-	{
-		mlx_set_cursor_mode(mlx, MLX_MOUSE_HIDDEN);
 		mlx_image_to_window(mlx, info->game, 0, 0);
-	}
 	else
 	{
 		info->window = mlx_new_image(mlx, mlx->width, mlx->height);
@@ -111,8 +112,16 @@ static bool	init_rendering_layout(t_cub3d *info)
 	int	width;
 	int	height;
 
-	width = DEFAULT_WIDTH;
-	height = DEFAULT_HEIGHT;
+	if (info->fullscreen)
+	{
+		width = FULLSCREEN_WIDTH;
+		height = FULLSCREEN_HEIGHT;
+	}
+	else
+	{
+		width = MIN_WIDTH;
+		height = MIN_HEIGHT;
+	}
 	info->rays->fov = 60.0f * M_PI / 180.0f;
 	if (allocate_rays(info->rays, width))
 	{

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/15 14:51:01 by clouden          ###   ########.fr       */
+/*   Updated: 2026/04/16 14:53:50 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	on_resize(int32_t width, int32_t height, void *param)
 	update_window_info(info->mlx, width, height);
 	update_render_layour(info, width, height);
 	update_buffers(info, reallocate);
+	printf("width: %d; height: %d\n", width, height);
 }
 
 static void	update_degree(t_cub3d *info, int change)
@@ -68,29 +69,31 @@ static void	update_degree(t_cub3d *info, int change)
 	calculate_angles(info->rays, info->player);
 }
 
- void handle_mouse(t_cub3d *info)
- {
- 	int x;
- 	int y;
- 	int center_x;
- 	int center_y;
- 	int dx;
+void handle_mouse(t_cub3d *info)
+{
+	int	x;
+	int	y;
+	int	center_x;
+	int	center_y;
+	int	dx;
 
- 	center_x = info->mlx->width / 2;
- 	center_y = info->mlx->height / 2;
- 	mlx_get_mouse_pos(info->mlx, &x, &y);
+	center_x = info->mlx->width / 2;
+	center_y = info->mlx->height / 2;
+	mlx_get_mouse_pos(info->mlx, &x, &y);
 	if (x > center_x)
 		dx = x - center_x;
 	else
 		dx = x - center_x;
-	printf("x : %d  x_cent : %d  dx : %d\n", x, center_x, dx);
- 	update_degree(info, dx);
- 	mlx_set_mouse_pos(info->mlx, center_x, center_y);
- }
+	if (y > 0 && y < info->mlx->height && x > 0 && x < info->mlx->width)
+	{
+		update_degree(info, dx);
+		mlx_set_mouse_pos(info->mlx, center_x, (center_y - y) / 4);
+	}
+}
 
 static void	ft_hook(void *param)
 {
-	t_cub3d	*info;
+	t_cub3d		*info;
 
 	info = param;
 	handle_mouse(info);

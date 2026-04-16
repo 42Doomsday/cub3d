@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 14:15:12 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:29:01 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/16 16:04:15 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	update_window_info(mlx_t *mlx, int width, int height)
 {
-	if (width < DEFAULT_WIDTH)
-		width = DEFAULT_WIDTH;
-	if (height <= DEFAULT_HEIGHT)
-		height = DEFAULT_HEIGHT;
+	if (width < MIN_WIDTH)
+		width = MIN_WIDTH;
+	if (height <= MIN_HEIGHT)
+		height = MIN_HEIGHT;
 	mlx->width = width;
 	mlx->height = height;
 }
