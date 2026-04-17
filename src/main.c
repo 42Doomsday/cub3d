@@ -34,9 +34,8 @@ int32_t	main(int argc, char **argv)
 	while (info.exit_flag == false)
 	{
 		init_mlx(&info);
-		/* update_window_info(info->mlx, width, height);
-		update_render_layour(info, width, height);
-		update_buffers(info, reallocate); */
+		update_render_layour(&info, info.mlx->width, info.mlx->height);
+		update_buffers(&info, true);
 		mlx_loop_hook(info.mlx, ft_hook, &info);
 		mlx_resize_hook(info.mlx, on_resize, &info);
 		mlx_loop_hook(info.mlx, get_frame, &info);
@@ -57,7 +56,6 @@ static void	on_resize(int32_t width, int32_t height, void *param)
 	update_window_info(info->mlx, width, height);
 	update_render_layour(info, width, height);
 	update_buffers(info, reallocate);
-	printf("width: %d; height: %d\n", width, height);
 }
 
 static void	update_degree(t_cub3d *info, int change)
