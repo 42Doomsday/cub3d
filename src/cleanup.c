@@ -26,7 +26,8 @@ void	free_recourses(t_cub3d *info)
 void	terminate_mlx(t_cub3d *info)
 {
 	mlx_delete_image(info->mlx, info->game);
-	mlx_delete_image(info->mlx, info->window);
+	if (info->window)
+		mlx_delete_image(info->mlx, info->window);
 	mlx_terminate(info->mlx);
 }
 

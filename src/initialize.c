@@ -98,7 +98,10 @@ bool	init_mlx(t_cub3d *info)
 	info->game = mlx_new_image(mlx, mlx->width, mlx->height);
 	mlx_set_cursor_mode(mlx, MLX_MOUSE_HIDDEN);
 	if (info->fullscreen)
+	{
+		info->window = NULL;
 		mlx_image_to_window(mlx, info->game, 0, 0);
+	}
 	else
 	{
 		info->window = mlx_new_image(mlx, mlx->width, mlx->height);
@@ -123,7 +126,7 @@ static bool	init_rendering_layout(t_cub3d *info)
 		height = MIN_HEIGHT;
 	}
 	info->rays->fov = 60.0f * M_PI / 180.0f;
-	if (allocate_rays(info->rays, width))
+	if (allocate_rays(info->rays, FULLSCREEN_WIDTH))
 	{
 		calculate_angles(info->rays, info->player);
 		info->layout->game_bs = get_block_size(info->map, width, height);
