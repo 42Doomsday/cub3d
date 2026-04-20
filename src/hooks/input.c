@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 14:56:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 17:45:36 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:02:54 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	settings_press_hook(mlx_key_data_t key, void *param)
 
 void	scroll_hook(double ydelta, double xdelta, void *param)
 {
-	t_cub3d *info;
+	t_cub3d	*info;
 
 	(void)ydelta;
 	info = (t_cub3d *)param;
@@ -87,7 +87,7 @@ static void	change_minimap_procent(t_render_layout *layout, t_map *map,
 	}
 }
 
-void handle_mouse(t_cub3d *info)
+void	handle_mouse(t_cub3d *info)
 {
 	int		x;
 	int		y;
@@ -107,4 +107,4 @@ void handle_mouse(t_cub3d *info)
 	dx = (x - center_x) * info->sensitivity;
 	update_degree(info, dx);
 	mlx_set_mouse_pos(info->mlx, center_x, center_y);
- }
+}
