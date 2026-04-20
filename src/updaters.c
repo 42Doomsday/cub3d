@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 14:15:12 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/16 16:04:15 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 14:43:08 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,13 @@ void	update_render_layour(t_cub3d *info, int width, int height)
 		layout->game_bs = get_block_size(map, width, height);
 		layout->rescale = false;
 	}
-	layout->minimap_width = layout->game_width * 0.2f;
-	layout->minimap_height = layout->game_height * 0.2f;
+	update_minimap_layout(layout, map);
+}
+
+void	update_minimap_layout(t_render_layout *layout, t_map *map)
+{
+	layout->minimap_width = layout->game_width * layout->minimap_procent;
+	layout->minimap_height = layout->game_height * layout->minimap_procent;
 	layout->minimap_bs = get_block_size(map, layout->minimap_width,
 			layout->minimap_height);
 }

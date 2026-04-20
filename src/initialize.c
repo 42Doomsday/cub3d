@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 13:43:19 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 14:52:24 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	info_ptrs_setup(t_cub3d *info)
 	info->world = &info->data.world;
 	info->world->map = info->map;
 	info->world->player = info->player;
+	info->minimap = true;
 }
 
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
@@ -93,12 +94,13 @@ static bool	init_rendering_layout(t_cub3d *info)
 		height = MIN_HEIGHT;
 	}
 	info->rays->fov = 60.0f * M_PI / 180.0f;
+	info->layout->minimap_procent = MINIMAP_MIN_SIZE;
 	if (allocate_rays(info->rays, FULLSCREEN_WIDTH))
 	{
 		calculate_angles(info->rays, info->player);
 		info->layout->game_bs = get_block_size(info->map, width, height);
-		width *= 0.2f;
-		height *= 0.2f;
+		width *= info->layout->minimap_procent;
+		height *= info->layout->minimap_procent;
 		info->layout->minimap_bs = get_block_size(info->map, width, height);
 		return (true);
 	}

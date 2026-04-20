@@ -6,13 +6,15 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 13:34:07 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 13:39:10 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 14:52:35 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static void	handle_mouse(t_cub3d *info);
+static void	change_minimap_procent(t_render_layout *layout, t_map *map,
+				float change);
 
 void	close_hook(void *param)
 {
@@ -42,19 +44,18 @@ void	frame_hook(void *param)
 	info = param;
 	get_all_rays(info->rays, info->map, info->player, info->game->height);
 	put_game_screen(info->game, info->rays, info->textures, info->pngs);
-	put_minimap(info->game, info->world, info->rays, info->layout->minimap_bs);
-	if (info->fullscreen == false)
+	if (info->minimap)
+		put_minimap(info->game, info->world, info->rays, info->layout->minimap_bs);
+	if (info->fullscreen == false && info->layout->rescale)
 		mlx_scale_image_into(info->game, info->window);
 }
 
-void	control_hook(void *param)
+void	movements_press_hook(void *param)
 {
 	t_cub3d	*info;
 
 	info = param;
 	handle_mouse(info);
-	if (mlx_is_key_down(info->mlx, MLX_KEY_ESCAPE))
-		close_hook(info);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_LEFT))
 		update_degree(info, -PLAYER_ROT_STEP);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_RIGHT))
@@ -67,10 +68,42 @@ void	control_hook(void *param)
 		move_player(info->world, 0, info->mlx->delta_time);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_D))
 		move_player(info->world, 190, info->mlx->delta_time);
-	if (mlx_is_key_down(info->mlx, MLX_KEY_F12))
+}
+
+void	settings_press_hook(mlx_key_data_t key, void *param)
+{
+	t_cub3d	*info;
+
+	if (key.action == MLX_PRESS)
 	{
-		info->fullscreen = !info->fullscreen;
-		mlx_close_window(info->mlx);
+		info = param;
+		if (key.key == MLX_KEY_ESCAPE)
+			close_hook(info);
+		if (key.key == MLX_KEY_F12)
+		{
+			info->fullscreen = !info->fullscreen;
+			mlx_close_window(info->mlx);
+		}
+		if (key.key == MLX_KEY_M)
+			info->minimap = !info->minimap;
+		if (key.key == MLX_KEY_MINUS)
+			change_minimap_procent(info->layout, info->map, -0.1f);
+		if (key.key == MLX_KEY_EQUAL)
+			change_minimap_procent(info->layout, info->map, 0.1f);
+	}
+}
+
+
+static void	change_minimap_procent(t_render_layout *layout, t_map *map,
+	float change)
+{
+	float	new_procent;
+
+	new_procent = layout->minimap_procent + change;
+	if (new_procent >= MINIMAP_MIN_SIZE && new_procent <= MINIMAP_MAX_SIZE)
+	{
+		layout->minimap_procent = new_procent;
+		update_minimap_layout(layout, map);
 	}
 }
 

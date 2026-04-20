@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 13:40:16 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 14:52:01 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 # define MAX_WIDTH             1200
 # define MIN_WIDTH             128
 # define MIN_HEIGHT            96
-# define MINIMAP_PROCENT_SIZE  0.2f
+# define MINIMAP_MIN_SIZE      0.2f
+# define MINIMAP_MAX_SIZE      0.5f
 # define TITLE                 "cub3d"
 
 # define PLAYER_STEP      5
@@ -46,6 +47,7 @@ typedef struct s_render_layout
 	int		game_width;
 	int		game_height;
 	int		minimap_bs;
+	float	minimap_procent;
 	int		minimap_width;
 	int		minimap_height;
 	bool	rescale;
@@ -76,6 +78,7 @@ typedef struct s_cub3d
 	t_world			*world;
 	bool			fullscreen;
 	bool			exit_flag;
+	bool			minimap;
 	mlx_image_t		*fps;
 	t_cub3d_data	data;
 }	t_cub3d;
@@ -89,7 +92,8 @@ void	terminate_mlx(t_cub3d *info);
 // hooks
 void	close_hook(void *param);
 void	on_resize_hook(int32_t width, int32_t height, void *param);
-void	control_hook(void *param);
+void	settings_press_hook(mlx_key_data_t key, void *param);
+void	movements_press_hook(void *param);
 void	frame_hook(void *param);
 
 // parsing
@@ -112,6 +116,7 @@ void	destroy_textures(t_png_textures *pngs);
 // updaters
 void	update_degree(t_cub3d *info, int change);
 void	update_window_info(mlx_t *mlx, int width, int height);
+void	update_minimap_layout(t_render_layout *layout, t_map *map);
 void	update_render_layour(t_cub3d *info, int width, int height);
 void	update_buffers(t_cub3d *info, bool realloc);
 bool	mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);
