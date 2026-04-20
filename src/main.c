@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 13:39:56 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 13:41:58 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,3 @@ int32_t	main(int argc, char **argv)
 	free_recourses(&info);
 	return (EXIT_SUCCESS);
 }
-
-
-
-
