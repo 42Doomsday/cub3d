@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 14:56:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 16:38:02 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:38:01 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,21 @@ void	settings_press_hook(mlx_key_data_t key, void *param)
 			change_minimap_procent(info->layout, info->map, -0.1f);
 		if (key.key == MLX_KEY_EQUAL)
 			change_minimap_procent(info->layout, info->map, 0.1f);
+		if (key.key == MLX_KEY_F)
+			info->mouse_captured = !info->mouse_captured;
 	}
+}
+
+void	scroll_hook(double ydelta, double xdelta, void *param)
+{
+	t_cub3d *info;
+
+	(void)ydelta;
+	info = (t_cub3d *)param;
+	if (xdelta >= 0)
+		info->sensitivity += 0.1f;
+	if (xdelta < 0 && info->sensitivity >= 0)
+		info->sensitivity -= 0.1f;
 }
 
 static void	change_minimap_procent(t_render_layout *layout, t_map *map,
@@ -72,24 +86,25 @@ static void	change_minimap_procent(t_render_layout *layout, t_map *map,
 	}
 }
 
-static void	handle_mouse(t_cub3d *info)
+void handle_mouse(t_cub3d *info)
 {
-	int	x;
-	int	y;
-	int	center_x;
-	int	center_y;
-	int	dx;
+	int		x;
+	int		y;
+	int		center_x;
+	int		center_y;
+	float	dx;
 
+	if (!info->mouse_captured)
+	{
+		mlx_set_cursor_mode(info->mlx, MLX_MOUSE_NORMAL);
+		return ;
+	}
+	mlx_set_cursor_mode(info->mlx, MLX_MOUSE_HIDDEN);
 	center_x = info->mlx->width / 2;
 	center_y = info->mlx->height / 2;
 	mlx_get_mouse_pos(info->mlx, &x, &y);
-	if (x > center_x)
-		dx = x - center_x;
-	else
-		dx = x - center_x;
-	if (y > 0 && y < info->mlx->height && x > 0 && x < info->mlx->width)
-	{
-		update_degree(info, dx);
-		mlx_set_mouse_pos(info->mlx, center_x, (center_y - y) / 4);
-	}
-}
+	dx = (x - center_x) * info->sensitivity;
+	printf("dx %f   rot_rate %f\n", dx, info->sensitivity);
+	update_degree(info, dx);
+	mlx_set_mouse_pos(info->mlx, center_x, center_y);
+ }

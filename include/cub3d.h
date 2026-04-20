@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 16:37:25 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:29:20 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ typedef struct s_cub3d
 	bool			fullscreen;
 	bool			exit_flag;
 	bool			minimap;
+	bool			mouse_captured;
+	float			sensitivity;
 	t_cub3d_data	data;
 }	t_cub3d;
 
@@ -95,6 +97,7 @@ void	on_resize_hook(int32_t width, int32_t height, void *param);
 void	settings_press_hook(mlx_key_data_t key, void *param);
 void	movements_press_hook(void *param);
 void	frame_hook(void *param);
+void	scroll_hook(double ydelta, double xdelta, void *param);
 
 // parsing
 bool	parse(char *filename, t_textures *texts, t_map *map, t_player *player);
