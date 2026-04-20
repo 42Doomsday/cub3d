@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/16 14:53:50 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 12:37:22 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	get_frame(void *param);
 static void	on_resize(int32_t width, int32_t height, void *param);
 static void	ft_hook(void *param);
-bool		init_mlx(t_cub3d *info);
 
 int32_t	main(int argc, char **argv)
 {
@@ -31,9 +30,8 @@ int32_t	main(int argc, char **argv)
 		print_error("init_info", "failed to start");
 		return (EXIT_FAILURE);
 	}
-	while (info.exit_flag == false)
+	while (info.exit_flag == false && init_mlx(&info))
 	{
-		init_mlx(&info);
 		update_render_layour(&info, info.mlx->width, info.mlx->height);
 		update_buffers(&info, true);
 		mlx_loop_hook(info.mlx, ft_hook, &info);
@@ -67,7 +65,7 @@ static void	update_degree(t_cub3d *info, int change)
 	calculate_angles(info->rays, info->player);
 }
 
-void handle_mouse(t_cub3d *info)
+void	handle_mouse(t_cub3d *info)
 {
 	int	x;
 	int	y;
@@ -114,7 +112,7 @@ static void	ft_hook(void *param)
 		move_player(info->world, 190, info->mlx->delta_time);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_F12))
 	{
-		info->fullscreen = (bool)!(info->fullscreen);
+		info->fullscreen = !info->fullscreen;
 		mlx_close_window(info->mlx);
 	}
 }
@@ -124,7 +122,6 @@ static void	get_frame(void *param)
 	t_cub3d	*info;
 
 	info = param;
-	//printf("fps: %f\n", 1 / (info->mlx->delta_time));
 	get_all_rays(info->rays, info->map, info->player, info->game->height);
 	put_game_screen(info->game, info->rays, info->textures, info->pngs);
 	put_minimap(info->game, info->world, info->rays, info->layout->minimap_bs);

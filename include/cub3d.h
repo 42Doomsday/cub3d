@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/16 14:59:13 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 12:32:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define FULLSCREEN_WIDTH      1980
 # define FULLSCREEN_HEIGHT     1080
 # define MAX_WIDTH             1200
-# define MIN_WIDTH             480
-# define MIN_HEIGHT            240
+# define MIN_WIDTH             128
+# define MIN_HEIGHT            96
 # define MINIMAP_PROCENT_SIZE  0.2f
 # define TITLE                 "cub3d"
 
@@ -82,6 +82,7 @@ typedef struct s_cub3d
 
 // main
 bool	init_info(t_cub3d *info, char *filename);
+bool	init_mlx(t_cub3d *info);
 void	free_recourses(t_cub3d *info);
 void	terminate_mlx(t_cub3d *info);
 

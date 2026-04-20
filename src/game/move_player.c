@@ -12,6 +12,8 @@
 
 #include "cub3d.h"
 
+static bool		set_dist_to_coords_or_wall(float *dist, t_world *world,
+					t_vec2 normilized, float delta);
 static float	resolve_x(t_map *map, float dx, float new_x, float cur_y);
 static float	resolve_y(t_map *map, float dy, float cur_x, float new_y);
 
@@ -19,38 +21,46 @@ void	move_player(t_world *world, float degree, double delta)
 {
 	t_coords	displacement;
 	t_vec2		normilized;
-	t_coords	wall;
 	float		radians;
-	float		dist_to_wall;
-	float		dist_to_new_coords;
+	float		dist_to_coords;
 
 	radians = convert_degree_to_radians(degree);
 	normilized = normilize(world->player->dir.radians + radians);
+	if (set_dist_to_coords_or_wall(&dist_to_coords, world, normilized, delta))
+	{
+		displacement.x = normilized.x * (dist_to_coords);
+		displacement.y = normilized.y * (dist_to_coords);
+		world->player->coords.y = resolve_y(
+				world->map,
+				displacement.y,
+				world->player->coords.x,
+				world->player->coords.y + displacement.y
+				);
+		world->player->coords.x = resolve_x(
+				world->map,
+				displacement.x,
+				world->player->coords.x + displacement.x,
+				world->player->coords.y
+				);
+	}
+}
+
+static bool	set_dist_to_coords_or_wall(float *dist, t_world *world,
+	t_vec2 normilized, float delta)
+{
+	t_coords	wall;
+	float		dist_to_wall;
 
 	wall = cast_ray_to_wall(world->player->coords, normilized, world->map);
 	dist_to_wall = get_dist_to_wall(world->player->coords, wall);
-	dist_to_new_coords = PLAYER_STEP * delta;
-	if (dist_to_new_coords > dist_to_wall)
+	*dist = PLAYER_STEP * delta;
+	if (*dist > dist_to_wall)
 	{
-		dist_to_new_coords = dist_to_wall;
-		if (dist_to_new_coords < PLAYER_HITBOX_R * 2)
-			return ;
+		*dist = dist_to_wall;
+		if (*dist < PLAYER_HITBOX_R * 2)
+			return (false);
 	}
-
-	displacement.x = normilized.x * (dist_to_new_coords);
-	displacement.y = normilized.y * (dist_to_new_coords);
-	world->player->coords.y = resolve_y(
-			world->map,
-			displacement.y,
-			world->player->coords.x,
-			world->player->coords.y + displacement.y
-			);
-	world->player->coords.x = resolve_x(
-			world->map,
-			displacement.x,
-			world->player->coords.x + displacement.x,
-			world->player->coords.y
-			);
+	return (true);
 }
 
 static float	resolve_x(t_map *map, float dx, float new_x, float cur_y)

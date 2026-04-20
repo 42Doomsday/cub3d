@@ -13,7 +13,7 @@
 #include "minimap.h"
 
 static void	put_direction_ray(mlx_image_t *img, t_player_draw prms,
-					t_rays *rays, int bs);
+				t_rays *rays, int bs);
 
 void	put_player(mlx_image_t *img, t_player *player, t_rays *rays, int bs)
 {

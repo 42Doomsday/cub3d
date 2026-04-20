@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 17:28:23 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:06:55 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 12:54:55 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ typedef struct s_render_obj
 void			put_player(mlx_image_t *img, t_player *player,
 					t_rays *rays, int bs);
 t_player_draw	make_draw_params(t_player *player, int bs);
-void	put_line(mlx_image_t *img, t_coords start, t_coords end,
-			uint32_t color);
-void	put_circle(mlx_image_t *img, t_icoords center, int radius);
-void	put_square(mlx_image_t *minimap, t_render_obj square);
+void			put_line(mlx_image_t *img, t_coords start, t_coords end,
+					uint32_t color);
+void			put_circle(mlx_image_t *img, t_icoords center, int radius);
+void			put_square(mlx_image_t *minimap, t_render_obj square);
+void			put_grid(mlx_image_t *img, char **map_data, int bs);
 
 #endif

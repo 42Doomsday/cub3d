@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/16 14:53:17 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 12:35:14 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,45 +69,6 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures)
 	}
 	print_error("config file", "can't open the texture");
 	return (false);
-}
-
-bool	init_mlx(t_cub3d *info)
-{
-	mlx_t	*mlx;
-
-	if (info->fullscreen)
-	{
-		mlx_set_setting(MLX_MAXIMIZED, false);
-		mlx_set_setting(MLX_FULLSCREEN, true);
-	}
-	else
-	{
-		mlx_set_setting(MLX_FULLSCREEN, false);
-		mlx_set_setting(MLX_MAXIMIZED, true);
-	}
-	if (info->fullscreen)
-		mlx = mlx_init(FULLSCREEN_WIDTH, FULLSCREEN_HEIGHT, TITLE, true);
-	else
-		mlx = mlx_init(MIN_WIDTH, MIN_HEIGHT, TITLE, true);
-	if (mlx == NULL)
-	{
-		print_error("mlx", (char *)mlx_strerror(mlx_errno));
-		return (false);
-	}
-	info->mlx = mlx;
-	info->game = mlx_new_image(mlx, mlx->width, mlx->height);
-	mlx_set_cursor_mode(mlx, MLX_MOUSE_HIDDEN);
-	if (info->fullscreen)
-	{
-		info->window = NULL;
-		mlx_image_to_window(mlx, info->game, 0, 0);
-	}
-	else
-	{
-		info->window = mlx_new_image(mlx, mlx->width, mlx->height);
-		mlx_image_to_window(mlx, info->window, 0, 0);
-	}
-	return (true);
 }
 
 static bool	init_rendering_layout(t_cub3d *info)
