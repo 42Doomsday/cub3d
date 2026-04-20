@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 14:56:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 18:02:54 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:08:30 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ void	settings_press_hook(mlx_key_data_t key, void *param)
 			close_hook(info);
 		if (key.key == MLX_KEY_F12)
 		{
-			info->pending_fullscreen = true;
-			info->mouse_captured = true;
+			info->states->pending_fullscreen = true;
+			info->states->mouse_captured = true;
 			mlx_close_window(info->mlx);
 		}
 		if (key.key == MLX_KEY_M)
-			info->minimap = !info->minimap;
+			info->states->minimap = !info->states->minimap;
 		if (key.key == MLX_KEY_MINUS)
 			change_minimap_procent(info->layout, info->map, -0.1f);
 		if (key.key == MLX_KEY_EQUAL)
 			change_minimap_procent(info->layout, info->map, 0.1f);
 		if (key.key == MLX_KEY_F)
-			info->mouse_captured = !info->mouse_captured;
+			info->states->mouse_captured = !info->states->mouse_captured;
 	}
 }
 
@@ -69,9 +69,9 @@ void	scroll_hook(double ydelta, double xdelta, void *param)
 	(void)ydelta;
 	info = (t_cub3d *)param;
 	if (xdelta >= 0)
-		info->sensitivity += 0.1f;
-	if (xdelta < 0 && info->sensitivity >= 0)
-		info->sensitivity -= 0.1f;
+		info->states->sensitivity += 0.1f;
+	if (xdelta < 0 && info->states->sensitivity >= 0)
+		info->states->sensitivity -= 0.1f;
 }
 
 static void	change_minimap_procent(t_render_layout *layout, t_map *map,
@@ -95,7 +95,7 @@ void	handle_mouse(t_cub3d *info)
 	int		center_y;
 	float	dx;
 
-	if (!info->mouse_captured)
+	if (!info->states->mouse_captured)
 	{
 		mlx_set_cursor_mode(info->mlx, MLX_MOUSE_NORMAL);
 		return ;
@@ -104,7 +104,7 @@ void	handle_mouse(t_cub3d *info)
 	center_x = info->mlx->width / 2;
 	center_y = info->mlx->height / 2;
 	mlx_get_mouse_pos(info->mlx, &x, &y);
-	dx = (x - center_x) * info->sensitivity;
+	dx = (x - center_x) * info->states->sensitivity;
 	update_degree(info, dx);
 	mlx_set_mouse_pos(info->mlx, center_x, center_y);
 }

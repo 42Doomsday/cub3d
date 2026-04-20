@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 18:28:58 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:10:45 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ static void	info_ptrs_setup(t_cub3d *info)
 	info->world = &info->data.world;
 	info->world->map = info->map;
 	info->world->player = info->player;
-	info->minimap = true;
-	info->sensitivity = 1.0f;
+	info->states = &info->data.states;
+	info->states->minimap = true;
+	info->states->sensitivity = 1.0f;
 }
 
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
@@ -84,7 +85,7 @@ static bool	init_rendering_layout(t_cub3d *info)
 	int	width;
 	int	height;
 
-	if (info->fullscreen)
+	if (info->states->fullscreen)
 	{
 		width = FULLSCREEN_WIDTH;
 		height = FULLSCREEN_HEIGHT;

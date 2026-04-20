@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 17:53:19 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:09:19 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int32_t	main(int argc, char **argv)
 		print_error("init_info", "failed to start");
 		return (EXIT_FAILURE);
 	}
-	while (info.exit_flag == false && init_mlx(&info))
+	while (info.states->exit_flag == false && init_mlx(&info))
 	{
 		update_render_layour(&info, info.mlx->width, info.mlx->height);
 		update_buffers(&info, true);
@@ -54,11 +54,11 @@ static void	setup_hooks(mlx_t *mlx, t_cub3d *info)
 
 static void	check_pending_fullscreen(t_cub3d *info)
 {
-	if (info->pending_fullscreen)
+	if (info->states->pending_fullscreen)
 	{
-		info->fullscreen = !info->fullscreen;
-		if (info->fullscreen == false)
-			info->mouse_captured = false;
-		info->pending_fullscreen = false;
+		info->states->fullscreen = !info->states->fullscreen;
+		if (info->states->fullscreen == false)
+			info->states->mouse_captured = false;
+		info->states->pending_fullscreen = false;
 	}
 }

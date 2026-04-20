@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 14:56:56 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 15:03:02 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:12:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	close_hook(void *param)
 
 	info = param;
 	mlx_close_window(info->mlx);
-	info->exit_flag = true;
+	info->states->exit_flag = true;
 }
 
 void	on_resize_hook(int32_t width, int32_t height, void *param)
@@ -40,9 +40,9 @@ void	frame_hook(void *param)
 	info = param;
 	get_all_rays(info->rays, info->map, info->player, info->game->height);
 	put_game_screen(info->game, info->rays, info->textures, info->pngs);
-	if (info->minimap)
+	if (info->states->minimap)
 		put_minimap(info->game, info->world, info->rays,
 			info->layout->minimap_bs);
-	if (info->fullscreen == false && info->layout->rescale)
+	if (info->states->fullscreen == false && info->layout->rescale)
 		mlx_scale_image_into(info->game, info->window);
 }

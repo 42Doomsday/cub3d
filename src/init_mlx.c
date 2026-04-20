@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 12:17:23 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 15:12:01 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:09:44 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static mlx_t	*init_engine(t_cub3d *info)
 {
 	mlx_t	*mlx;
 
-	mlx_set_setting(MLX_FULLSCREEN, info->fullscreen == true);
-	mlx_set_setting(MLX_MAXIMIZED, info->fullscreen == false);
-	if (info->fullscreen)
+	mlx_set_setting(MLX_FULLSCREEN, info->states->fullscreen == true);
+	mlx_set_setting(MLX_MAXIMIZED, info->states->fullscreen == false);
+	if (info->states->fullscreen)
 		mlx = mlx_init(FULLSCREEN_WIDTH, FULLSCREEN_HEIGHT, TITLE, true);
 	else
 		mlx = mlx_init(MIN_WIDTH, MIN_HEIGHT, TITLE, true);
@@ -47,7 +47,7 @@ static bool	setup_images(t_cub3d *info)
 	info->game = mlx_new_image(info->mlx, info->mlx->width, info->mlx->height);
 	if (info->game)
 	{
-		if (info->fullscreen)
+		if (info->states->fullscreen)
 		{
 			info->window = NULL;
 			if (mlx_image_to_window(info->mlx, info->game, 0, 0) != -1)

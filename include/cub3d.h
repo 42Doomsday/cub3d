@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 18:29:20 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:10:15 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,16 @@ typedef struct s_render_layout
 	bool	rescale;
 }	t_render_layout;
 
+typedef struct s_states
+{
+	bool	pending_fullscreen;
+	bool	fullscreen;
+	bool	exit_flag;
+	bool	minimap;
+	bool	mouse_captured;
+	float	sensitivity;
+}	t_states;
+
 typedef struct s_cub3d_data
 {
 	t_textures		textures;
@@ -62,7 +72,10 @@ typedef struct s_cub3d_data
 	t_rays			rays;
 	t_png_textures	text;
 	t_world			world;
+	t_states		states;
 }	t_cub3d_data;
+
+
 
 typedef struct s_cub3d
 {
@@ -76,12 +89,7 @@ typedef struct s_cub3d
 	t_rays			*rays;
 	t_png_textures	*pngs;
 	t_world			*world;
-	bool			pending_fullscreen;
-	bool			fullscreen;
-	bool			exit_flag;
-	bool			minimap;
-	bool			mouse_captured;
-	float			sensitivity;
+	t_states		*states;
 	t_cub3d_data	data;
 }	t_cub3d;
 
