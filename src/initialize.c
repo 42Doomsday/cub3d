@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 12:35:14 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 13:43:19 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,14 @@ bool	init_info(t_cub3d *info, char *filename)
 		if (parse(filename, info->textures, info->map, info->player))
 		{
 			if (init_textures(info->pngs, info->textures))
+			{
 				if (init_rendering_layout(info))
 					return (true);
+				mlx_delete_texture(info->pngs->north);
+				mlx_delete_texture(info->pngs->south);
+				mlx_delete_texture(info->pngs->east);
+				mlx_delete_texture(info->pngs->west);
+			}
 			free_map(info->map);
 			free_textures(info->textures);
 		}
