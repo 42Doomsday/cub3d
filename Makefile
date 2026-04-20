@@ -28,7 +28,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SOURCES  = main.c init_mlx.c initialize.c cleanup.c updaters.c
+SOURCES  = main.c init_mlx.c initialize.c cleanup.c updaters.c hooks.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \

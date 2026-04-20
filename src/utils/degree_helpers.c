@@ -6,11 +6,20 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 12:57:19 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 13:13:57 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 13:35:32 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	update_degree(t_cub3d *info, int change)
+{
+	int	new_degree;
+
+	new_degree = info->player->dir.degree + (change * info->mlx->delta_time);
+	update_player_degree(info->player, new_degree);
+	calculate_angles(info->rays, info->player);
+}
 
 void	update_player_degree(t_player *player, float degree)
 {

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 12:32:40 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 13:40:16 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,12 @@ bool	init_mlx(t_cub3d *info);
 void	free_recourses(t_cub3d *info);
 void	terminate_mlx(t_cub3d *info);
 
+// hooks
+void	close_hook(void *param);
+void	on_resize_hook(int32_t width, int32_t height, void *param);
+void	control_hook(void *param);
+void	frame_hook(void *param);
+
 // parsing
 bool	parse(char *filename, t_textures *texts, t_map *map, t_player *player);
 bool	is_valid_path(char *path);
@@ -104,6 +110,7 @@ void	print_error(char *error_type, char *message);
 void	destroy_textures(t_png_textures *pngs);
 
 // updaters
+void	update_degree(t_cub3d *info, int change);
 void	update_window_info(mlx_t *mlx, int width, int height);
 void	update_render_layour(t_cub3d *info, int width, int height);
 void	update_buffers(t_cub3d *info, bool realloc);
