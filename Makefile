@@ -99,7 +99,7 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
 $(MLX):
-	@cmake -S $(MLX_DIR) -B $(MLX_BUILD)
+	@cmake -S $(MLX_DIR) -B $(MLX_BUILD) -DDEBUG=1
 	@cmake --build $(MLX_BUILD) -j4
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
