@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 14:15:12 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 14:43:08 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:48:37 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,15 @@ void	update_buffers(t_cub3d *info, bool realloc)
 			mlx_close_window(info->mlx);
 	}
 	if (info->fullscreen == false && info->layout->rescale)
+	{
 		if (mlx_resize_image(info->window, info->mlx->width,
 				info->mlx->height) == false)
-			mlx_close_window(info->mlx);
+		{
+			info->exit_flag = true;
+			mlx_terminate(info->mlx);
+			free_recourses(info);
+			exit(123);
+		}
+	}
 	calculate_angles(info->rays, info->player);
 }

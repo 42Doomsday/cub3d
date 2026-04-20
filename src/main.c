@@ -6,13 +6,14 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 18:30:19 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:53:19 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static void	setup_hooks(mlx_t *mlx, t_cub3d *info);
+static void	check_pending_fullscreen(t_cub3d *info);
 
 int32_t	main(int argc, char **argv)
 {
@@ -34,11 +35,7 @@ int32_t	main(int argc, char **argv)
 		update_buffers(&info, true);
 		setup_hooks(info.mlx, &info);
 		mlx_loop(info.mlx);
-		if (info.pending_fullscreen)
-		{
-			info.fullscreen = !info.fullscreen;
-			info.pending_fullscreen = false;
-		}
+		check_pending_fullscreen(&info);
 		terminate_mlx(&info);
 	}
 	free_recourses(&info);
@@ -53,4 +50,15 @@ static void	setup_hooks(mlx_t *mlx, t_cub3d *info)
 	mlx_loop_hook(mlx, frame_hook, info);
 	mlx_close_hook(mlx, close_hook, info);
 	mlx_scroll_hook(mlx, scroll_hook, info);
+}
+
+static void	check_pending_fullscreen(t_cub3d *info)
+{
+	if (info->pending_fullscreen)
+	{
+		info->fullscreen = !info->fullscreen;
+		if (info->fullscreen == false)
+			info->mouse_captured = false;
+		info->pending_fullscreen = false;
+	}
 }

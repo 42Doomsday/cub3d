@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 14:56:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 18:38:01 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:45:36 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	settings_press_hook(mlx_key_data_t key, void *param)
 		if (key.key == MLX_KEY_F12)
 		{
 			info->pending_fullscreen = true;
+			info->mouse_captured = true;
 			mlx_close_window(info->mlx);
 		}
 		if (key.key == MLX_KEY_M)
@@ -104,7 +105,6 @@ void handle_mouse(t_cub3d *info)
 	center_y = info->mlx->height / 2;
 	mlx_get_mouse_pos(info->mlx, &x, &y);
 	dx = (x - center_x) * info->sensitivity;
-	printf("dx %f   rot_rate %f\n", dx, info->sensitivity);
 	update_degree(info, dx);
 	mlx_set_mouse_pos(info->mlx, center_x, center_y);
  }
