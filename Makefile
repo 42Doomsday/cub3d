@@ -9,6 +9,7 @@ MINIMAP_DIR = minimap
 GAME_DIR = game
 UTILS_DIR = utils
 RAYS_DIR = rays
+HOOKS_DIR = hooks
 
 NAME = cub3d
 
@@ -28,7 +29,7 @@ VALGRIND = valgrind \
 	--errors-for-leak-kinds=definite \
 	--error-exitcode=1
 
-SOURCES  = main.c init_mlx.c initialize.c cleanup.c updaters.c hooks.c
+SOURCES  = main.c init_mlx.c initialize.c cleanup.c updaters.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
 		parse_player.c helpers/free_map.c helpers/read_lines.c \
@@ -45,14 +46,17 @@ RAYS_SOURCES = cast_ray.c is_wall.c ray_utils.c
 
 UTILS_SOURCES = mlx_scale_image_into.c common.c degree_helpers.c
 
+HOOKS_SOURCES = lifecycle.c input.c
+
 GAME_SRC = $(addprefix $(GAME_DIR)/, $(GAME_SOURCES))
 MINIMAP_SRC = $(addprefix $(MINIMAP_DIR)/, $(MINIMAP_SOURCES))
 PARSING_SRC = $(addprefix $(PARSING_DIR)/, $(PARSING_SOURCES))
 UTILS_SRC = $(addprefix $(UTILS_DIR)/, $(UTILS_SOURCES))
 RAYS_SRC = $(addprefix $(RAYS_DIR)/, $(RAYS_SOURCES))
+HOOKS_SRC = $(addprefix $(HOOKS_DIR)/, $(HOOKS_SOURCES))
 
 SRC = $(SOURCES) $(PARSING_SRC) $(MINIMAP_SRC) $(GAME_SRC) \
-		$(RAYS_SRC) $(UTILS_SRC)
+		$(RAYS_SRC) $(UTILS_SRC) $(HOOKS_SRC)
 
 OBJ  = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
