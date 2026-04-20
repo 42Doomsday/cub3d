@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 12:17:23 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 13:12:18 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:12:01 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static bool	setup_images(t_cub3d *info)
 	{
 		if (info->fullscreen)
 		{
+			info->window = NULL;
 			if (mlx_image_to_window(info->mlx, info->game, 0, 0) != -1)
 				return (true);
 		}
