@@ -45,10 +45,13 @@ typedef struct s_render_layout
 	int		game_bs;
 	int		game_width;
 	int		game_height;
+	int		disp_width;
+	int		disp_height;
+	int		disp_x;
+	int		disp_y;
 	int		minimap_bs;
 	int		minimap_width;
 	int		minimap_height;
-	bool	rescale;
 }	t_render_layout;
 
 typedef struct s_cub3d_data
