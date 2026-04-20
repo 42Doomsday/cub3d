@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 14:52:01 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:37:25 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ typedef struct s_cub3d
 	t_rays			*rays;
 	t_png_textures	*pngs;
 	t_world			*world;
+	bool			pending_fullscreen;
 	bool			fullscreen;
 	bool			exit_flag;
 	bool			minimap;
-	mlx_image_t		*fps;
 	t_cub3d_data	data;
 }	t_cub3d;
 

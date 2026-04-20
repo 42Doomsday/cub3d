@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 15:02:42 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:38:34 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ int32_t	main(int argc, char **argv)
 		update_buffers(&info, true);
 		setup_hooks(info.mlx, &info);
 		mlx_loop(info.mlx);
+		if (info.pending_fullscreen)
+		{
+			info.fullscreen = !info.fullscreen;
+			info.pending_fullscreen = false;
+		}
 		terminate_mlx(&info);
 	}
 	free_recourses(&info);
