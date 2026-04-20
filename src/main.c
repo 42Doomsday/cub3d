@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/15 14:51:01 by clouden          ###   ########.fr       */
+/*   Updated: 2026/04/17 21:26:25 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	get_frame(void *param);
 static void	on_resize(int32_t width, int32_t height, void *param);
 static void	ft_hook(void *param);
 bool	init_mlx_2(t_cub3d *info);
+void	toggle_mouse(mlx_key_data_t keydata, void *param);
+void	scroll_hook(double ydelta, double xdelta, void *param);
 
 int32_t	main(int argc, char **argv)
 {
@@ -31,6 +33,8 @@ int32_t	main(int argc, char **argv)
 	mlx_loop_hook(info.mlx, ft_hook, &info);
 	mlx_resize_hook(info.mlx, on_resize, &info);
 	mlx_loop_hook(info.mlx, get_frame, &info);
+	mlx_key_hook(info.mlx, toggle_mouse, &info);
+	mlx_scroll_hook(info.mlx, scroll_hook, &info);
 	mlx_loop(info.mlx);
 	terminate_mlx(&info);
 
@@ -40,6 +44,8 @@ int32_t	main(int argc, char **argv)
 		mlx_loop_hook(info.mlx, ft_hook, &info);
 		mlx_resize_hook(info.mlx, on_resize, &info);
 		mlx_loop_hook(info.mlx, get_frame, &info);
+		mlx_key_hook(info.mlx, toggle_mouse, &info);
+		mlx_scroll_hook(info.mlx, scroll_hook, &info);
 		mlx_loop(info.mlx);
 		terminate_mlx(&info);
 	}
@@ -69,24 +75,53 @@ static void	update_degree(t_cub3d *info, int change)
 	calculate_angles(info->rays, info->player);
 }
 
+void	toggle_mouse(mlx_key_data_t keydata, void *param)
+{
+	t_cub3d	*info;
+
+	info = (t_cub3d *)param;
+
+	if (keydata.key == MLX_KEY_F && keydata.action == MLX_PRESS)
+		info->mouse_captured = !info->mouse_captured;
+}
+
+void	scroll_hook(double ydelta, double xdelta, void *param)
+{
+	t_cub3d *info;
+
+	(void)ydelta;
+	info = (t_cub3d *)param;
+	if (xdelta >= 0)
+		info->sensitivity += 0.1f;
+	if (xdelta < 0 && info->sensitivity >= 0)
+		info->sensitivity -= 0.1f;
+}
+
  void handle_mouse(t_cub3d *info)
  {
- 	int x;
- 	int y;
- 	int center_x;
- 	int center_y;
- 	int dx;
+ 	int		x;
+ 	int		y;
+ 	int		center_x;
+ 	int		center_y;
+ 	float	dx;
 
- 	center_x = info->mlx->width / 2;
- 	center_y = info->mlx->height / 2;
- 	mlx_get_mouse_pos(info->mlx, &x, &y);
+	if (!info->mouse_captured)
+	{
+		mlx_set_cursor_mode(info->mlx, MLX_MOUSE_NORMAL);
+		return ;
+	}
+	mlx_set_cursor_mode(info->mlx, MLX_MOUSE_HIDDEN);
+	center_x = info->mlx->width / 2;
+	center_y = info->mlx->height / 2;
+	mlx_get_mouse_pos(info->mlx, &x, &y);
+	if (x < center_x)
+		dx = x - center_x - info->sensitivity;
 	if (x > center_x)
-		dx = x - center_x;
-	else
-		dx = x - center_x;
-	printf("x : %d  x_cent : %d  dx : %d\n", x, center_x, dx);
- 	update_degree(info, dx);
- 	mlx_set_mouse_pos(info->mlx, center_x, center_y);
+		dx = x - center_x + info->sensitivity;
+	dx *= info->sensitivity;
+	printf("dx %f   rot_rate %f\n", dx, info->sensitivity);
+	update_degree(info, dx);
+	mlx_set_mouse_pos(info->mlx, center_x, center_y);
  }
 
 //void handle_mouse(t_cub3d *info)
@@ -127,7 +162,7 @@ static void	ft_hook(void *param)
 		move_player(info->world, 0, info->mlx->delta_time);
 	if (mlx_is_key_down(info->mlx, MLX_KEY_D))
 		move_player(info->world, 190, info->mlx->delta_time);
-	if (mlx_is_key_down(info->mlx, MLX_KEY_F))
+	if (mlx_is_key_down(info->mlx, MLX_KEY_O))
 	{
 		info->fullscreen = (bool)!(info->fullscreen);
 		mlx_close_window(info->mlx);

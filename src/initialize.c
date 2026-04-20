@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/14 16:27:53 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/17 21:01:41 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static void	info_ptrs_setup(t_cub3d *info)
 	info->world = &info->data.world;
 	info->world->map = info->map;
 	info->world->player = info->player;
+	info->sensitivity = 1.1f;
 }
 
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
