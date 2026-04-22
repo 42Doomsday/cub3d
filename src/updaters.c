@@ -6,11 +6,13 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 14:15:12 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 18:11:09 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:33:12 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static void	exit_on_error(t_cub3d *info);
 
 void	update_window_info(mlx_t *mlx, int width, int height)
 {
@@ -61,23 +63,28 @@ void	update_buffers(t_cub3d *info, bool realloc)
 
 	layout = *info->layout;
 	info->rays->count = info->layout->game_width;
-	mlx_resize_image(info->game, layout.game_width, layout.game_height);
+	if (mlx_resize_image(info->game, layout.game_width,
+			layout.game_height) == false)
+		exit_on_error(info);
 	if (realloc)
 	{
 		free(info->rays->coords);
 		if (allocate_rays(info->rays, info->layout->game_width) == NULL)
-			mlx_close_window(info->mlx);
+			exit_on_error(info);
 	}
 	if (info->states->fullscreen == false && info->layout->rescale)
 	{
 		if (mlx_resize_image(info->window, info->mlx->width,
 				info->mlx->height) == false)
-		{
-			info->states->exit_flag = true;
-			mlx_terminate(info->mlx);
-			free_recourses(info);
-			exit(123);
-		}
+			exit_on_error(info);
 	}
 	calculate_angles(info->rays, info->player);
+}
+
+static void	exit_on_error(t_cub3d *info)
+{
+	print_error("cub3d", "can't update buffers");
+	mlx_terminate(info->mlx);
+	free_recourses(info);
+	exit(2);
 }
