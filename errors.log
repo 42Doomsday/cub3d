@@ -1,4 +1,0 @@
-1) When path is incorrect message has wrong order (first comes MLX error, our message doesn't prints Error)
-
-2) When parts of congfig textures are incorrect message doesn't specify a reason
-
