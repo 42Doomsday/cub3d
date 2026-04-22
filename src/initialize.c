@@ -6,20 +6,42 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 14:32:40 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:42:31 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:10:45 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static bool	init_mlx(t_cub3d *info);
+static void	info_ptrs_setup(t_cub3d *info);
 static bool	init_textures(t_png_textures *pngs, t_textures *textures);
-static bool	init_game(t_cub3d *info);
-static void	destroy_textures(t_png_textures *pngs);
+static bool	init_rendering_layout(t_cub3d *info);
 
 bool	init_info(t_cub3d *info, char *filename)
 {
 	ft_bzero(info, sizeof(t_cub3d));
+	info_ptrs_setup(info);
+	if (is_valid_path(filename))
+	{
+		if (parse(filename, info->textures, info->map, info->player))
+		{
+			if (init_textures(info->pngs, info->textures))
+			{
+				if (init_rendering_layout(info))
+					return (true);
+				mlx_delete_texture(info->pngs->north);
+				mlx_delete_texture(info->pngs->south);
+				mlx_delete_texture(info->pngs->east);
+				mlx_delete_texture(info->pngs->west);
+			}
+			free_map(info->map);
+			free_textures(info->textures);
+		}
+	}
+	return (false);
+}
+
+static void	info_ptrs_setup(t_cub3d *info)
+{
 	info->textures = &info->data.textures;
 	info->map = &info->data.map;
 	info->player = &info->data.player;
@@ -29,25 +51,9 @@ bool	init_info(t_cub3d *info, char *filename)
 	info->world = &info->data.world;
 	info->world->map = info->map;
 	info->world->player = info->player;
-	if (is_valid_path(filename))
-	{
-		if (parse(filename, info->textures, info->map, info->player))
-		{
-			if (init_textures(info->pngs, info->textures))
-			{
-				if (init_mlx(info))
-				{
-					if (init_game(info))
-						return (true);
-					mlx_terminate(info->mlx);
-				}
-				destroy_textures(info->pngs);
-			}
-			free_map(info->map);
-			free_textures(info->textures);
-		}
-	}
-	return (false);
+	info->states = &info->data.states;
+	info->states->minimap = true;
+	info->states->sensitivity = 1.0f;
 }
 
 static bool	init_textures(t_png_textures *pngs, t_textures *textures)
@@ -70,54 +76,35 @@ static bool	init_textures(t_png_textures *pngs, t_textures *textures)
 		}
 		mlx_delete_texture(pngs->north);
 	}
-	ft_putstr_fd("cub3d: can't open the texture\n", STDERR_FILENO);
+	print_error("config file", "can't open the texture");
 	return (false);
 }
 
-static bool	init_mlx(t_cub3d *info)
-{
-	mlx_set_setting(MLX_MAXIMIZED, true);
-	info->mlx = mlx_init(DEFAULT_WIDTH, DEFAULT_HEIGHT, TITLE, true);
-	if (info->mlx == NULL)
-	{
-		ft_putstr_fd((char *)mlx_strerror(mlx_errno), STDERR_FILENO);
-		return (false);
-	}
-	return (true);
-}
-
-static bool	init_game(t_cub3d *info)
+static bool	init_rendering_layout(t_cub3d *info)
 {
 	int	width;
 	int	height;
 
-	width = info->mlx->width;
-	height = info->mlx->height;
-	info->rays->count = width;
+	if (info->states->fullscreen)
+	{
+		width = FULLSCREEN_WIDTH;
+		height = FULLSCREEN_HEIGHT;
+	}
+	else
+	{
+		width = MIN_WIDTH;
+		height = MIN_HEIGHT;
+	}
 	info->rays->fov = 60.0f * M_PI / 180.0f;
-	if (allocate_rays(info->rays, width))
+	info->layout->minimap_procent = MINIMAP_MIN_SIZE;
+	if (allocate_rays(info->rays, FULLSCREEN_WIDTH))
 	{
 		calculate_angles(info->rays, info->player);
-		info->game = mlx_new_image(info->mlx, width, height);
-		if (info->game)
-		{
-			info->layout->game_bs = get_block_size(info->map, width, height);
-			width *= 0.2f;
-			height *= 0.2f;
-			info->layout->minimap_bs = get_block_size(info->map, width, height);
-			info->window = mlx_new_image(info->mlx, width, height);
-			mlx_image_to_window(info->mlx, info->window, 0, 0);
-			return (true);
-		}
-		free(info->rays->coords);
+		info->layout->game_bs = get_block_size(info->map, width, height);
+		width *= info->layout->minimap_procent;
+		height *= info->layout->minimap_procent;
+		info->layout->minimap_bs = get_block_size(info->map, width, height);
+		return (true);
 	}
 	return (false);
-}
-
-static void	destroy_textures(t_png_textures *pngs)
-{
-	mlx_delete_texture(pngs->north);
-	mlx_delete_texture(pngs->east);
-	mlx_delete_texture(pngs->south);
-	mlx_delete_texture(pngs->west);
 }

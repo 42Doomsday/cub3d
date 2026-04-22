@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 14:03:39 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:40:26 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:13:41 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	parse(char *filename, t_textures *texts, t_map *map, t_player *player)
 		close(fd);
 		return (result);
 	}
-	ft_putstr_fd("cub3d: can't open the configuration file\n", STDERR_FILENO);
+	print_error("config file", "can't open the configuration file");
 	return (false);
 }
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 14:11:45 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/01 16:25:44 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 12:57:09 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,12 @@ int	get_block_size(t_map *map, int32_t width, int32_t height)
 	return (size2);
 }
 
-void	update_player_degree(t_player *player, float degree)
+void	print_error(char *error_type, char *message)
 {
-	float	radians;
-
-	player->dir.degree = degree;
-	radians = convert_degree_to_radians(degree);
-	player->dir.radians = radians;
-	player->dir.unit = normilize(radians);
-}
-
-float	convert_degree_to_radians(float degree)
-{
-	return ((90.0f - degree) * M_PI / 180.0f);
-}
-
-t_vec2	normilize(float radians)
-{
-	t_vec2	unit_vector;
-
-	unit_vector.x = cos(radians);
-	unit_vector.y = -sin(radians);
-	return (unit_vector);
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	ft_putstr_fd("Cub3D: ", STDERR_FILENO);
+	ft_putstr_fd(error_type, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(message, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 }

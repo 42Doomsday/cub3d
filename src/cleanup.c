@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 14:10:38 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:43:06 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:53:58 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,23 @@ void	free_recourses(t_cub3d *info)
 
 void	terminate_mlx(t_cub3d *info)
 {
-	mlx_delete_image(info->mlx, info->game);
-	mlx_delete_image(info->mlx, info->window);
+	if (info->game)
+	{
+		mlx_delete_image(info->mlx, info->game);
+		info->game = NULL;
+	}
+	if (info->window)
+	{
+		mlx_delete_image(info->mlx, info->window);
+		info->window = NULL;
+	}
 	mlx_terminate(info->mlx);
+}
+
+void	destroy_textures(t_png_textures *pngs)
+{
+	mlx_delete_texture(pngs->north);
+	mlx_delete_texture(pngs->east);
+	mlx_delete_texture(pngs->south);
+	mlx_delete_texture(pngs->west);
 }

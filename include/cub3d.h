@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:42:20 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/20 18:10:15 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@
 # include "world.h"
 # include "rays.h"
 
-# define MAX_WIDTH             1024
-# define DEFAULT_WIDTH         32
-# define DEFAULT_HEIGHT        32
-# define MINIMAP_PROCENT_SIZE  0.2f
+# define FULLSCREEN_WIDTH      1980
+# define FULLSCREEN_HEIGHT     1080
+# define MAX_WIDTH             1200
+# define MIN_WIDTH             128
+# define MIN_HEIGHT            96
+# define MINIMAP_MIN_SIZE      0.2f
+# define MINIMAP_MAX_SIZE      0.5f
 # define TITLE                 "cub3d"
 
 # define PLAYER_STEP      5
@@ -44,10 +47,21 @@ typedef struct s_render_layout
 	int		game_width;
 	int		game_height;
 	int		minimap_bs;
+	float	minimap_procent;
 	int		minimap_width;
 	int		minimap_height;
 	bool	rescale;
 }	t_render_layout;
+
+typedef struct s_states
+{
+	bool	pending_fullscreen;
+	bool	fullscreen;
+	bool	exit_flag;
+	bool	minimap;
+	bool	mouse_captured;
+	float	sensitivity;
+}	t_states;
 
 typedef struct s_cub3d_data
 {
@@ -58,7 +72,10 @@ typedef struct s_cub3d_data
 	t_rays			rays;
 	t_png_textures	text;
 	t_world			world;
+	t_states		states;
 }	t_cub3d_data;
+
+
 
 typedef struct s_cub3d
 {
@@ -72,13 +89,23 @@ typedef struct s_cub3d
 	t_rays			*rays;
 	t_png_textures	*pngs;
 	t_world			*world;
+	t_states		*states;
 	t_cub3d_data	data;
 }	t_cub3d;
 
 // main
 bool	init_info(t_cub3d *info, char *filename);
+bool	init_mlx(t_cub3d *info);
 void	free_recourses(t_cub3d *info);
 void	terminate_mlx(t_cub3d *info);
+
+// hooks
+void	close_hook(void *param);
+void	on_resize_hook(int32_t width, int32_t height, void *param);
+void	settings_press_hook(mlx_key_data_t key, void *param);
+void	movements_press_hook(void *param);
+void	frame_hook(void *param);
+void	scroll_hook(double ydelta, double xdelta, void *param);
 
 // parsing
 bool	parse(char *filename, t_textures *texts, t_map *map, t_player *player);
@@ -94,9 +121,13 @@ int		get_block_size(t_map *map, int32_t width, int32_t height);
 int		get_rgba(int r, int g, int b, int a);
 float	convert_degree_to_radians(float degree);
 t_vec2	normilize(float radians);
+void	print_error(char *error_type, char *message);
+void	destroy_textures(t_png_textures *pngs);
 
 // updaters
+void	update_degree(t_cub3d *info, int change);
 void	update_window_info(mlx_t *mlx, int width, int height);
+void	update_minimap_layout(t_render_layout *layout, t_map *map);
 void	update_render_layour(t_cub3d *info, int width, int height);
 void	update_buffers(t_cub3d *info, bool realloc);
 bool	mlx_scale_image_into(mlx_image_t *src, mlx_image_t *dst);

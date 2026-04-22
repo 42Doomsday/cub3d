@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:19 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 15:12:00 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:09:15 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int		*parse_rgb(char *trim);
 // common
 bool	set_gnl(int fd, char **line);
 void	exit_with_error(t_textures *tex, char *error_type, char *message);
-void	print_error(char *error_type, char *message);
 bool	msg_on_error(bool result, char *error_type, char *message);
 void	free_rgb(char ***strarr, int **intarr);
 
