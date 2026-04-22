@@ -60,7 +60,7 @@ static void	put_floor(mlx_image_t *img, t_textures *texts, t_icoords coords)
 {
 	uint32_t	pixel;
 
-	while (coords.y < ((int)img->height - 1))
+	while (coords.y < (int)img->height)
 	{
 		pixel = get_rgba(
 				texts->floor[0],

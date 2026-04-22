@@ -91,7 +91,10 @@ MINIMAP_MOCK_OBJ = $(OBJ_DIR)/mock_mlx.o
 
 GAME_TEST_OBJ = $(GAME_SRC:%.c=$(OBJ_DIR)/%.o) \
 				$(OBJ_DIR)/rays/is_wall.o \
-				$(OBJ_DIR)/utils/common.o
+				$(OBJ_DIR)/rays/cast_ray.o \
+				$(OBJ_DIR)/rays/ray_utils.o \
+				$(OBJ_DIR)/utils/common.o \
+				$(OBJ_DIR)/utils/degree_helpers.o
 
 all: $(NAME)
 
