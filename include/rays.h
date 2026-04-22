@@ -6,11 +6,12 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:00:51 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/10 15:42:34 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:47:22 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RAYS_H
+# define RAYS_H
 
 # include <stdlib.h>
 # include "coords.h"

@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 11:54:27 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 18:10:15 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:47:13 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ typedef struct s_cub3d_data
 	t_world			world;
 	t_states		states;
 }	t_cub3d_data;
-
-
 
 typedef struct s_cub3d
 {
