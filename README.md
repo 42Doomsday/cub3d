@@ -53,7 +53,14 @@ Move with the standard keys `w`,`s`,`a`,`d` and rotate left or right with `<-` o
 Enjoy!
 
 # Resources
-*The following is a brief summary of our process from start to finish*
+
+Very good article that explaines a lot about raycasting and the math behind it [[link](https://lodev.org/cgtutor/raycasting.html)]
+
+Video that visualize the problem and explains existing solution and implementation of code [[link](https://www.youtube.com/watch?v=NbSee-XM7WA)]
+
+ChatGPT was used for general questions and resource finding
+
+Claude was used for trouble shooting and very fast concept testing
 
 ## Parser
 To start, we had to build a parser that would read the `.cub` file and extract the paths for the texture assets, the rgb color configurations, and the map for validation.
@@ -136,11 +143,6 @@ $$
 \mathrm{projectedplane} = \frac{\mathrm{screenwidth} / 2}{\tan\left(\frac{\mathrm{FOV}}{2}\right)}
 $$
 
-$$
-projected\_plane = \frac{screen\_width / 2}{\tan\left(\frac{FOV}{2}\right)}
-$$
-
-
 Which is the measurement of distance from the player to the screen.
 
 ### Wall Height
@@ -148,10 +150,6 @@ This is the magic that creates the illusion of a 3-dimentional perspective.
 
 We have laid the groundwork by casting rays now for each ray me must measure distance from player coords to the x and y axis that borders the walls. The distance is used to determine the number of pixels along the y-axis for every column of pixels along the x-axis.
 ![wall perspective](assets/images/fullscreen.png)
-
-$$
-wall height = \frac{real wall height \cdot proj plane}{perp distance}
-$$
 
 $$
 \mathrm{wall\ height} = \frac{\mathrm{real\ wall\ height} \cdot \mathrm{proj\ plane}}{\mathrm{perp\ distance}}
@@ -167,10 +165,3 @@ Before moving the player, we cast a ray in the direction of travel and measure t
 The challenge with wall textures was mapping the texteure to the wall so that when the top of the wall gets cut off, we get the corresponding pixels of the textures. 
 
 What was happening when we rendered a cut off wall only showed us the top of the texture not the middle of the texture. But this was solve with allowing 
-
-## FPS (not FPS)
-This is the second part of First Person Shooter games: Frames Per Second
-
-
-• A “Resources” section listing classic references related to the topic (documentation, articles, tutorials, etc.), as well as a description of how AI was used —
-specifying for which tasks and which parts of the project.
