@@ -1,13 +1,13 @@
-NO textures/minecraft_lucky_block.png
+NO assets/textures/minecraft_lucky_block.png
 
-SO textures/minecraft_mixed_stones.png
+SO assets/textures/minecraft_mixed_stones.png
 
 F 47, 207, 57
 
 C 255,255,252
 
-EA textures/minecraft_leafs.png
-WE textures/minecraft_diamong_ore.png
+EA assets/textures/minecraft_leafs.png
+WE assets/textures/minecraft_diamong_ore.png
 
 111111111111111111111111111111111111
 111011110111101111011110111101111011

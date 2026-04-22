@@ -1,10 +1,9 @@
-NO textures/minecraft_wall.png
-EA textures/minecraft_wall.png
-WE textures/minecraft_wall.png
-SO textures/minecraft_wall.png
+NO assets/textures/minecraft_wall.png
+EA assets/textures/minecraft_wall.png
+WE assets/textures/minecraft_wall.png
+SO assets/textures/minecraft_wall.png
 
 F 255,255,255
-
 C 255,255,252
 
 1111111

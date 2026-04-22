@@ -1,7 +1,7 @@
-NO textures/red.png
-EA textures/red.png
-WE textures/red.png
-SO textures/red.png
+NO assets/textures/red.png
+EA assets/textures/red.png
+WE assets/textures/red.png
+SO assets/textures/red.png
 
 F 255,0,0
 C 255,0,0

@@ -1,7 +1,7 @@
-NO textures/minecraft_bookshelf.png
-EA textures/minecraft_bookshelf.png
-WE textures/minecraft_bookshelf.png
-SO textures/minecraft_bookshelf.png
+NO assets/textures/minecraft_bookshelf.png
+EA assets/textures/minecraft_bookshelf.png
+WE assets/textures/minecraft_bookshelf.png
+SO assets/textures/minecraft_bookshelf.png
 
 F 255,255,255
 C 255,255,255

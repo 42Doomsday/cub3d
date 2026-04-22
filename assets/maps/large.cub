@@ -1,13 +1,13 @@
-NO textures/minecraft_void.png
+NO assets/textures/minecraft_void.png
 
-SO textures/minecraft_void.png
+SO assets/textures/minecraft_void.png
 
 F 255,255,255
 
 C 255,255,252
 
-EA textures/minecraft_void.png
-WE textures/minecraft_void.png
+EA assets/textures/minecraft_void.png
+WE assets/textures/minecraft_void.png
 
 111111111111111111
 1000001000000000011
