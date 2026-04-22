@@ -161,6 +161,7 @@ This requires another variable called perpendicular distance.
 
 ## Player Collision
 
+Before moving the player, we cast a ray in the direction of travel and measure the distance to the nearest wall. If the requested step would take the player past that wall, the step is clamped to the available distance, and cancelled entirely when the remaining space is smaller than the player's hitbox radius. After the distance check, a per-axis hitbox correction lets the player slide smoothly along a wall instead of sticking when moving diagonally into it.
 
 ## Wall Textures
 The challenge with wall textures was mapping the texteure to the wall so that when the top of the wall gets cut off, we get the corresponding pixels of the textures. 
