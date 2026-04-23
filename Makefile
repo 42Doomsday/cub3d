@@ -10,7 +10,7 @@ UTILS_DIR = utils
 RAYS_DIR = rays
 HOOKS_DIR = hooks
 
-NAME = cub3d
+NAME = cub3D
 
 CC = cc
 
@@ -20,12 +20,6 @@ MLX = $(MLX_BUILD)/libmlx42.a
 CFLAGS = -Wall -Wextra -Werror -Iinclude -g -O3
 GUI_FLAGS = -lglfw -pthread -ldl
 MATH_FLAG = -lm
-
-VALGRIND = valgrind \
-	--leak-check=full \
-	--show-leak-kinds=all \
-	--errors-for-leak-kinds=definite \
-	--error-exitcode=1
 
 SOURCES  = main.c init_mlx.c initialize.c cleanup.c updaters.c
 
