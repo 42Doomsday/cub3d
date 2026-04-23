@@ -10,7 +10,7 @@ UTILS_DIR = utils
 RAYS_DIR = rays
 HOOKS_DIR = hooks
 
-NAME = cub3d
+NAME = cub3D
 
 CC = cc
 
