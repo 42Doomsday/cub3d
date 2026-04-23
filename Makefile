@@ -21,12 +21,6 @@ CFLAGS = -Wall -Wextra -Werror -Iinclude -g -O3
 GUI_FLAGS = -lglfw -pthread -ldl
 MATH_FLAG = -lm
 
-VALGRIND = valgrind \
-	--leak-check=full \
-	--show-leak-kinds=all \
-	--errors-for-leak-kinds=definite \
-	--error-exitcode=1
-
 SOURCES  = main.c init_mlx.c initialize.c cleanup.c updaters.c
 
 PARSING_SOURCES = is_valid_path.c parse_textures.c parse_rgb.c parse_map.c \
