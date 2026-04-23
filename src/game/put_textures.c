@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 19:43:59 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/07 16:31:50 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/23 15:31:18 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,12 @@ static int	get_text_clmn(t_texture_id side, t_coords crds, mlx_texture_t *text)
 {
 	int	column_idx;
 
-	if (side == NORTH || side == SOUTH)
+	if (side == NORTH)
 		column_idx = (int)((crds.x - (float)(int)crds.x) * (float)text->width);
+	else if (side == SOUTH)
+		column_idx = (int)((ceilf(crds.x) - crds.x) * (float)text->width);
+	else if (side == WEST)
+		column_idx = (int)((ceilf(crds.y) - crds.y) * (float)text->width);
 	else
 		column_idx = (int)((crds.y - (float)(int)crds.y) * (float)text->width);
 	if (column_idx < 0)
