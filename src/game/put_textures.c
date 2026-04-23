@@ -32,7 +32,9 @@ int	put_textures(mlx_image_t *img, t_rays *rays, t_png_textures *texts,
 			rays->coords[coords.x], texture);
 	step = (float)texture->height / (float)rays->heights[coords.x];
 	text_pos_y = (float)(coords.y - rays->top_borders[coords.x]) * step;
-	end = put_to_limits(rays->bot_borders[coords.x], img->height);
+	end = rays->bot_borders[coords.x];
+	if (end > (int)img->height)
+		end = (int)img->height;
 	while (coords.y < end)
 	{
 		text.y = put_to_limits(text_pos_y, texture->height);
