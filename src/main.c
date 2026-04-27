@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:54:04 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/22 15:25:04 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/27 12:33:13 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static void	check_pending_fullscreen(t_cub3d *info)
 		info->states->fullscreen = !info->states->fullscreen;
 		if (info->states->fullscreen == false)
 			info->states->mouse_captured = false;
+		else
+			info->states->mouse_captured = true;
 		info->states->pending_fullscreen = false;
 	}
 }

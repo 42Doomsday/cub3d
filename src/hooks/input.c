@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 14:56:53 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/20 18:08:30 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/04/27 12:33:08 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	settings_press_hook(mlx_key_data_t key, void *param)
 		if (key.key == MLX_KEY_F12)
 		{
 			info->states->pending_fullscreen = true;
-			info->states->mouse_captured = true;
 			mlx_close_window(info->mlx);
 		}
 		if (key.key == MLX_KEY_M)
