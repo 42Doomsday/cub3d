@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isnum.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
+/*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 16:53:56 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/19 18:09:17 by clouden          ###   ########.fr       */
+/*   Updated: 2026/04/27 18:02:15 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,3 @@ int	ft_isnum(const char *str)
 		return (0);
 	return (1);
 }
-

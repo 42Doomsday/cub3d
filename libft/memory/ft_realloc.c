@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouden <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 20:16:42 by clouden           #+#    #+#             */
-/*   Updated: 2025/10/20 20:20:51 by clouden          ###   ########.fr       */
+/*   Updated: 2026/04/27 18:01:46 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_realloc(void *ptr, size_t size)
 	mem = malloc(size);
 	while (i < size)
 	{
-		((unsigned char*)mem)[i] = 0;
+		((unsigned char *)mem)[i] = 0;
 		i++;
 	}
 	if (!ptr)
@@ -38,6 +38,5 @@ void	*ft_realloc(void *ptr, size_t size)
 		i++;
 	}
 	free(ptr);
-	return(mem);
+	return (mem);
 }
-

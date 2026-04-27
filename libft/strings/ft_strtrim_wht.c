@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim_wht.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouden <clouden@studen42madrid.com>       +#+  +:+       +#+        */
+/*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 11:26:16 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/14 18:07:59 by clouden          ###   ########.fr       */
+/*   Updated: 2026/04/27 18:03:40 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>	
+#include <libft.h>
 
-char *ft_strtrim_wht(char const *s1)
+char	*ft_strtrim_wht(char const *s1)
 {
-	return(ft_strtrim(s1, "\a\b\t\n\v\f\r "));
+	return (ft_strtrim(s1, "\a\b\t\n\v\f\r "));
 }
-

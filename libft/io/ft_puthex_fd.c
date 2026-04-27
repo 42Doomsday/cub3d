@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_puthex_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
+/*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:32:02 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/04 17:32:33 by clouden          ###   ########.fr       */
+/*   Updated: 2026/04/27 18:02:29 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,3 @@ int	ft_puthex_fd(unsigned long long n, int fd, char mode)
 		bytes += ft_putchar_fd(upx[r], fd);
 	return (bytes);
 }
-

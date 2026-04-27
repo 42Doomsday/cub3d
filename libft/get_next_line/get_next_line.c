@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
+/*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:21:36 by clouden           #+#    #+#             */
-/*   Updated: 2026/02/05 14:54:35 by clouden          ###   ########.fr       */
+/*   Updated: 2026/04/27 18:03:46 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,3 @@ char	*get_next_line(int fd)
 		next[n] = s.buff[s.b];
 	return (++s.b, next);
 }
-
