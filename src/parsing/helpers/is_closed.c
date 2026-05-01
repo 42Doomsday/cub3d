@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 17:01:18 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/03/02 17:13:35 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/05/01 13:45:29 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	is_closed(char **map, int height)
 		x = 0;
 		while (map[y][x])
 		{
-			if (map[y][x] == WALL)
+			if (map[y][x] == FLOOR || ft_strchr(VALID_PLAYER_SIDES, map[y][x]))
 			{
 				if (is_border_coord(map, height, x, y))
 					return (false);

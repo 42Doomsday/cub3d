@@ -6,7 +6,7 @@
 /*   By: dkalgano <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:58:19 by dkalgano          #+#    #+#             */
-/*   Updated: 2026/04/08 14:09:15 by dkalgano         ###   ########.fr       */
+/*   Updated: 2026/05/01 13:44:58 by dkalgano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 
 # define FILL '2'
 # define SPACE ' '
-# define WALL '0'
+# define WALL '1'
+# define FLOOR '0'
 
 # define PARSER "parsing"
 # define INV_CHARS "map contains unallowed characters"
